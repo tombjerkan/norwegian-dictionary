@@ -63,7 +63,7 @@ function parseInterpretation(container) {
     const examples = examplesContainer && examplesContainer.textContent.trim();
 
     const expandedContainer = container.querySelector(":scope > .tyding.utvidet");
-    const expanded = expandedContainer && expandedContainer.textContent.trim();
+    const expanded = expandedContainer && parseExpanded(expandedContainer);
 
     const articleEntryContainers = container.querySelectorAll(":scope > .artikkelinnhold > .utvidet");
     const articleContent = Array.from(articleEntryContainers).map(c => c.textContent.trim());
@@ -73,6 +73,21 @@ function parseInterpretation(container) {
         examples,
         expanded,
         articleContent
+    };
+}
+
+function parseExpanded(container) {
+    const header = _.takeWhile(
+        container.childNodes,
+        node => !(node.classList && node.classList.contains("doemeliste"))
+    ).map(n => n.textContent).join("").trim();
+
+    const examplesContainer = container.querySelector(":scope > .doemeliste");
+    const examples = examplesContainer && examplesContainer.textContent.trim();
+
+    return {
+        header,
+        examples
     };
 }
 

@@ -66,7 +66,7 @@ function parseInterpretation(container) {
     const expanded = expandedContainer && parseExpanded(expandedContainer);
 
     const articleEntryContainers = container.querySelectorAll(":scope > .artikkelinnhold > .utvidet");
-    const articleContent = Array.from(articleEntryContainers).map(c => c.textContent.trim());
+    const articleContent = Array.from(articleEntryContainers).map(parseArticleEntry);
 
     return {
         header,
@@ -88,6 +88,21 @@ function parseExpanded(container) {
     return {
         header,
         examples
+    };
+}
+
+function parseArticleEntry(container) {
+    const headerContainer = container.querySelector(":scope > .artikkeloppslagsord");
+    if (headerContainer === null) throw Error("Invalid article entry.");
+    const header = headerContainer.textContent.trim();
+
+    const expandedContainer = container.querySelector(":scope > .utvidet");
+    if (expandedContainer === null) throw Error("Invalid article entry.");
+    const expanded = expandedContainer.textContent.trim();
+
+    return {
+        header,
+        expanded
     };
 }
 

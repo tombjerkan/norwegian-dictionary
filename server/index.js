@@ -1,6 +1,7 @@
 const axios = require("axios");
 const express = require("express");
 const { JSDOM } = require("jsdom");
+const _ = require("lodash");
 
 const app = express();
 
@@ -24,8 +25,32 @@ app.get("/api/:word", async (req, res) => {
 function parseEntry(container) {
     return {
         term: container.firstChild.textContent,
-        definition: container.firstChild.nextSibling.textContent.trim()
+        definition: parseDefinition(container.firstChild.nextSibling)
     };
+}
+
+function parseDefinition(container) {
+    const articleContent = container.querySelector(".artikkelinnhold");
+    if (!articleContent) throw new Error("Invalid definition");
+
+    const interpretationElements = articleContent.querySelectorAll(":scope > .utvidet > .tyding");
+
+    if (interpretationElements.length === 0) {
+        return {
+            header: articleContent.textContent,
+            interpretations: []
+        };
+    } else {
+        const headerNodes = _.takeWhile(
+            articleContent.childNodes,
+            node => !(node.classList && node.classList.contains("utvidet"))
+        ).filter(node => !(node.classList && node.classList.contains("oppsgramordklassevindu")));
+
+        return {
+            header: headerNodes.map(node => node.textContent).join(""),
+            interpretations: Array.from(interpretationElements).map(e => e.textContent.trim())
+        };
+    }
 }
 
 app.listen(8080, () => console.log("Listening on port 8080..."));

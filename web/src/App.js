@@ -3,19 +3,19 @@ import React, { Component } from 'react';
 class App extends Component {
 
     state = {
-        word: null
+        response: null
     };
 
     async componentDidMount() {
         const response = await fetch("/api/for");
         const json = await response.json();
-        this.setState({ word: json.word });
+        this.setState({ response: json });
     }
 
     render() {
         return (
           <div>
-              {this.state.word}
+              {this.state.response}
           </div>
         );
     }

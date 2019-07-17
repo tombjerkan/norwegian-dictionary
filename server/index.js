@@ -48,9 +48,32 @@ function parseDefinition(container) {
 
         return {
             header: headerNodes.map(node => node.textContent).join(""),
-            interpretations: Array.from(interpretationElements).map(e => e.textContent.trim())
+            interpretations: Array.from(interpretationElements).map(parseInterpretation)
         };
     }
+}
+
+function parseInterpretation(container) {
+    const header = _.takeWhile(
+        container.childNodes,
+        node => !(node.classList && node.classList.contains("doemeliste"))
+    ).map(n => n.textContent).join("").trim().replace(/^\d+\s/, "");
+
+    const examplesContainer = container.querySelector(".doemeliste");
+    const examples = examplesContainer && examplesContainer.textContent.trim();
+
+    const expandedContainer = container.querySelector(":scope > .tyding.utvidet");
+    const expanded = expandedContainer && expandedContainer.textContent.trim();
+
+    const articleEntryContainers = container.querySelectorAll(":scope > .artikkelinnhold > .utvidet");
+    const articleContent = Array.from(articleEntryContainers).map(c => c.textContent.trim());
+
+    return {
+        header,
+        examples,
+        expanded,
+        articleContent
+    };
 }
 
 app.listen(8080, () => console.log("Listening on port 8080..."));

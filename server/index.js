@@ -44,76 +44,50 @@ function takeTextContentUntilClass(element, className) {
 }
 
 function parseEntry(container) {
+    const articleContent = container.firstChild.nextSibling.querySelector(".artikkelinnhold");
+    removeChildrenByClassName(articleContent, "oppsgramordklassevindu");
+
     return {
         term: container.firstChild.textContent,
-        definition: parseDefinition(container.firstChild.nextSibling)
+        etymology: takeTextContentUntilClass(articleContent, "utvidet").trim(),
+        senses: parseSenses(articleContent.querySelector(".utvidet"))
     };
 }
 
-function parseDefinition(container) {
-    const articleContent = container.querySelector(".artikkelinnhold");
-    if (!articleContent) throw new Error("Invalid definition");
+function parseSenses(container) {
+    const isSingleSense = container.querySelector(":scope > .doemeliste") !== null;
 
-    removeChildrenByClassName(articleContent, "oppsgramordklassevindu");
-
-    const isSingleInterpretation = articleContent.querySelector(":scope > .utvidet > .doemeliste") !== null;
-
-    if (isSingleInterpretation) {
-        return parseInterpretation(articleContent);
+    if (isSingleSense) {
+        return parseSense(container);
     } else {
-        const interpretationElements = articleContent.querySelectorAll(":scope > .utvidet > .tyding");
-
-        return {
-            header: takeTextContentUntilClass(articleContent, "utvidet").trim(),
-            interpretations: Array.from(interpretationElements).map(parseInterpretation)
-        };
+        const senseContainers = container.querySelectorAll(":scope > .tyding");
+        return Array.from(senseContainers).map(parseSense);
     }
 }
 
-function parseInterpretation(container) {
-    const header = takeTextContentUntilClass(container, "utvidet").trim().replace(/^\d+\s/, "");
-
-    const examplesContainer = container.querySelector(".doemeliste");
-    const examples = examplesContainer && examplesContainer.textContent.trim();
-
-    const expandedContainer = container.querySelector(".tyding.utvidet");
-    const expanded = expandedContainer && parseExpanded(expandedContainer);
-
-    const articleEntryContainers = container.querySelectorAll(":scope > .artikkelinnhold > .utvidet");
-    const articleContent = Array.from(articleEntryContainers).map(parseArticleEntry);
-
-    return {
-        header,
-        examples,
-        expanded,
-        articleContent
-    };
-}
-
-function parseExpanded(container) {
-    const header = takeTextContentUntilClass(container, "doemeliste").trim();
+function parseSense(container) {
+    const definition = takeTextContentUntilClass(container, "doemeliste").trim().replace(/^\d+\s/, "") || null;
 
     const examplesContainer = container.querySelector(":scope > .doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();
 
-    return {
-        header,
-        examples
+    const subDefinitionContainer = container.querySelector(":scope > .tyding.utvidet");
+    const subDefinition = subDefinitionContainer && {
+        definition: takeTextContentUntilClass(subDefinitionContainer, "doemeliste").trim(),
+        examples: subDefinitionContainer.querySelector(":scope > .doemeliste").textContent.trim()
     };
-}
 
-function parseArticleEntry(container) {
-    const headerContainer = container.querySelector(":scope > .artikkeloppslagsord");
-    if (headerContainer === null) throw Error("Invalid article entry.");
-    const header = headerContainer.textContent.trim();
-
-    const expandedContainer = container.querySelector(":scope > .utvidet");
-    if (expandedContainer === null) throw Error("Invalid article entry.");
-    const expanded = expandedContainer.textContent.trim();
+    const subEntryContainers = container.querySelectorAll(":scope > .artikkelinnhold > div");
+    const subEntries = Array.from(subEntryContainers).map(subEntryContainer => ({
+        term: subEntryContainer.querySelector(":scope > .artikkeloppslagsord").textContent.trim(),
+        definition: subEntryContainer.querySelector(":scope > .utvidet").textContent.trim()
+    }));
 
     return {
-        header,
-        expanded
+        definition,
+        examples,
+        subDefinition,
+        subEntries
     };
 }
 

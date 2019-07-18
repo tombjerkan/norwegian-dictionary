@@ -58,14 +58,12 @@ function parseDefinition(container) {
 
     removeChildrenByClassName(articleContent, "oppsgramordklassevindu");
 
-    const interpretationElements = articleContent.querySelectorAll(":scope > .utvidet > .tyding");
+    const isSingleInterpretation = articleContent.querySelector(":scope > .utvidet > .doemeliste") !== null;
 
-    if (interpretationElements.length === 0) {
-        return {
-            header: articleContent.textContent,
-            interpretations: []
-        };
+    if (isSingleInterpretation) {
+        return parseInterpretation(articleContent);
     } else {
+        const interpretationElements = articleContent.querySelectorAll(":scope > .utvidet > .tyding");
         const headerNodes = takeChildNodesUntilClass(articleContent, "utvidet");
 
         return {
@@ -76,13 +74,13 @@ function parseDefinition(container) {
 }
 
 function parseInterpretation(container) {
-    const headerNodes = takeChildNodesUntilClass(container, "doemeliste");
+    const headerNodes = takeChildNodesUntilClass(container, "utvidet");
     const header = getNodeListTextContent(headerNodes).trim().replace(/^\d+\s/, "");
 
     const examplesContainer = container.querySelector(".doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();
 
-    const expandedContainer = container.querySelector(":scope > .tyding.utvidet");
+    const expandedContainer = container.querySelector(".tyding.utvidet");
     const expanded = expandedContainer && parseExpanded(expandedContainer);
 
     const articleEntryContainers = container.querySelectorAll(":scope > .artikkelinnhold > .utvidet");

@@ -11,16 +11,28 @@ app.get("/api/:word", async (req, res) => {
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
-    const hiddenElements = document.getElementsByClassName("kompakt");
-    const styleElements = document.getElementsByTagName("style");
-    const elementsToRemove = [...hiddenElements, ...styleElements];
-    elementsToRemove.forEach(e => e.parentNode.removeChild(e));
+    removeChildrenByClassName(document, "kompakt");
+    removeChildrenByTagName(document, "style");
 
     const tableRows = Array.from(document.querySelectorAll("#byttutBM > tbody > tr:not(#resultat_kolonne_overskrift_tr)"));
     const entries = tableRows.map(parseEntry);
 
     res.json(entries);
 });
+
+function removeChildrenByClassName(root, className) {
+    const elements = root.getElementsByClassName(className);
+    while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+}
+
+function removeChildrenByTagName(root, tagName) {
+    const elements = root.getElementsByTagName(tagName);
+    while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+}
 
 function parseEntry(container) {
     return {
@@ -33,6 +45,8 @@ function parseDefinition(container) {
     const articleContent = container.querySelector(".artikkelinnhold");
     if (!articleContent) throw new Error("Invalid definition");
 
+    removeChildrenByClassName(articleContent, "oppsgramordklassevindu");
+
     const interpretationElements = articleContent.querySelectorAll(":scope > .utvidet > .tyding");
 
     if (interpretationElements.length === 0) {
@@ -44,7 +58,7 @@ function parseDefinition(container) {
         const headerNodes = _.takeWhile(
             articleContent.childNodes,
             node => !(node.classList && node.classList.contains("utvidet"))
-        ).filter(node => !(node.classList && node.classList.contains("oppsgramordklassevindu")));
+        );
 
         return {
             header: headerNodes.map(node => node.textContent).join(""),

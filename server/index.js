@@ -34,14 +34,12 @@ function removeChildrenByTagName(root, tagName) {
     }
 }
 
-function takeChildNodesUntilClass(parent, className) {
-    return _.takeWhile(
-        parent.childNodes,
+function takeTextContentUntilClass(element, className) {
+    const nodeList = _.takeWhile(
+        element.childNodes,
         node => !(node.classList && node.classList.contains(className))
     );
-}
 
-function getNodeListTextContent(nodeList) {
     return nodeList.map(node => node.textContent).join("");
 }
 
@@ -64,18 +62,16 @@ function parseDefinition(container) {
         return parseInterpretation(articleContent);
     } else {
         const interpretationElements = articleContent.querySelectorAll(":scope > .utvidet > .tyding");
-        const headerNodes = takeChildNodesUntilClass(articleContent, "utvidet");
 
         return {
-            header: getNodeListTextContent(headerNodes),
+            header: takeTextContentUntilClass(articleContent, "utvidet").trim(),
             interpretations: Array.from(interpretationElements).map(parseInterpretation)
         };
     }
 }
 
 function parseInterpretation(container) {
-    const headerNodes = takeChildNodesUntilClass(container, "utvidet");
-    const header = getNodeListTextContent(headerNodes).trim().replace(/^\d+\s/, "");
+    const header = takeTextContentUntilClass(container, "utvidet").trim().replace(/^\d+\s/, "");
 
     const examplesContainer = container.querySelector(".doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();
@@ -95,8 +91,7 @@ function parseInterpretation(container) {
 }
 
 function parseExpanded(container) {
-    const headerNodes = takeChildNodesUntilClass(container, "doemeliste");
-    const header = getNodeListTextContent(headerNodes).trim();
+    const header = takeTextContentUntilClass(container, "doemeliste").trim();
 
     const examplesContainer = container.querySelector(":scope > .doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();

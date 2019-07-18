@@ -34,6 +34,13 @@ function removeChildrenByTagName(root, tagName) {
     }
 }
 
+function takeChildNodesUntilClass(parent, className) {
+    return _.takeWhile(
+        parent.childNodes,
+        node => !(node.classList && node.classList.contains(className))
+    );
+}
+
 function parseEntry(container) {
     return {
         term: container.firstChild.textContent,
@@ -55,10 +62,7 @@ function parseDefinition(container) {
             interpretations: []
         };
     } else {
-        const headerNodes = _.takeWhile(
-            articleContent.childNodes,
-            node => !(node.classList && node.classList.contains("utvidet"))
-        );
+        const headerNodes = takeChildNodesUntilClass(articleContent, "utvidet");
 
         return {
             header: headerNodes.map(node => node.textContent).join(""),
@@ -68,10 +72,11 @@ function parseDefinition(container) {
 }
 
 function parseInterpretation(container) {
-    const header = _.takeWhile(
-        container.childNodes,
-        node => !(node.classList && node.classList.contains("doemeliste"))
-    ).map(n => n.textContent).join("").trim().replace(/^\d+\s/, "");
+    const header = takeChildNodesUntilClass(container, "doemeliste")
+        .map(n => n.textContent)
+        .join("")
+        .trim()
+        .replace(/^\d+\s/, "");
 
     const examplesContainer = container.querySelector(".doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();
@@ -91,10 +96,10 @@ function parseInterpretation(container) {
 }
 
 function parseExpanded(container) {
-    const header = _.takeWhile(
-        container.childNodes,
-        node => !(node.classList && node.classList.contains("doemeliste"))
-    ).map(n => n.textContent).join("").trim();
+    const header = takeChildNodesUntilClass(container, "doemeliste")
+        .map(n => n.textContent)
+        .join("")
+        .trim();
 
     const examplesContainer = container.querySelector(":scope > .doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();

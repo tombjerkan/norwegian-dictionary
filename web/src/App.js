@@ -24,31 +24,31 @@ class App extends Component {
 function Entry({ entry }) {
     return (
         <div>
-            <h1>{entry.term}</h1>
+            <div>{entry.term}</div>
 
             <div>
-                <h2>{entry.definition.header}</h2>
+                <div>{entry.etymology}</div>
 
-                {entry.definition.interpretations.length > 0 &&
+                {entry.senses.length > 0 &&
                     <ol>
-                        {entry.definition.interpretations.map(interpretation =>
+                        {entry.senses.map(sense =>
                             <li>
-                                <h3>{interpretation.header}</h3>
+                                <div>{sense.definition}</div>
 
-                                <div>{interpretation.examples}</div>
+                                <div>{sense.examples}</div>
 
-                                {interpretation.expanded &&
+                                {sense.subDefinition &&
                                     <div>
-                                        <div>{interpretation.expanded.header}</div>
-                                        <div>{interpretation.expanded.examples}</div>
+                                        <div>{sense.subDefinition.definition}</div>
+                                        <div>{sense.subDefinition.examples}</div>
                                     </div>
                                 }
 
-                                {interpretation.articleContent.length > 0 &&
+                                {sense.subEntries.length > 0 &&
                                     <ul>
-                                        {interpretation.articleContent.map(articleEntry =>
+                                        {sense.subEntries.map(subEntry =>
                                             <li>
-                                                {articleEntry.header} {articleEntry.expanded}
+                                                {subEntry.term} {subEntry.definition}
                                             </li>
                                         )}
                                     </ul>}

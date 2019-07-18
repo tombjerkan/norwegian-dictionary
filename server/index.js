@@ -41,6 +41,10 @@ function takeChildNodesUntilClass(parent, className) {
     );
 }
 
+function getNodeListTextContent(nodeList) {
+    return nodeList.map(node => node.textContent).join("");
+}
+
 function parseEntry(container) {
     return {
         term: container.firstChild.textContent,
@@ -65,18 +69,15 @@ function parseDefinition(container) {
         const headerNodes = takeChildNodesUntilClass(articleContent, "utvidet");
 
         return {
-            header: headerNodes.map(node => node.textContent).join(""),
+            header: getNodeListTextContent(headerNodes),
             interpretations: Array.from(interpretationElements).map(parseInterpretation)
         };
     }
 }
 
 function parseInterpretation(container) {
-    const header = takeChildNodesUntilClass(container, "doemeliste")
-        .map(n => n.textContent)
-        .join("")
-        .trim()
-        .replace(/^\d+\s/, "");
+    const headerNodes = takeChildNodesUntilClass(container, "doemeliste");
+    const header = getNodeListTextContent(headerNodes).trim().replace(/^\d+\s/, "");
 
     const examplesContainer = container.querySelector(".doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();
@@ -96,10 +97,8 @@ function parseInterpretation(container) {
 }
 
 function parseExpanded(container) {
-    const header = takeChildNodesUntilClass(container, "doemeliste")
-        .map(n => n.textContent)
-        .join("")
-        .trim();
+    const headerNodes = takeChildNodesUntilClass(container, "doemeliste");
+    const header = getNodeListTextContent(headerNodes).trim();
 
     const examplesContainer = container.querySelector(":scope > .doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();

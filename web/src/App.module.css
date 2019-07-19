@@ -34,6 +34,12 @@
     margin-top: 20px;
 }
 
+.sensesList > li:only-child {
+    list-style-type: none;
+    margin-left: -25px;
+    margin-right: -25px;
+}
+
 .definition {
     font-weight: 600;
 }

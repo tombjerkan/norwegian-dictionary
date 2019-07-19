@@ -58,7 +58,7 @@ function parseSenses(container) {
     const isSingleSense = container.querySelector(":scope > .doemeliste") !== null;
 
     if (isSingleSense) {
-        return parseSense(container);
+        return [parseSense(container)];
     } else {
         const senseContainers = container.querySelectorAll(":scope > .tyding");
         return Array.from(senseContainers).map(parseSense);

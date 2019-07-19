@@ -1,0 +1,76 @@
+.container {
+    padding: 20px;
+}
+
+.entriesList {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style-type: none;
+}
+.entriesList > li + li {
+    margin-top: 30px;
+}
+
+.term {
+    margin-top: 0.5em;
+    margin-bottom: 0.75em;
+    padding-bottom: 0.25em;
+    border-bottom: 1px solid #222222;
+}
+
+.etymology {
+    font-size: 0.8em;
+    color: #777777;
+}
+
+.sensesList {
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 20px;
+}
+
+.sensesList > li + li {
+    margin-top: 20px;
+}
+
+.definition {
+    font-weight: 600;
+}
+
+.examples {
+    color: #555555;
+}
+
+.subDefinitionContainer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    border-left: 2px solid #565656;
+    background: #f7f7f7;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 10px;
+}
+
+.subDefinition {
+    font-weight: 600;
+}
+
+.subDefinitionExamples {
+    color: #404040;
+}
+
+.subEntriesList {
+    margin-top: 20px;
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.subEntriesList > li + li {
+    margin-top: 10px;
+}
+
+.subEntryTerm {
+    font-weight: 600;
+}

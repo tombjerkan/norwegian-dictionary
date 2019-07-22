@@ -8,6 +8,7 @@
     padding-left: 0;
     list-style-type: none;
 }
+
 .entriesList > li + li {
     margin-top: 30px;
 }
@@ -16,12 +17,12 @@
     margin-top: 0.5em;
     margin-bottom: 0.75em;
     padding-bottom: 0.25em;
-    border-bottom: 1px solid #222222;
+    border-bottom: 1px solid #222;
 }
 
 .etymology {
     font-size: 0.8em;
-    color: #777777;
+    color: #777;
 }
 
 .sensesList {
@@ -32,6 +33,10 @@
 
 .sensesList > li + li {
     margin-top: 20px;
+}
+
+.subEntriesList > li + li {
+    margin-top: 10px;
 }
 
 .sensesList > li:only-child {
@@ -45,7 +50,7 @@
 }
 
 .examples {
-    color: #555555;
+    color: #555;
 }
 
 .subDefinitionContainer {
@@ -53,10 +58,7 @@
     font-size: 0.9em;
     border-left: 2px solid #565656;
     background: #f7f7f7;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 10px;
+    padding: 5px 10px;
 }
 
 .subDefinition {
@@ -71,10 +73,6 @@
     margin-top: 20px;
     padding-left: 0;
     list-style-type: none;
-}
-
-.subEntriesList > li + li {
-    margin-top: 10px;
 }
 
 .subEntryTerm {

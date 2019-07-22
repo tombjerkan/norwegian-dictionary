@@ -10,11 +10,8 @@
     align-items: center;
     height: 48px;
     border-radius: 4px;
-    border: 1px solid #555555;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    border: 1px solid #555;
+    padding: 3px 10px;
 }
 
 .queryInput {

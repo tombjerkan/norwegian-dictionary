@@ -17,9 +17,19 @@ class ResultPage extends Component {
         return (
             <div className={styles.container}>
                 {this.state.response !== null &&
-                    <ul className={styles.entriesList}>
-                        {this.state.response.map(entry => <Entry entry={entry} />)}
-                    </ul>
+                    <React.Fragment>
+                        <div className={styles.sourceSection}>
+                            <h2>Ordbok</h2>
+                            <ul className={styles.entriesList}>
+                                {this.state.response.ordbok.map(entry => <Entry entry={entry} />)}
+                            </ul>
+                        </div>
+
+                        <div className={styles.sourceSection}>
+                            <h2>Wiktionary</h2>
+                            <div dangerouslySetInnerHTML={{ __html: this.state.response.wiktionary }} />
+                        </div>
+                    </React.Fragment>
                 }
           </div>
         );

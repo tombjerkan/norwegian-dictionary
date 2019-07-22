@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-radius: 4px;
+    border: 1px solid #555555;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.queryInput {
+    flex: 1;
+    border: none;
+    height: 90%;
+}
+
+.submitButton {
+    flex: 0;
+    height: 80%;
+    margin-left: 10px;
+}

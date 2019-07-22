@@ -29,6 +29,13 @@ class ResultPage extends Component {
                             <h2>Wiktionary</h2>
                             <div dangerouslySetInnerHTML={{ __html: this.state.response.wiktionary }} />
                         </div>
+
+                        <div className={styles.sourceSection}>
+                            <h2>Google Translate</h2>
+                            <ul>
+                                {this.state.response.googleTranslate.map(translation => <li>{translation}</li>)}
+                            </ul>
+                        </div>
                     </React.Fragment>
                 }
           </div>

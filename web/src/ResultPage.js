@@ -1,66 +1,39 @@
 import React, { Component } from 'react';
 import styles from "./ResultPage.module.css";
-import Loading from "./Loading";
+import Section from "./Section";
 
 class ResultPage extends Component {
-
-    state = {
-        ordbok: null,
-        wiktionary: null,
-        googleTranslate: null
-    };
-
-    async componentDidMount() {
-        fetch(`/api/ordbok/${this.props.match.params.query}`).then(async response => {
-            this.setState({ ordbok: await response.json() });
-        });
-
-        fetch(`/api/wiktionary/${this.props.match.params.query}`).then(async response => {
-            this.setState({ wiktionary: await response.json() });
-        });
-
-        fetch(`/api/googleTranslate/${this.props.match.params.query}`).then(async response => {
-            this.setState({ googleTranslate: await response.json() });
-        });
-    }
 
     render() {
         return (
             <div className={styles.container}>
-                <div className={styles.sourceSection}>
-                    <h2>Ordbok</h2>
-
-                    {this.state.ordbok !== null ? (
+                <Section
+                    name="ordbok"
+                    title="Ordbok"
+                    query={this.props.match.params.query}
+                    render={data => (
                         <ul className={styles.entriesList}>
-                            {this.state.ordbok.map(entry => <Entry entry={entry} />)}
+                            {data.map(entry => <Entry entry={entry} />)}
                         </ul>
-                    ) : (
-                        <Loading />
-                    )}
-                </div>
+                    )} />
 
+                <Section
+                    name="wiktionary"
+                    title="Wiktionary"
+                    query={this.props.match.params.query}
+                    render={data => (
+                        <div dangerouslySetInnerHTML={{ __html: data }} />
+                    )} />
 
-                <div className={styles.sourceSection}>
-                    <h2>Wiktionary</h2>
-
-                    {this.state.wiktionary !== null ? (
-                        <div dangerouslySetInnerHTML={{ __html: this.state.wiktionary }} />
-                    ) : (
-                        <Loading />
-                    )}
-                </div>
-
-                <div className={styles.sourceSection}>
-                    <h2>Google Translate</h2>
-
-                    {this.state.googleTranslate !== null ? (
+                <Section
+                    name="googleTranslate"
+                    title="Google Translate"
+                    query={this.props.match.params.query}
+                    render={data => (
                         <ul>
-                            {this.state.googleTranslate.map(translation => <li>{translation}</li>)}
+                            {data.map(translation => <li>{translation}</li>)}
                         </ul>
-                    ) : (
-                        <Loading />
-                    )}
-                </div>
+                    )} />
           </div>
         );
     }

@@ -2,10 +2,6 @@
     padding: 20px;
 }
 
-.sourceSection + .sourceSection {
-    margin-top: 50px;
-}
-
 .entriesList {
     margin-top: 0;
     margin-bottom: 0;

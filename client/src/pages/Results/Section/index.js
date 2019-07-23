@@ -9,7 +9,7 @@ function Section({ name, title, query, render }) {
         fetch(`/api/${name}/${query}`)
             .then(response => response.json())
             .then(data => setData(data));
-    });
+    }, [name, query]);
 
     return (
         <div className={styles.container}>

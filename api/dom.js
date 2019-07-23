@@ -14,13 +14,16 @@ function removeChildrenByTagName(root, tagName) {
     }
 }
 
-function takeTextContentUntilClass(element, className) {
-    const nodeList = _.takeWhile(
-        element.childNodes,
-        node => !(node.classList && node.classList.contains(className))
-    );
+function takeTextContentUntil(root, querySelector) {
+    const endElement = root.querySelector(querySelector);
 
-    return nodeList.map(node => node.textContent).join("");
+    if (endElement === null) {
+        return root.textContent;
+    } else {
+        return _.takeWhile(root.childNodes, node => node !== endElement)
+            .map(node => node.textContent)
+            .join("");
+    }
 }
 
-module.exports = { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntilClass };
+module.exports = { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntil };

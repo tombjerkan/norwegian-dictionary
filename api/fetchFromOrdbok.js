@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { JSDOM } = require("jsdom");
 const _ = require("lodash");
-const { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntilClass } = require("./dom");
+const { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntil } = require("./dom");
 
 async function fetchFromOrdbok(word) {
     const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodeURIComponent(word)}&ant_bokmaal=100`);
@@ -24,7 +24,7 @@ function parseEntry(container) {
 
     return {
         term: container.firstChild.textContent,
-        etymology: takeTextContentUntilClass(articleContent, "utvidet").trim(),
+        etymology: takeTextContentUntil(articleContent, ".utvidet").trim(),
         senses: parseSenses(articleContent.querySelector(".utvidet"))
     };
 }
@@ -41,14 +41,14 @@ function parseSenses(container) {
 }
 
 function parseSense(container) {
-    const definition = takeTextContentUntilClass(container, "doemeliste").trim().replace(/^\d+\s/, "") || null;
+    const definition = takeTextContentUntil(container, ".doemeliste, .tyding.utvidet, .artikkelinnhold").trim().replace(/^\d+\s/, "") || null;
 
     const examplesContainer = container.querySelector(":scope > .doemeliste");
     const examples = examplesContainer && examplesContainer.textContent.trim();
 
     const subDefinitionContainer = container.querySelector(":scope > .tyding.utvidet");
     const subDefinition = subDefinitionContainer && {
-        definition: takeTextContentUntilClass(subDefinitionContainer, "doemeliste").trim(),
+        definition: takeTextContentUntil(subDefinitionContainer, ".doemeliste").trim(),
         examples: subDefinitionContainer.querySelector(":scope > .doemeliste").textContent.trim()
     };
 

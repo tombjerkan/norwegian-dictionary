@@ -1,37 +1,26 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import styles from "./styles.module.css";
 
-class Search extends Component {
+function Search({ history }) {
+    const [inputValue, setInputValue] = useState("");
 
-    state = {
-        queryValue: ""
-    };
-
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    function handleChange(event) {
+        setInputValue(event.target.value);
     }
 
-    handleChange(event) {
-        this.setState({ queryValue: event.target.value });
-    }
-
-    handleSubmit(event) {
-        this.props.history.push(`/${this.state.queryValue}`);
+    function handleSubmit(event) {
+        history.push(`/${inputValue}`);
         event.preventDefault();
     }
 
-    render() {
-        return (
-            <div className={styles.container}>
-                <form onSubmit={this.handleSubmit} className={styles.form}>
-                    <input type="text" onChange={this.handleChange} className={styles.queryInput} />
-                    <input type="submit" value="Submit" className={styles.submitButton} />
-                </form>
-            </div>
-        )
-    }
+    return (
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <input type="text" value={inputValue} onChange={handleChange} className={styles.queryInput} />
+                <input type="submit" value="Submit" className={styles.submitButton} />
+            </form>
+        </div>
+    );
 }
 
 export default Search;

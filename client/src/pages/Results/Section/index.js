@@ -1,26 +1,22 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import Loading from "components/Loading";
 
-class Section extends Component {
+function Section({ name, title, query, render }) {
+    const [data, setData] = useState(null);
 
-    state = {
-        data: null
-    };
+    useEffect(() => {
+        fetch(`/api/${name}/${query}`)
+            .then(response => response.json())
+            .then(data => setData(data));
+    });
 
-    async componentDidMount() {
-        const response = await fetch(`/api/${this.props.name}/${this.props.query}`);
-        this.setState({ data: await response.json() });
-    }
-
-    render() {
-        return (
-            <div className={styles.container}>
-                <h2>{this.props.title}</h2>
-                {this.state.data !== null ? this.props.render(this.state.data) : <Loading />}
-            </div>
-        )
-    }
+    return (
+        <div className={styles.container}>
+            <h2>{title}</h2>
+            {data !== null ? render(data) : <Loading />}
+        </div>
+    )
 }
 
 export default Section;

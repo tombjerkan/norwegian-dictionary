@@ -1,42 +1,39 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from "./styles.module.css";
 import Section from "./Section";
 
-class Results extends Component {
+function Results({ match }) {
+    return (
+        <div className={styles.container}>
+            <Section
+                name="ordbok"
+                title="Ordbok"
+                query={match.params.query}
+                render={data => (
+                    <ul className={styles.entriesList}>
+                        {data.map(entry => <Entry entry={entry} />)}
+                    </ul>
+                )} />
 
-    render() {
-        return (
-            <div className={styles.container}>
-                <Section
-                    name="ordbok"
-                    title="Ordbok"
-                    query={this.props.match.params.query}
-                    render={data => (
-                        <ul className={styles.entriesList}>
-                            {data.map(entry => <Entry entry={entry} />)}
-                        </ul>
-                    )} />
+            <Section
+                name="wiktionary"
+                title="Wiktionary"
+                query={match.params.query}
+                render={data => (
+                    <div dangerouslySetInnerHTML={{ __html: data }} />
+                )} />
 
-                <Section
-                    name="wiktionary"
-                    title="Wiktionary"
-                    query={this.props.match.params.query}
-                    render={data => (
-                        <div dangerouslySetInnerHTML={{ __html: data }} />
-                    )} />
-
-                <Section
-                    name="googleTranslate"
-                    title="Google Translate"
-                    query={this.props.match.params.query}
-                    render={data => (
-                        <ul>
-                            {data.map(translation => <li>{translation}</li>)}
-                        </ul>
-                    )} />
-          </div>
-        );
-    }
+            <Section
+                name="googleTranslate"
+                title="Google Translate"
+                query={match.params.query}
+                render={data => (
+                    <ul>
+                        {data.map(translation => <li>{translation}</li>)}
+                    </ul>
+                )} />
+        </div>
+    );
 }
 
 function Entry({ entry }) {

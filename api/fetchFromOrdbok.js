@@ -4,7 +4,7 @@ const _ = require("lodash");
 const { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntilClass } = require("./dom");
 
 async function fetchFromOrdbok(word) {
-    const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${word}&ant_bokmaal=100`);
+    const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodeURIComponent(word)}&ant_bokmaal=100`);
     const html = response.data;
     const dom = new JSDOM(html);
     const document = dom.window.document;

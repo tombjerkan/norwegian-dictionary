@@ -6,6 +6,10 @@
   "engines": {
     "node": "12.6.0"
   },
+  "cacheDirectories": [
+    "node_modules",
+    "web/node_modules"
+  ],
   "scripts": {
     "start": "node server.js",
     "build": "cd web && yarn install && yarn build"

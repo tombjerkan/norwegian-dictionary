@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const fetchFromOrdbok = require("./fetchFromOrdbok");
 const fetchFromWiktionary = require("./fetchFromWiktionary");

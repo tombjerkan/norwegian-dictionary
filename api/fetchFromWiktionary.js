@@ -23,7 +23,9 @@ async function fetchFromWiktionary(word) {
         }
     }
 
-    const languageHeader = document.getElementById("Norwegian_Bokmål").parentElement;
+    const norwegianBokmaalElement = document.getElementById("Norwegian_Bokmål");
+    if (norwegianBokmaalElement === null) return "";
+    const languageHeader = norwegianBokmaalElement.parentElement;
     const bokmaalElements = [];
     let currentElement = languageHeader.nextElementSibling;
     while (currentElement !== null && currentElement.tagName !== "H2") {

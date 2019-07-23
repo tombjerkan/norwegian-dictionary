@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import styles from "./Section.module.css";
-import Loading from "./Loading";
+import styles from "./styles.module.css";
+import Loading from "components/Loading";
 
 class Section extends Component {
 

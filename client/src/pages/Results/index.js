@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import styles from "./ResultPage.module.css";
+import styles from "./styles.module.css";
 import Section from "./Section";
 
-class ResultPage extends Component {
+class Results extends Component {
 
     render() {
         return (
@@ -79,4 +79,4 @@ function Entry({ entry }) {
     )
 }
 
-export default ResultPage;
+export default Results;

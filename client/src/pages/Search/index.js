@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import styles from "./SearchPage.module.css";
+import styles from "./styles.module.css";
 
-class SearchPage extends Component {
+class Search extends Component {
 
     state = {
         queryValue: ""
@@ -34,4 +34,4 @@ class SearchPage extends Component {
     }
 }
 
-export default SearchPage;
+export default Search;

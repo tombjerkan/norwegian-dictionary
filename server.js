@@ -4,8 +4,6 @@ const api = require("./api");
 
 const app = express();
 
-console.log(process.env.NODE_ENV);
-
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.resolve(__dirname, "./web/build")));
 }

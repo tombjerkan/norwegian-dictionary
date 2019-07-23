@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from "./ResultPage.module.css";
+import Loading from "./Loading";
 
 class ResultPage extends Component {
 
@@ -16,7 +17,7 @@ class ResultPage extends Component {
     render() {
         return (
             <div className={styles.container}>
-                {this.state.response !== null &&
+                {this.state.response !== null ? (
                     <React.Fragment>
                         <div className={styles.sourceSection}>
                             <h2>Ordbok</h2>
@@ -37,7 +38,9 @@ class ResultPage extends Component {
                             </ul>
                         </div>
                     </React.Fragment>
-                }
+                ) : (
+                    <Loading />
+                )}
           </div>
         );
     }

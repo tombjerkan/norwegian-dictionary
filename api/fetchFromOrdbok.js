@@ -30,7 +30,7 @@ function parseEntry(container) {
 }
 
 function parseSenses(container) {
-    const isSingleSense = container.querySelector(":scope > .doemeliste") !== null;
+    const isSingleSense = container.querySelectorAll(":scope > .tyding").length <= 1;
 
     if (isSingleSense) {
         return [parseSense(container)];

@@ -5,42 +5,62 @@ import Loading from "./Loading";
 class ResultPage extends Component {
 
     state = {
-        response: null
+        ordbok: null,
+        wiktionary: null,
+        googleTranslate: null
     };
 
     async componentDidMount() {
-        const response = await fetch(`/api/${this.props.match.params.query}`);
-        const json = await response.json();
-        this.setState({ response: json });
+        fetch(`/api/ordbok/${this.props.match.params.query}`).then(async response => {
+            this.setState({ ordbok: await response.json() });
+        });
+
+        fetch(`/api/wiktionary/${this.props.match.params.query}`).then(async response => {
+            this.setState({ wiktionary: await response.json() });
+        });
+
+        fetch(`/api/googleTranslate/${this.props.match.params.query}`).then(async response => {
+            this.setState({ googleTranslate: await response.json() });
+        });
     }
 
     render() {
         return (
             <div className={styles.container}>
-                {this.state.response !== null ? (
-                    <React.Fragment>
-                        <div className={styles.sourceSection}>
-                            <h2>Ordbok</h2>
-                            <ul className={styles.entriesList}>
-                                {this.state.response.ordbok.map(entry => <Entry entry={entry} />)}
-                            </ul>
-                        </div>
+                <div className={styles.sourceSection}>
+                    <h2>Ordbok</h2>
 
-                        <div className={styles.sourceSection}>
-                            <h2>Wiktionary</h2>
-                            <div dangerouslySetInnerHTML={{ __html: this.state.response.wiktionary }} />
-                        </div>
+                    {this.state.ordbok !== null ? (
+                        <ul className={styles.entriesList}>
+                            {this.state.ordbok.map(entry => <Entry entry={entry} />)}
+                        </ul>
+                    ) : (
+                        <Loading />
+                    )}
+                </div>
 
-                        <div className={styles.sourceSection}>
-                            <h2>Google Translate</h2>
-                            <ul>
-                                {this.state.response.googleTranslate.map(translation => <li>{translation}</li>)}
-                            </ul>
-                        </div>
-                    </React.Fragment>
-                ) : (
-                    <Loading />
-                )}
+
+                <div className={styles.sourceSection}>
+                    <h2>Wiktionary</h2>
+
+                    {this.state.wiktionary !== null ? (
+                        <div dangerouslySetInnerHTML={{ __html: this.state.wiktionary }} />
+                    ) : (
+                        <Loading />
+                    )}
+                </div>
+
+                <div className={styles.sourceSection}>
+                    <h2>Google Translate</h2>
+
+                    {this.state.googleTranslate !== null ? (
+                        <ul>
+                            {this.state.googleTranslate.map(translation => <li>{translation}</li>)}
+                        </ul>
+                    ) : (
+                        <Loading />
+                    )}
+                </div>
           </div>
         );
     }

@@ -27,11 +27,7 @@ function Results({ match }) {
                 name="googleTranslate"
                 title="Google Translate"
                 query={match.params.query}
-                render={data => (
-                    <ul>
-                        {data.map(translation => <li>{translation}</li>)}
-                    </ul>
-                )} />
+                render={data => <div>{data}</div>} />
         </div>
     );
 }

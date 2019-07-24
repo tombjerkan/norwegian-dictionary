@@ -1,9 +1,23 @@
 const axios = require("axios");
+const { Router } = require("express");
 const { JSDOM } = require("jsdom");
+const { handleAsyncErrors, ApiError } = require("./errorHandling");
 const { removeChildrenByClassName } = require("./dom");
 
-async function fetchFromWiktionary(word) {
-    const response = await axios.get(`https://en.wiktionary.org/wiki/${word}`);
+const router = Router();
+
+router.get("/wiktionary/:word", handleAsyncErrors(async (req, res) => {
+    let response;
+    try {
+        response = await axios.get(`https://en.wiktionary.org/wiki/${req.params.word}`);
+    } catch (err) {
+        if (err.response && err.response.status === 404) {
+            throw new ApiError(404);
+        } else {
+            throw err;
+        }
+    }
+
     const html = response.data;
     const dom = new JSDOM(html);
     const document = dom.window.document;
@@ -24,7 +38,10 @@ async function fetchFromWiktionary(word) {
     }
 
     const norwegianBokmaalElement = document.getElementById("Norwegian_Bokmål");
-    if (norwegianBokmaalElement === null) return "";
+    if (norwegianBokmaalElement === null) {
+        throw new ApiError(404);
+    }
+
     const languageHeader = norwegianBokmaalElement.parentElement;
     const bokmaalElements = [];
     let currentElement = languageHeader.nextElementSibling;
@@ -33,8 +50,8 @@ async function fetchFromWiktionary(word) {
         currentElement = currentElement.nextElementSibling;
     }
 
-    return bokmaalElements.map(element => element.outerHTML).join("");
-}
+    res.json(bokmaalElements.map(element => element.outerHTML).join(""));
+}));
 
 function removeSectionByHeader(root, header) {
     const matches = Array.from(root.querySelectorAll("h1, h2, h3, h4, h5, h6")).filter(element => element.textContent === header);
@@ -50,4 +67,4 @@ function removeSectionByHeader(root, header) {
     }
 }
 
-module.exports = fetchFromWiktionary;
+module.exports = router;

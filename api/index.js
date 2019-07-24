@@ -1,24 +1,21 @@
 require('dotenv').config()
 const express = require("express");
-const fetchFromOrdbok = require("./fetchFromOrdbok");
-const fetchFromWiktionary = require("./fetchFromWiktionary");
-const fetchFromGoogleTranslate = require("./fetchFromGoogleTranslate");
+const ordbok = require("./ordbok");
+const wiktionary = require("./wiktionary");
+const googleTranslate = require("./googleTranslate");
+const { ApiError } = require("./errorHandling");
 
 const api = express.Router();
+api.use(ordbok);
+api.use(wiktionary);
+api.use(googleTranslate);
 
-api.get("/ordbok/:word", async (req, res) => {
-    const response = await fetchFromOrdbok(req.params.word);
-    res.json(response);
-});
-
-api.get("/wiktionary/:word", async (req, res) => {
-    const response = await fetchFromWiktionary(req.params.word);
-    res.json(response);
-});
-
-api.get("/googleTranslate/:word", async (req, res) => {
-    const response = await fetchFromGoogleTranslate(req.params.word);
-    res.json(response);
+api.use((err, req, res, next) => {
+    if (err instanceof ApiError) {
+        res.status(err.code).send(err.message);
+    } else {
+        res.status(500).send();
+    }
 });
 
 module.exports = api;

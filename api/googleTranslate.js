@@ -1,4 +1,8 @@
+const { Router } = require("express");
 const { TranslationServiceClient } = require('@google-cloud/translate').v3beta1;
+const { handleAsyncErrors } = require("./errorHandling");
+
+const router = Router();
 
 const translationClient = new TranslationServiceClient({
     credentials: {
@@ -7,16 +11,16 @@ const translationClient = new TranslationServiceClient({
     }
 });
 
-async function fetchFromGoogleTranslate(word) {
+router.get("/googleTranslate/:word", handleAsyncErrors(async (req, res) => {
     const [response] = await translationClient.translateText({
         parent: translationClient.locationPath("norsk-dictionary-1563830111515", "global"),
-        contents: [word],
+        contents: [req.params.word],
         mimeType: 'text/plain',
         sourceLanguageCode: 'nb-NO',
         targetLanguageCode: 'en-US'
     });
 
-    return response.translations.map(translation => translation.translatedText);
-}
+    res.json(response.translations[0].translatedText);
+}));
 
-module.exports = fetchFromGoogleTranslate;
+module.exports = router;

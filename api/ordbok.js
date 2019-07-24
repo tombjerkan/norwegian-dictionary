@@ -1,13 +1,21 @@
 const axios = require("axios");
+const { Router } = require("express");
 const { JSDOM } = require("jsdom");
 const _ = require("lodash");
 const { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntil } = require("./dom");
+const { handleAsyncErrors, ApiError } = require("./errorHandling");
 
-async function fetchFromOrdbok(word) {
-    const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodeURIComponent(word)}&ant_bokmaal=100`);
+const router = Router();
+
+router.get("/ordbok/:word", handleAsyncErrors(async (req, res) => {
+    const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodeURIComponent(req.params.word)}&ant_bokmaal=100`);
     const html = response.data;
     const dom = new JSDOM(html);
     const document = dom.window.document;
+
+    if (document.querySelector(".ikkefunnet") !== null) {
+        throw new ApiError(404);
+    }
 
     removeChildrenByClassName(document, "kompakt");
     removeChildrenByTagName(document, "style");
@@ -15,8 +23,8 @@ async function fetchFromOrdbok(word) {
     const tableRows = Array.from(document.querySelectorAll("#byttutBM > tbody > tr:not(#resultat_kolonne_overskrift_tr)"));
     const entries = tableRows.map(parseEntry);
 
-    return entries;
-}
+    res.json(entries);
+}));
 
 function parseEntry(container) {
     const articleContent = container.firstChild.nextSibling.querySelector(".artikkelinnhold");
@@ -66,4 +74,4 @@ function parseSense(container) {
     };
 }
 
-module.exports = fetchFromOrdbok;
+module.exports = router;

@@ -19,10 +19,15 @@ router.get("/googleTranslate/:word", async (req, res) => {
             sourceLanguageCode: 'nb-NO',
             targetLanguageCode: 'en-US'
         });
+
+        if (response.translations.length === 0) {
+            next(404);
+            return;
+        }
     
         res.json(response.translations.map(translation => translation.translatedText));
     } catch (err) {
-        next(err);
+        next(500);
     }
 });
 

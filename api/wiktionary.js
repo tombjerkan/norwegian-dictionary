@@ -6,8 +6,17 @@ const { removeChildrenByClassName } = require("./dom");
 const router = Router();
 
 router.get("/wiktionary/:word", async (req, res, next) => {
+    let response;
     try {
-        const response = await axios.get(`https://en.wiktionary.org/wiki/${req.params.word}`);
+        response = await axios.get(`https://en.wiktionary.org/wiki/${req.params.word}`);
+    } catch (err) {
+        if (err.response && err.response.status === 404) {
+            next(404);
+            return;
+        }
+    }
+
+    try {
         const html = response.data;
         const dom = new JSDOM(html);
         const document = dom.window.document;
@@ -28,7 +37,11 @@ router.get("/wiktionary/:word", async (req, res, next) => {
         }
     
         const norwegianBokmaalElement = document.getElementById("Norwegian_Bokmål");
-        if (norwegianBokmaalElement === null) return "";
+        if (norwegianBokmaalElement === null) {
+            next(404);
+            return;
+        }
+
         const languageHeader = norwegianBokmaalElement.parentElement;
         const bokmaalElements = [];
         let currentElement = languageHeader.nextElementSibling;
@@ -39,7 +52,7 @@ router.get("/wiktionary/:word", async (req, res, next) => {
     
         res.json(bokmaalElements.map(element => element.outerHTML).join(""));
     } catch (err) {
-        next(err);
+        next(500);
     }
 });
 

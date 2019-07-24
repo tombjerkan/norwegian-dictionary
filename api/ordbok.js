@@ -17,11 +17,15 @@ router.get("/ordbok/:word", async (req, res, next) => {
         removeChildrenByTagName(document, "style");
     
         const tableRows = Array.from(document.querySelectorAll("#byttutBM > tbody > tr:not(#resultat_kolonne_overskrift_tr)"));
+        if (tableRows.length === 0) {
+            next(404);
+            return;
+        }
         const entries = tableRows.map(parseEntry);
     
         res.json(entries);;
     } catch (err) {
-        next(err);
+        next(500);
     }
 });
 

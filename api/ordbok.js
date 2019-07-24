@@ -1,22 +1,29 @@
 const axios = require("axios");
+const { Router } = require("express");
 const { JSDOM } = require("jsdom");
 const _ = require("lodash");
 const { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntil } = require("./dom");
 
-async function fetchFromOrdbok(word) {
-    const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodeURIComponent(word)}&ant_bokmaal=100`);
-    const html = response.data;
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
+const router = Router();
 
-    removeChildrenByClassName(document, "kompakt");
-    removeChildrenByTagName(document, "style");
-
-    const tableRows = Array.from(document.querySelectorAll("#byttutBM > tbody > tr:not(#resultat_kolonne_overskrift_tr)"));
-    const entries = tableRows.map(parseEntry);
-
-    return entries;
-}
+router.get("/ordbok/:word", async (req, res, next) => {
+    try {
+        const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodeURIComponent(req.params.word)}&ant_bokmaal=100`);
+        const html = response.data;
+        const dom = new JSDOM(html);
+        const document = dom.window.document;
+    
+        removeChildrenByClassName(document, "kompakt");
+        removeChildrenByTagName(document, "style");
+    
+        const tableRows = Array.from(document.querySelectorAll("#byttutBM > tbody > tr:not(#resultat_kolonne_overskrift_tr)"));
+        const entries = tableRows.map(parseEntry);
+    
+        res.json(entries);;
+    } catch (err) {
+        next(err);
+    }
+});
 
 function parseEntry(container) {
     const articleContent = container.firstChild.nextSibling.querySelector(".artikkelinnhold");
@@ -66,4 +73,4 @@ function parseSense(container) {
     };
 }
 
-module.exports = fetchFromOrdbok;
+module.exports = router;

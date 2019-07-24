@@ -12,15 +12,16 @@ router.get("/ordbok/:word", async (req, res, next) => {
         const html = response.data;
         const dom = new JSDOM(html);
         const document = dom.window.document;
+
+        if (document.querySelector(".ikkefunnet") !== null) {
+            next(404);
+            return;
+        }
     
         removeChildrenByClassName(document, "kompakt");
         removeChildrenByTagName(document, "style");
     
         const tableRows = Array.from(document.querySelectorAll("#byttutBM > tbody > tr:not(#resultat_kolonne_overskrift_tr)"));
-        if (tableRows.length === 0) {
-            next(404);
-            return;
-        }
         const entries = tableRows.map(parseEntry);
     
         res.json(entries);;

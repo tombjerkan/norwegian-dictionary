@@ -1,63 +1,57 @@
 const axios = require("axios");
 const { Router } = require("express");
 const { JSDOM } = require("jsdom");
+const { handleAsyncErrors, ApiError } = require("./errorHandling");
 const { removeChildrenByClassName } = require("./dom");
 
 const router = Router();
 
-router.get("/wiktionary/:word", async (req, res, next) => {
+router.get("/wiktionary/:word", handleAsyncErrors(async (req, res) => {
     let response;
     try {
         response = await axios.get(`https://en.wiktionary.org/wiki/${req.params.word}`);
     } catch (err) {
         if (err.response && err.response.status === 404) {
-            next(404);
+            throw new ApiError(404);
         } else {
-            next(500);
+            throw err;
         }
-
-        return;
     }
 
-    try {
-        const html = response.data;
-        const dom = new JSDOM(html);
-        const document = dom.window.document;
-    
-        removeChildrenByClassName(document, "mw-editsection");
-        removeSectionByHeader(document, "Derived terms");
-        removeSectionByHeader(document, "References");
-        removeSectionByHeader(document, "Pronunciation");
-    
-        const links = Array.from(document.querySelectorAll("a[href]"));
-        for (link of links) {
-            const match = link.getAttribute("href").match(/\/wiki\/(.*)#Norwegian_Bokmål/);
-            if (match) {
-                link.setAttribute("href", `/${match[1]}`);
-            } else {
-                link.replaceWith(...link.childNodes);
-            }
-        }
-    
-        const norwegianBokmaalElement = document.getElementById("Norwegian_Bokmål");
-        if (norwegianBokmaalElement === null) {
-            next(404);
-            return;
-        }
+    const html = response.data;
+    const dom = new JSDOM(html);
+    const document = dom.window.document;
 
-        const languageHeader = norwegianBokmaalElement.parentElement;
-        const bokmaalElements = [];
-        let currentElement = languageHeader.nextElementSibling;
-        while (currentElement !== null && currentElement.tagName !== "H2") {
-            bokmaalElements.push(currentElement);
-            currentElement = currentElement.nextElementSibling;
+    removeChildrenByClassName(document, "mw-editsection");
+    removeSectionByHeader(document, "Derived terms");
+    removeSectionByHeader(document, "References");
+    removeSectionByHeader(document, "Pronunciation");
+
+    const links = Array.from(document.querySelectorAll("a[href]"));
+    for (link of links) {
+        const match = link.getAttribute("href").match(/\/wiki\/(.*)#Norwegian_Bokmål/);
+        if (match) {
+            link.setAttribute("href", `/${match[1]}`);
+        } else {
+            link.replaceWith(...link.childNodes);
         }
-    
-        res.json(bokmaalElements.map(element => element.outerHTML).join(""));
-    } catch (err) {
-        next(500);
     }
-});
+
+    const norwegianBokmaalElement = document.getElementById("Norwegian_Bokmål");
+    if (norwegianBokmaalElement === null) {
+        throw new ApiError(404);
+    }
+
+    const languageHeader = norwegianBokmaalElement.parentElement;
+    const bokmaalElements = [];
+    let currentElement = languageHeader.nextElementSibling;
+    while (currentElement !== null && currentElement.tagName !== "H2") {
+        bokmaalElements.push(currentElement);
+        currentElement = currentElement.nextElementSibling;
+    }
+
+    res.json(bokmaalElements.map(element => element.outerHTML).join(""));
+}));
 
 function removeSectionByHeader(root, header) {
     const matches = Array.from(root.querySelectorAll("h1, h2, h3, h4, h5, h6")).filter(element => element.textContent === header);

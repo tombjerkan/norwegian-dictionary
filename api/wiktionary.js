@@ -12,8 +12,11 @@ router.get("/wiktionary/:word", async (req, res, next) => {
     } catch (err) {
         if (err.response && err.response.status === 404) {
             next(404);
-            return;
+        } else {
+            next(500);
         }
+
+        return;
     }
 
     try {

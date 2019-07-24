@@ -39,7 +39,9 @@ function Section({ name, title, query, render }) {
 
             {data !== null && (
                 <React.Fragment>
-                    <button onClick={toggleOpen}>{isOpen ? "Hide" : "Show"}</button>
+                    <button onClick={toggleOpen} className={styles.showContentButton}>
+                        {isOpen ? "Hide" : "Show"}
+                    </button>
 
                     {isOpen && <div className={styles.content}>{render(data)}</div>}
                 </React.Fragment>

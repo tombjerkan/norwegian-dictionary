@@ -12,6 +12,10 @@
     flex: 1;
 }
 
+.showContentButton {
+    height: 40px;
+}
+
 .content {
     width: 100%;
 }

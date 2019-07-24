@@ -9,4 +9,8 @@ api.use(ordbok);
 api.use(wiktionary);
 api.use(googleTranslate);
 
+api.use((err, req, res, next) => {
+    res.status(err).send();
+});
+
 module.exports = api;

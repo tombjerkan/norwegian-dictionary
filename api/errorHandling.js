@@ -6,6 +6,10 @@ function handleErrors(err, req, res, next) {
     }
 }
 
+// Express does not automatically catch errors thrown in async route handlers,
+// they must be explicitly passed to the error handlers using 'next'. Using
+// this higher-order function ensures any uncaught errors in the route handler
+// are passed to the error handlers
 function withAsyncErrorHandling(routeHandler) {
     return function(req, res, next) {
         routeHandler(req, res, next).catch(next);

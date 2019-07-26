@@ -8,9 +8,9 @@ class ApiError extends Error {
 }
 
 function handleAsyncError(routeHandler) {
-    return function (req, res, next) {
+    return function(req, res, next) {
         routeHandler(req, res, next).catch(next);
-    }
+    };
 }
 
 module.exports = { ApiError, handleAsyncErrors: handleAsyncError };

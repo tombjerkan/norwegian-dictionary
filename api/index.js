@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 const express = require("express");
 const ordbok = require("./ordbok");
 const wiktionary = require("./wiktionary");
@@ -11,6 +11,7 @@ api.use(wiktionary);
 api.use(googleTranslate);
 
 api.use((err, req, res, next) => {
+    console.log(err);
     if (err instanceof ApiError) {
         res.status(err.code).send(err.message);
     } else {

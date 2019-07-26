@@ -1,16 +1,20 @@
 const _ = require("lodash");
 
+function removeElement(element) {
+    element.parentNode.removeChild(element);
+}
+
 function removeChildrenByClassName(root, className) {
     const elements = root.getElementsByClassName(className);
     while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
+        removeElement(elements[0]);
     }
 }
 
 function removeChildrenByTagName(root, tagName) {
     const elements = root.getElementsByTagName(tagName);
     while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
+        removeElement(elements[0]);
     }
 }
 
@@ -26,4 +30,9 @@ function takeTextContentUntil(root, querySelector) {
     }
 }
 
-module.exports = { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntil };
+module.exports = {
+    removeElement,
+    removeChildrenByClassName,
+    removeChildrenByTagName,
+    takeTextContentUntil
+};

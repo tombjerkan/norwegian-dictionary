@@ -1,34 +1,52 @@
 const axios = require("axios");
 const { Router } = require("express");
 const { JSDOM } = require("jsdom");
-const _ = require("lodash");
-const { removeChildrenByClassName, removeChildrenByTagName, takeTextContentUntil } = require("./dom");
+const {
+    removeChildrenByClassName,
+    removeChildrenByTagName,
+    takeTextContentUntil
+} = require("./dom");
 const { handleAsyncErrors, ApiError } = require("./errorHandling");
 
 const router = Router();
 
-router.get("/ordbok/:word", handleAsyncErrors(async (req, res) => {
-    const response = await axios.get(`https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodeURIComponent(req.params.word)}&ant_bokmaal=100`);
-    const html = response.data;
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
+router.get(
+    "/ordbok/:word",
+    handleAsyncErrors(async (req, res) => {
+        const document = await fetchDocument(req.params.word);
 
-    if (document.querySelector(".ikkefunnet") !== null) {
-        throw new ApiError(404);
-    }
+        if (document.querySelector(".ikkefunnet") !== null) {
+            throw new ApiError(404);
+        }
 
-    removeChildrenByClassName(document, "kompakt");
-    removeChildrenByTagName(document, "style");
+        // Remove hidden elements from DOM so that their text is not included
+        // when getting textContent
+        removeChildrenByClassName(document, "kompakt");
+        removeChildrenByClassName(document, "oppsgramordklassevindu");
+        removeChildrenByTagName(document, "style");
 
-    const tableRows = Array.from(document.querySelectorAll("#byttutBM > tbody > tr:not(#resultat_kolonne_overskrift_tr)"));
-    const entries = tableRows.map(parseEntry);
+        const bokmaalTable = document.querySelector("#byttutBM");
+        const entryRows = bokmaalTable.querySelectorAll(
+            ":scope > tbody > tr:not(#resultat_kolonne_overskrift_tr)"
+        );
+        const entries = Array.from(entryRows).map(parseEntry);
 
-    res.json(entries);
-}));
+        res.json(entries);
+    })
+);
+
+async function fetchDocument(word) {
+    const encodedWord = encodeURIComponent(word);
+    const url = `https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodedWord}`
+    const response = await axios.get(url);
+    const dom = new JSDOM(response.data);
+    return dom.window.document;
+}
 
 function parseEntry(container) {
-    const articleContent = container.firstChild.nextSibling.querySelector(".artikkelinnhold");
-    removeChildrenByClassName(articleContent, "oppsgramordklassevindu");
+    const articleContent = container.firstChild.nextSibling.querySelector(
+        ".artikkelinnhold"
+    );
 
     return {
         term: container.firstChild.textContent,
@@ -38,7 +56,8 @@ function parseEntry(container) {
 }
 
 function parseSenses(container) {
-    const isSingleSense = container.querySelectorAll(":scope > .tyding").length <= 1;
+    const isSingleSense =
+        container.querySelectorAll(":scope > .tyding").length <= 1;
 
     if (isSingleSense) {
         return [parseSense(container)];
@@ -49,29 +68,76 @@ function parseSenses(container) {
 }
 
 function parseSense(container) {
-    const definition = takeTextContentUntil(container, ".doemeliste, .tyding.utvidet, .artikkelinnhold").trim().replace(/^\d+\s/, "") || null;
-
-    const examplesContainer = container.querySelector(":scope > .doemeliste");
-    const examples = examplesContainer && examplesContainer.textContent.trim();
-
-    const subDefinitionContainer = container.querySelector(":scope > .tyding.utvidet");
-    const subDefinition = subDefinitionContainer && {
-        definition: takeTextContentUntil(subDefinitionContainer, ".doemeliste").trim(),
-        examples: subDefinitionContainer.querySelector(":scope > .doemeliste").textContent.trim()
-    };
-
-    const subEntryContainers = container.querySelectorAll(":scope > .artikkelinnhold > div");
-    const subEntries = Array.from(subEntryContainers).map(subEntryContainer => ({
-        term: subEntryContainer.querySelector(":scope > .artikkeloppslagsord").textContent.trim(),
-        definition: subEntryContainer.querySelector(":scope > .utvidet").textContent.trim()
-    }));
-
     return {
-        definition,
-        examples,
-        subDefinition,
-        subEntries
+        definition: parseDefinition(container),
+        examples: parseExamples(container),
+        subDefinition: parseSubDefinition(container),
+        subEntries: parseSubEntries(container)
     };
+}
+
+function parseDefinition(senseContainer) {
+    const originalTextContent = takeTextContentUntil(
+        senseContainer,
+        ".doemeliste, .tyding.utvidet, .artikkelinnhold"
+    );
+
+    return originalTextContent.trim().replace(/^\d+\s/, "");
+}
+
+function parseExamples(senseContainer) {
+    const examplesContainer = senseContainer.querySelector(
+        ":scope > .doemeliste"
+    );
+
+    if (examplesContainer === null) {
+        return null;
+    }
+
+    return examplesContainer.textContent.trim();
+}
+
+function parseSubDefinition(senseContainer) {
+    const subDefinitionContainer = senseContainer.querySelector(
+        ":scope > .tyding.utvidet"
+    );
+
+    if (subDefinitionContainer === null) {
+        return null;
+    }
+
+    const definition = takeTextContentUntil(
+        subDefinitionContainer, ".doemeliste"
+    ).trim();
+
+    const examples = subDefinitionContainer
+        .querySelector(":scope > .doemeliste")
+        .textContent
+        .trim();
+
+    return { definition, examples };
+}
+
+function parseSubEntries(senseContainer) {
+    const subEntryContainers = senseContainer.querySelectorAll(
+        ":scope > .artikkelinnhold > div"
+    );
+
+    return Array.from(subEntryContainers).map(parseSubEntry);
+}
+
+function parseSubEntry(container) {
+    const term = container
+        .querySelector(":scope > .artikkeloppslagsord")
+        .textContent
+        .trim();
+
+    const definition = container
+        .querySelector(":scope > .utvidet")
+        .textContent
+        .trim();
+
+    return { term, definition };
 }
 
 module.exports = router;

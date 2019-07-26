@@ -6,7 +6,12 @@ function Wiktionary({ query }) {
     const [data, isLoading, error] = useFetch(`/api/wiktionary/${query}`);
 
     return (
-        <Section title="Wiktionary" isLoading={isLoading} error={error}>
+        <Section
+            id="wiktionary"
+            title="Wiktionary"
+            isLoading={isLoading}
+            error={error}
+        >
             <div dangerouslySetInnerHTML={{ __html: data }} />
         </Section>
     );

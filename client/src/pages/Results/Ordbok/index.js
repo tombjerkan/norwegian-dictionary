@@ -7,7 +7,7 @@ function Ordbok({ query }) {
     const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`, []);
 
     return (
-        <Section title="Ordbok" isLoading={isLoading} error={error}>
+        <Section id="ordbok" title="Ordbok" isLoading={isLoading} error={error}>
             <ul className={styles.entriesList}>
                 {data.map(entry => (
                     <Entry entry={entry} />

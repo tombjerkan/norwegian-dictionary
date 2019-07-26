@@ -6,7 +6,12 @@ function GoogleTranslate({ query }) {
     const [data, isLoading, error] = useFetch(`/api/googleTranslate/${query}`);
 
     return (
-        <Section title="Google Translate" isLoading={isLoading} error={error}>
+        <Section
+            id="google-translate"
+            title="Google Translate"
+            isLoading={isLoading}
+            error={error}
+        >
             {data}
         </Section>
     );

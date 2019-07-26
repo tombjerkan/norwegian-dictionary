@@ -12,7 +12,8 @@
     ],
     "scripts": {
         "start": "node server.js",
-        "build": "cd client && npm install && npm run build"
+        "build": "cd client && npm install && npm run build",
+        "test": "testcafe firefox testcafe.js"
     },
     "husky": {
         "hooks": {

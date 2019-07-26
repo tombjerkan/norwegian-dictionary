@@ -1,6 +1,6 @@
 import React from "react";
-import Section from "src/pages/Results/Section";
-import useFetch from "src/pages/Results/useFetch";
+import Section from "pages/Results/Section";
+import useFetch from "pages/Results/useFetch";
 import styles from "./styles.module.css";
 
 function Ordbok({ query }) {
@@ -9,7 +9,9 @@ function Ordbok({ query }) {
     return (
         <Section title="Ordbok" isLoading={isLoading} error={error}>
             <ul className={styles.entriesList}>
-                {data.map(entry => <Entry entry={entry} />)}
+                {data.map(entry => (
+                    <Entry entry={entry} />
+                ))}
             </ul>
         </Section>
     );
@@ -22,7 +24,7 @@ function Entry({ entry }) {
             <div className={styles.etymology}>{entry.etymology}</div>
             <Senses senses={entry.senses} />
         </li>
-    )
+    );
 }
 
 function Senses({ senses }) {
@@ -32,14 +34,14 @@ function Senses({ senses }) {
 
     return (
         <ol className={styles.sensesList}>
-            {senses.map(sense =>
+            {senses.map(sense => (
                 <li>
                     <div className={styles.definition}>{sense.definition}</div>
                     <div className={styles.examples}>{sense.examples}</div>
                     <SubDefinition subDefinition={sense.subDefinition} />
                     <SubEntries subEntries={sense.subEntries} />
                 </li>
-            )}
+            ))}
         </ol>
     );
 }
@@ -58,7 +60,7 @@ function SubDefinition({ subDefinition }) {
                 {subDefinition.examples}
             </div>
         </div>
-    )
+    );
 }
 
 function SubEntries({ subEntries }) {
@@ -68,15 +70,12 @@ function SubEntries({ subEntries }) {
 
     return (
         <ul className={styles.subEntriesList}>
-            {.subEntries.map(subEntry =>
+            {subEntries.map(subEntry => (
                 <li>
-                    <span className={styles.subEntryTerm}>
-                        {subEntry.term}
-                    </span>
-                    {" "}
+                    <span className={styles.subEntryTerm}>{subEntry.term}</span>{" "}
                     {subEntry.definition}
                 </li>
-            )}
+            ))}
         </ul>
     );
 }

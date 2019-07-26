@@ -1,6 +1,6 @@
 import React from "react";
-import Section from "src/pages/Results/Section";
-import useFetch from "src/pages/Results/useFetch";
+import Section from "pages/Results/Section";
+import useFetch from "pages/Results/useFetch";
 
 function Wiktionary({ query }) {
     const [data, isLoading, error] = useFetch(`/api/wiktionary/${query}`);

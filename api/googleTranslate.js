@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { TranslationServiceClient } = require("@google-cloud/translate").v3beta1;
-const { handleAsyncErrors } = require("./errorHandling");
+const { withAsyncErrorHandling } = require("./errorHandling");
 
 const router = Router();
 
@@ -13,7 +13,7 @@ const translationClient = new TranslationServiceClient({
 
 router.get(
     "/googleTranslate/:word",
-    handleAsyncErrors(async (req, res) => {
+    withAsyncErrorHandling(async (req, res) => {
         const [response] = await translationClient.translateText({
             parent: translationClient.locationPath(
                 "norsk-dictionary-1563830111515",

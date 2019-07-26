@@ -1,14 +1,14 @@
 const axios = require("axios");
 const { Router } = require("express");
 const { JSDOM } = require("jsdom");
-const { handleAsyncErrors, ApiError } = require("./errorHandling");
+const { withAsyncErrorHandling, ApiError } = require("./errorHandling");
 const { removeElement, removeChildrenByClassName } = require("./dom");
 
 const router = Router();
 
 router.get(
     "/wiktionary/:word",
-    handleAsyncErrors(async (req, res) => {
+    withAsyncErrorHandling(async (req, res) => {
         const document = await fetchDocument(req.params.word);
 
         // Remove parts of the document that should not be included in the

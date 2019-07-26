@@ -3,20 +3,13 @@ const express = require("express");
 const ordbok = require("./ordbok");
 const wiktionary = require("./wiktionary");
 const googleTranslate = require("./googleTranslate");
-const { ApiError } = require("./errorHandling");
+const { handleErrors } = require("./errorHandling");
 
 const api = express.Router();
 api.use(ordbok);
 api.use(wiktionary);
 api.use(googleTranslate);
 
-api.use((err, req, res, next) => {
-    console.log(err);
-    if (err instanceof ApiError) {
-        res.status(err.code).send(err.message);
-    } else {
-        res.status(500).send();
-    }
-});
+api.use(handleErrors);
 
 module.exports = api;

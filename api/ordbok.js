@@ -6,13 +6,13 @@ const {
     removeChildrenByTagName,
     takeTextContentUntil
 } = require("./dom");
-const { handleAsyncErrors, ApiError } = require("./errorHandling");
+const { withAsyncErrorHandling, ApiError } = require("./errorHandling");
 
 const router = Router();
 
 router.get(
     "/ordbok/:word",
-    handleAsyncErrors(async (req, res) => {
+    withAsyncErrorHandling(async (req, res) => {
         const document = await fetchDocument(req.params.word);
 
         if (document.querySelector(".ikkefunnet") !== null) {

@@ -16,8 +16,15 @@ function Search({ history }) {
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <input type="text" value={inputValue} onChange={handleChange} className={styles.queryInput} />
-                <input type="submit" value="Submit" className={styles.submitButton} />
+                <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleChange}
+                    className={styles.queryInput} />
+                <input
+                    type="submit"
+                    value="Submit"
+                    className={styles.submitButton} />
             </form>
         </div>
     );

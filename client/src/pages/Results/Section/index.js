@@ -1,33 +1,28 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./styles.module.css";
 import Loading from "components/Loading";
 
-function Section({ name, title, query, render }) {
+function useFetch(url) {
     const [data, setData] = useState(null);
     const [isLoading, setLoading] = useState(true);
-    const [isError, setError] = useState(false);
-    const [isOpen, setOpen] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         setLoading(true);
 
-        fetch(`/api/${name}/${query}`)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else if (response.status === 404) {
-                    return null;
-                } else {
-                    setError(true);
-                    return null;
-                }
-            })
-            .then(data => {
-                setData(data);
-                setLoading(false);
-            })
-            .catch(() => setError(true));
-    }, [name, query]);
+        axios.get(url)
+            .then(response => setData(response.data))
+            .catch(error => setError(error.response.status))
+            .finally(() => setLoading(false));
+    }, [url]);
+
+    return [data, isLoading, error];
+}
+
+function Section({ name, title, query, render }) {
+    const [data, isLoading, error] = useFetch(`/api/${name}/${query}`);
+    const [isOpen, setOpen] = useState(false);
 
     function toggleOpen() {
         setOpen(!isOpen);
@@ -47,9 +42,9 @@ function Section({ name, title, query, render }) {
                 </React.Fragment>
              )}
 
-            {data === null && !isLoading && !isError && <div>Not available</div>}
+            {!isLoading && error === 404 && <div>Not available</div>}
             {isLoading && <Loading />}
-            {isError && <div>Error</div>}
+            {error !== null && error !== 404 && <div>Error</div>}
         </div>
     )
 }

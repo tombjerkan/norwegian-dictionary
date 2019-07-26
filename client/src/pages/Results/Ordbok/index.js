@@ -4,7 +4,7 @@ import useFetch from "pages/Results/useFetch";
 import styles from "./styles.module.css";
 
 function Ordbok({ query }) {
-    const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`);
+    const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`, []);
 
     return (
         <Section title="Ordbok" isLoading={isLoading} error={error}>

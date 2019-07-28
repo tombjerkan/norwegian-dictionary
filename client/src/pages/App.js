@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import Search from "./Search";
 import Results from "./Results";

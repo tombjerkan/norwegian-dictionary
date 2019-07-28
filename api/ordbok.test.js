@@ -72,10 +72,7 @@ test("returns Internal Server Error (500) if other HTTP error received", async (
 test("returns Internal Server Error (500) if HTML received does not match expected structure", async () => {
     nock("https://ordbok.uib.no")
         .get("/perl/ordbok.cgi?OPP=tilsynelatende")
-        .replyWithFile(
-            200,
-            resolveDataPath("unexpected-structure.html")
-        );
+        .replyWithFile(200, resolveDataPath("unexpected-structure.html"));
 
     const response = await supertest(app).get("/ordbok/tilsynelatende");
 

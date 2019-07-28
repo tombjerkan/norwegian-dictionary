@@ -36,4 +36,11 @@ function isNoResponseError(axiosError) {
     return !axiosError.response && axiosError.request;
 }
 
-module.exports = { handleErrors, withAsyncErrorHandling, ApiError, isNotFoundError, isServiceUnavailableError, isNoResponseError };
+module.exports = {
+    handleErrors,
+    withAsyncErrorHandling,
+    ApiError,
+    isNotFoundError,
+    isServiceUnavailableError,
+    isNoResponseError
+};

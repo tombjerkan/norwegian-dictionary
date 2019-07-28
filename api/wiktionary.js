@@ -80,8 +80,9 @@ function replaceLinks(document) {
 
 function removeSection(root, header) {
     const allHeaders = root.querySelectorAll("h1, h2, h3, h4, h5, h6");
-    const matchingHeaders = Array.from(allHeaders)
-        .filter(element => element.textContent === header);
+    const matchingHeaders = Array.from(allHeaders).filter(
+        element => element.textContent === header
+    );
 
     for (match of matchingHeaders) {
         let sibling = match.nextElementSibling;

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const ordbok = require("./ordbok");
 const wiktionary = require("./wiktionary");

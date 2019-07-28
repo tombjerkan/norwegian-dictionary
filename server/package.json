@@ -1,0 +1,38 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "engines": {
+        "node": "12.6.0"
+    },
+    "scripts": {
+        "start": "node server.js",
+        "test": "jest api/",
+        "lint": "lint-staged"
+    },
+    "lint-staged": {
+        "*.js": "prettier --tab-width 4 --check",
+        "*.json": [
+            "prettier --tab-width 4 --write",
+            "git add"
+        ]
+    },
+    "dependencies": {
+        "@google-cloud/translate": "^4.1.1",
+        "axios": "^0.19.0",
+        "dotenv": "^8.0.0",
+        "express": "^4.17.1",
+        "jsdom": "^15.1.1",
+        "lodash": "^4.17.14",
+        "node-fetch": "^2.6.0"
+    },
+    "devDependencies": {
+        "eslint-plugin-import": "^2.18.2",
+        "jest": "^24.8.0",
+        "lint-staged": "^9.2.1",
+        "nock": "^10.0.6",
+        "prettier": "^1.18.2",
+        "supertest": "^4.0.2"
+    }
+}

@@ -1,5 +1,5 @@
 {
-    "name": "norsk-dictionary",
+    "name": "client",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -13,7 +13,16 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "lint-staged"
+    },
+    "lint-staged": {
+        "*.js": "prettier --tab-width 4 --check",
+        "*.json": [
+            "prettier --tab-width 4 --write",
+            "git add"
+        ],
+        "*.css": "stylelint"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -30,5 +39,11 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:8080/"
+    "proxy": "http://localhost:8080/",
+    "devDependencies": {
+        "lint-staged": "^9.2.1",
+        "prettier": "^1.18.2",
+        "stylelint": "^10.1.0",
+        "stylelint-config-standard": "^18.3.0"
+    }
 }

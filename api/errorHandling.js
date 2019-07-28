@@ -17,11 +17,10 @@ function withAsyncErrorHandling(routeHandler) {
 }
 
 class ApiError extends Error {
-    name = "ApiError";
-
     constructor(code, message) {
         super(message);
         this.code = code;
+        this.name = "ApiError";
     }
 }
 

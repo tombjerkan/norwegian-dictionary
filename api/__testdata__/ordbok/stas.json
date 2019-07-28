@@ -1,0 +1,30 @@
+[
+    {
+        "term": "stas",
+        "etymology": "stas m1 (av middelalderlatin statio 'stans under prosesjon' og genitiv av eldre dansk stat 'stas, prakt'; beslektet med stasjon; trolig sammenfall av lavtysk stacie '(kirkelig) prosesjon, prakt')",
+        "senses": [
+            {
+                "definition": "pynt (II), prakt",
+                "examples": "være kledd i sin fineste stas",
+                "subDefinition": null,
+                "subEntries": [
+                    { "term": "hele stasen", "definition": "alt sammen" },
+                    {
+                        "term": "på stas",
+                        "definition": "(gå, sitte) pyntet uten å gjøre nyttig arbeid, ha gode dager"
+                    },
+                    { "term": "til stas", "definition": "til pynt" }
+                ]
+            },
+            {
+                "definition": "moro (I), festlighet",
+                "examples": "barna synes det er stas med julen",
+                "subDefinition": {
+                    "definition": "glede (I)",
+                    "examples": "det ble stor stas da de traff hverandre igjen / gjøre stas på en vise stor oppmerksomhet, hylle"
+                },
+                "subEntries": []
+            }
+        ]
+    }
+]

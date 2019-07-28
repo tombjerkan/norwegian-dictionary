@@ -15,7 +15,7 @@ router.get(
     withAsyncErrorHandling(async (req, res) => {
         const document = await fetchDocument(req.params.word);
 
-        if (document.querySelector(".ikkefunnet") !== null) {
+        if (document.querySelector("#kolonnebm .ikkefunnet") !== null) {
             throw new ApiError(404);
         }
 
@@ -37,10 +37,27 @@ router.get(
 
 async function fetchDocument(word) {
     const encodedWord = encodeURIComponent(word);
-    const url = `https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodedWord}`
-    const response = await axios.get(url);
-    const dom = new JSDOM(response.data);
-    return dom.window.document;
+    const url = `https://ordbok.uib.no/perl/ordbok.cgi?OPP=${encodedWord}`;
+
+    try {
+        const response = await axios.get(url);
+        const dom = new JSDOM(response.data);
+        return dom.window.document;
+    } catch (err) {
+        if (isServiceUnavailableError(err) || isNoResponseError(err)) {
+            throw new ApiError(503);
+        } else {
+            throw err;
+        }
+    }
+}
+
+function isServiceUnavailableError(err) {
+    return err.response && err.response.status === 503;
+}
+
+function isNoResponseError(err) {
+    return !err.response && err.request;
 }
 
 function parseEntry(container) {
@@ -107,13 +124,13 @@ function parseSubDefinition(senseContainer) {
     }
 
     const definition = takeTextContentUntil(
-        subDefinitionContainer, ".doemeliste"
+        subDefinitionContainer,
+        ".doemeliste"
     ).trim();
 
     const examples = subDefinitionContainer
         .querySelector(":scope > .doemeliste")
-        .textContent
-        .trim();
+        .textContent.trim();
 
     return { definition, examples };
 }
@@ -129,13 +146,11 @@ function parseSubEntries(senseContainer) {
 function parseSubEntry(container) {
     const term = container
         .querySelector(":scope > .artikkeloppslagsord")
-        .textContent
-        .trim();
+        .textContent.trim();
 
     const definition = container
         .querySelector(":scope > .utvidet")
-        .textContent
-        .trim();
+        .textContent.trim();
 
     return { term, definition };
 }

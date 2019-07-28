@@ -1,0 +1,174 @@
+[
+    {
+        "term": "for",
+        "etymology": "III for prep. (norrønt fyr(ir), i betydning 2 etter tysk)",
+        "senses": [
+            {
+                "definition": "foran, framfor, framom",
+                "examples": "for bordenden, alteret / ha for hånden / ha tiden for seg / forsvinne som dugg for sol(en) / stå for tur, fall / ha noe for øye se øye (I) / se seg for",
+                "subDefinition": {
+                    "definition": "i forhold til",
+                    "examples": "øst for elva"
+                },
+                "subEntries": [
+                    {
+                        "term": "stå for døra",
+                        "definition": "også i overført betydning: nærme seg"
+                    },
+                    {
+                        "term": "gå for seg",
+                        "definition": "hende; gå an"
+                    },
+                    {
+                        "term": "ha for seg",
+                        "definition": "drive med, drøfte, behandle"
+                    },
+                    {
+                        "term": "komme ut for, bli ute  for",
+                        "definition": "bli utsatt for; få oppleve, merke"
+                    }
+                ]
+            },
+            {
+                "definition": "ved rekkefølge:",
+                "examples": "ord for ord / skritt for skritt",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "i stedet for",
+                "examples": "steiner for brød / få syn for sagn / øye for øye, tann for tann / én gang for alle / la nåde gå for rett",
+                "subDefinition": null,
+                "subEntries": [
+                    {
+                        "term": "arbeide, spise, for to",
+                        "definition": "arbeide, spise, like mye som to personer"
+                    }
+                ]
+            },
+            {
+                "definition": "om tid:",
+                "examples": "nå for tiden / han er ansatt for to år / for fire år siden / venner for livet",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "til støtte, gagn for (oftest trykksterkt)",
+                "examples": "stemme, tale for noe(n) / for eller imot EU / leve og ånde for naturvern",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "når det gjelder, med hensyn til",
+                "examples": "godt for helsa / mat for mons / det er noe for oss / bilen gikk tom for bensin / med fare for livet / hurra for 17. mai! / ord for dagen",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "i forhold til",
+                "examples": "stor for alderen / like for like / arbeide for maten",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "i uttrykk for kjøp og salg eller gjengjeldelse:",
+                "examples": "få 100 kr for umaken / kjøpe karameller for resten / ikke for noen pris / ikke for alt i verden",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "om måte, redskap:",
+                "examples": "falle for sverd / gå for full maskin / sove for åpent vindu / sydd for hånd",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "på grunn av",
+                "examples": "bli straffet for forseelsen / bli glad, sint, lei seg for noe / for din skyld / for skams skyld / for sikkerhets skyld / for enkelhets skyld",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "som",
+                "examples": "ta for god fisk godta, tro på ; se fisk (I) / gi seg ut for / ha for vane / si for spøk / for eksempel",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "som adverb: altfor",
+                "examples": "for lite og for mye forderver alt / nå går det for vidt / holde seg for god til / det er for dumt!",
+                "subDefinition": {
+                    "definition": "i utrop:",
+                    "examples": "for et vær!"
+                },
+                "subEntries": []
+            }
+        ]
+    },
+    {
+        "term": "for",
+        "etymology": "IV for konj. (sammenheng med III for)",
+        "senses": [
+            {
+                "definition": "sideordnende konjunksjon ved grunn, årsak:",
+                "examples": "han lå, for han var syk / for riket er ditt",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "som subjunksjon:",
+                "examples": "for di eller fordi se for di",
+                "subDefinition": null,
+                "subEntries": []
+            }
+        ]
+    },
+    {
+        "term": "forf.o.r.",
+        "etymology": "V for adv., fork.; el.  f.o.r. adv., fork. (engelsk forkorting for free on rail)",
+        "senses": [
+            {
+                "definition": "i handel: fritt på jernbanevogn,  uten kostnad for kjøper",
+                "examples": "varen leveres f.o.r. jamfør fob, cif",
+                "subDefinition": null,
+                "subEntries": []
+            }
+        ]
+    },
+    {
+        "term": "forfôr",
+        "etymology": "VI for n1; el. I fôr n1 (norrønt fóðr; trolig beslektet med I føde)",
+        "senses": [
+            {
+                "definition": "mat til husdyr",
+                "examples": "kraftfôr",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "fôrporsjon",
+                "examples": "to fôr om dagen",
+                "subDefinition": null,
+                "subEntries": []
+            }
+        ]
+    },
+    {
+        "term": "forfôr",
+        "etymology": "VII for n1; el. II fôr n1 (norrønt fóðr, fra lavtysk)",
+        "senses": [
+            {
+                "definition": "tøylag på innsiden av klesplagg",
+                "examples": "fôret har løsnet / sy fôr i jakka / kåpefôr",
+                "subDefinition": null,
+                "subEntries": []
+            },
+            {
+                "definition": "papirlag på innsiden av for eksempel en konvolutt",
+                "examples": "konvolutter med og uten fôr",
+                "subDefinition": null,
+                "subEntries": []
+            }
+        ]
+    }
+]

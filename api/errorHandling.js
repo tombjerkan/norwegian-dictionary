@@ -24,4 +24,16 @@ class ApiError extends Error {
     }
 }
 
-module.exports = { handleErrors, withAsyncErrorHandling, ApiError };
+function isNotFoundError(axiosError) {
+    return axiosError.response && axiosError.response.status === 404;
+}
+
+function isServiceUnavailableError(axiosError) {
+    return axiosError.response && axiosError.response.status === 503;
+}
+
+function isNoResponseError(axiosError) {
+    return !axiosError.response && axiosError.request;
+}
+
+module.exports = { handleErrors, withAsyncErrorHandling, ApiError, isNotFoundError, isServiceUnavailableError, isNoResponseError };

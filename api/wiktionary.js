@@ -1,7 +1,13 @@
 const axios = require("axios");
 const { Router } = require("express");
 const { JSDOM } = require("jsdom");
-const { withAsyncErrorHandling, ApiError } = require("./errorHandling");
+const {
+    withAsyncErrorHandling,
+    ApiError,
+    isNotFoundError,
+    isServiceUnavailableError,
+    isNoResponseError
+} = require("./errorHandling");
 const { removeElement, removeChildrenByClassName } = require("./dom");
 
 const router = Router();
@@ -46,8 +52,10 @@ async function fetchDocument(word) {
         const dom = new JSDOM(response.data);
         return dom.window.document;
     } catch (err) {
-        if (err.response && err.response.status === 404) {
+        if (isNotFoundError(err)) {
             throw new ApiError(404);
+        } else if (isServiceUnavailableError(err) || isNoResponseError(err)) {
+            throw new ApiError(503);
         } else {
             throw err;
         }

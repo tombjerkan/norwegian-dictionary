@@ -6,7 +6,12 @@ const {
     removeChildrenByTagName,
     takeTextContentUntil
 } = require("./dom");
-const { withAsyncErrorHandling, ApiError } = require("./errorHandling");
+const {
+    withAsyncErrorHandling,
+    ApiError,
+    isServiceUnavailableError,
+    isNoResponseError
+} = require("./errorHandling");
 
 const router = Router();
 
@@ -50,14 +55,6 @@ async function fetchDocument(word) {
             throw err;
         }
     }
-}
-
-function isServiceUnavailableError(err) {
-    return err.response && err.response.status === 503;
-}
-
-function isNoResponseError(err) {
-    return !err.response && err.request;
 }
 
 function parseEntry(container) {

@@ -2,6 +2,9 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    border-radius: 4px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    padding: 0 20px;
 }
 
 .container + .container {
@@ -18,4 +21,5 @@
 
 .content {
     width: 100%;
+    padding-bottom: 30px;
 }

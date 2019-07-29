@@ -74,3 +74,8 @@
 .subEntryTerm {
     font-weight: 600;
 }
+
+.link {
+    color: rgb(0, 121, 191);
+    text-decoration: none;
+}

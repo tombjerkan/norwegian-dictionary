@@ -94,6 +94,10 @@ function SubEntries({ subEntries }) {
 }
 
 function TextWithLinks({ text }) {
+    if (!text) {
+        return "";
+    }
+
     // Text content does not have root element, so would be invalid if dummy
     // root not added
     const parser = new DOMParser();

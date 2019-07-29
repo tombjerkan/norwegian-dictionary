@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import classNames from "classnames";
 import styles from "./styles.module.css";
 import { ReactComponent as SearchIcon } from "./search-icon.svg";
 
-function SearchBox({ history }) {
+function SearchBox({ history, className }) {
     const [inputValue, setInputValue] = useState("");
 
     function handleChange(event) {
@@ -16,7 +17,10 @@ function SearchBox({ history }) {
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className={styles.form}>
+            <form
+                onSubmit={handleSubmit}
+                className={classNames(styles.form, className)}
+            >
                 <input
                     type="text"
                     value={inputValue}

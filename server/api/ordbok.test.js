@@ -19,9 +19,13 @@ function resolveDataPath(fileName) {
  *  existing test case.
  *
  *      stas, for:          initial test pages
+ *
  *      tilsynelatende:     only one sense
+ *
+ *      male:               sub-definition without examples and link with
+ *                          number instead of roman numeral (svive (1))
  */
-test.each(["stas", "for", "tilsynelatende"])(
+test.each(["stas", "for", "tilsynelatende", "male"])(
     "correctly parses HTML into data structure",
     async word => {
         nock("https://ordbok.uib.no")

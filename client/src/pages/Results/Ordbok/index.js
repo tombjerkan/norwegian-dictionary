@@ -114,8 +114,15 @@ function TextWithLinks({ text }) {
         <React.Fragment>
             {Array.from(textNodes).map(node => {
                 if (node.nodeType === 1 && node.tagName === "Link") {
+                    const to = node.getAttribute("to");
+
+                    // Do not insert a link if already on linked page
+                    if (`/${to}` === window.location.pathname) {
+                        return node.textContent;
+                    }
+
                     return (
-                        <Link to={node.getAttribute("to")}>
+                        <Link to={to} className={styles.link}>
                             {node.textContent}
                         </Link>
                     );

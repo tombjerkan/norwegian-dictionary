@@ -1,5 +1,13 @@
 const _ = require("lodash");
 
+function isElementNode(node) {
+    return node.nodeType === 1;
+}
+
+function isTextNode(node) {
+    return node.nodeType === 3;
+}
+
 function removeElement(element) {
     element.parentNode.removeChild(element);
 }
@@ -18,21 +26,16 @@ function removeChildrenByTagName(root, tagName) {
     }
 }
 
-function takeTextContentUntil(root, querySelector) {
+function takeChildNodesUntil(root, querySelector) {
     const endElement = root.querySelector(querySelector);
-
-    if (endElement === null) {
-        return root.textContent;
-    } else {
-        return _.takeWhile(root.childNodes, node => node !== endElement)
-            .map(node => node.textContent)
-            .join("");
-    }
+    return _.takeWhile(root.childNodes, node => node !== endElement);
 }
 
 module.exports = {
+    isElementNode,
+    isTextNode,
     removeElement,
     removeChildrenByClassName,
     removeChildrenByTagName,
-    takeTextContentUntil
+    takeChildNodesUntil
 };

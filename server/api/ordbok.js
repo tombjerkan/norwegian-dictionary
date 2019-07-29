@@ -2,9 +2,11 @@ const axios = require("axios");
 const { Router } = require("express");
 const { JSDOM } = require("jsdom");
 const {
+    isElementNode,
+    isTextNode,
     removeChildrenByClassName,
     removeChildrenByTagName,
-    takeTextContentUntil
+    takeChildNodesUntil
 } = require("./dom");
 const {
     withAsyncErrorHandling,
@@ -61,11 +63,13 @@ function parseEntry(container) {
     const articleContent = container.firstChild.nextSibling.querySelector(
         ".artikkelinnhold"
     );
+    const etymologyNodes = takeChildNodesUntil(articleContent, ".utvidet");
+    const senseContainers = articleContent.querySelector(".utvidet");
 
     return {
-        term: container.firstChild.textContent,
-        etymology: takeTextContentUntil(articleContent, ".utvidet").trim(),
-        senses: parseSenses(articleContent.querySelector(".utvidet"))
+        term: parseTextContentWithLinks(container.firstChild).trim(),
+        etymology: parseTextContentWithLinks(...etymologyNodes).trim(),
+        senses: parseSenses(senseContainers)
     };
 }
 
@@ -91,12 +95,14 @@ function parseSense(container) {
 }
 
 function parseDefinition(senseContainer) {
-    const originalTextContent = takeTextContentUntil(
+    const definitionNodes = takeChildNodesUntil(
         senseContainer,
         ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     );
 
-    return originalTextContent.trim().replace(/^\d+\s/, "");
+    return parseTextContentWithLinks(...definitionNodes)
+        .trim()
+        .replace(/^\d+\s/, "");
 }
 
 function parseExamples(senseContainer) {
@@ -108,7 +114,7 @@ function parseExamples(senseContainer) {
         return null;
     }
 
-    return examplesContainer.textContent.trim();
+    return parseTextContentWithLinks(examplesContainer).trim();
 }
 
 function parseSubDefinition(senseContainer) {
@@ -120,16 +126,19 @@ function parseSubDefinition(senseContainer) {
         return null;
     }
 
-    const definition = takeTextContentUntil(
+    const definitionNodes = takeChildNodesUntil(
         subDefinitionContainer,
         ".doemeliste"
-    ).trim();
+    );
 
-    const examples = subDefinitionContainer
-        .querySelector(":scope > .doemeliste")
-        .textContent.trim();
+    const examplesContainer = subDefinitionContainer.querySelector(
+        ":scope > .doemeliste"
+    );
 
-    return { definition, examples };
+    return {
+        definition: parseTextContentWithLinks(...definitionNodes).trim(),
+        examples: parseTextContentWithLinks(examplesContainer).trim()
+    };
 }
 
 function parseSubEntries(senseContainer) {
@@ -141,15 +150,71 @@ function parseSubEntries(senseContainer) {
 }
 
 function parseSubEntry(container) {
-    const term = container
-        .querySelector(":scope > .artikkeloppslagsord")
-        .textContent.trim();
+    const termContainer = container.querySelector(
+        ":scope > .artikkeloppslagsord"
+    );
+    const definitionContainer = container.querySelector(":scope > .utvidet");
 
-    const definition = container
-        .querySelector(":scope > .utvidet")
-        .textContent.trim();
+    return {
+        term: parseTextContentWithLinks(termContainer).trim(),
+        definition: parseTextContentWithLinks(definitionContainer).trim()
+    };
+}
 
-    return { term, definition };
+function parseTextContentWithLinks(...nodes) {
+    return nodes
+        .map(node => {
+            if (isLinkElement(node)) {
+                const textContent = parseTextContentWithLinks(
+                    ...node.childNodes
+                );
+                const to = getWordLinkedTo(node);
+                return `<Link to='${to}'>${textContent}</Link>`;
+            } else if (isElementNode(node)) {
+                return parseTextContentWithLinks(...node.childNodes);
+            } else if (isTextNode(node)) {
+                return node.data;
+            } else {
+                return "";
+            }
+        })
+        .join("");
+}
+
+function isLinkElement(element) {
+    if (!isElementNode(element)) {
+        return false;
+    }
+
+    return (
+        element.classList.contains("henvisning") ||
+        element.classList.contains("etymtilvising")
+    );
+}
+
+function getWordLinkedTo(linkElement) {
+    /* Example onclick attribute:
+     *     bob_vise_ref_art(56729, '3313', '56732', '66235', 'stasjon')
+     *
+     * The 5th parameter contains the word being linked to.
+     */
+    const onClickParameterRegex = /^bob_vise_ref_art\(.*, .*, .*, .*, '(.*)'\)$/;
+
+    const onClickParameter = linkElement
+        .getAttribute("onclick")
+        .match(onClickParameterRegex)[1];
+
+    /* Need to remove roman numerals that precede or follow word in onclick
+     * parameter, as they we do not use them. e.g:
+     *
+     *     III for -> for
+     *     pynt (II) -> pynt
+     */
+    const to = onClickParameter
+        .replace(/^[IVX]+\s+/, "")
+        .replace(/\s+\([IVX]+\)$/, "");
+
+    return to;
 }
 
 module.exports = router;

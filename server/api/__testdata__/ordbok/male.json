@@ -6,28 +6,30 @@
             {
                 "definition": "knuse til mel (med kvern), <Link to='pulverisere'>pulverisere</Link>",
                 "examples": "male kjøtt, korn, mandler / kverna maler fint, grovt / hvordan vil du ha kaffen malt? / skuta ble malt i stykker av isen",
-                "subDefinition": {
-                    "definition": "<Link to='lage'>lage</Link>, <Link to='produsere'>produsere</Link> (mel)",
-                    "examples": "mølla maler mel / Guds kvern maler langsomt"
-                },
+                "subDefinitions": [
+                    {
+                        "definition": "<Link to='lage'>lage</Link>, <Link to='produsere'>produsere</Link> (mel)",
+                        "examples": "mølla maler mel / Guds kvern maler langsomt"
+                    }
+                ],
                 "subEntries": []
             },
             {
                 "definition": "<Link to='svive'>svive (1)</Link> rundt som en kvern",
                 "examples": "tankene mol i hodet hennes",
-                "subDefinition": null,
+                "subDefinitions": [],
                 "subEntries": []
             },
             {
                 "definition": "<Link to='dure'>dure</Link> som en kvern",
                 "examples": "katten maler av velvære",
-                "subDefinition": null,
+                "subDefinitions": [],
                 "subEntries": []
             },
             {
                 "definition": "gjenta og gjenta noe, <Link to='gnåle'>gnåle</Link> på",
                 "examples": "gå og male på det samme",
-                "subDefinition": null,
+                "subDefinitions": [],
                 "subEntries": []
             }
         ]
@@ -39,10 +41,12 @@
             {
                 "definition": "dekke med <Link to='maling'>maling</Link>",
                 "examples": "male stolen hvit / male huset, hytta",
-                "subDefinition": {
-                    "definition": "refleksivt:",
-                    "examples": null
-                },
+                "subDefinitions": [
+                    {
+                        "definition": "refleksivt:",
+                        "examples": null
+                    }
+                ],
                 "subEntries": [
                     {
                         "term": "male seg",
@@ -53,13 +57,13 @@
             {
                 "definition": "lage et <Link to='maleri'>maleri</Link>",
                 "examples": "Tidemand har malt &#39;Haugianerne&#39; / male landskapsbilder",
-                "subDefinition": null,
+                "subDefinitions": [],
                 "subEntries": []
             },
             {
                 "definition": "<Link to='framstille'>framstille</Link>, <Link to='uttrykke'>uttrykke</Link>",
                 "examples": "overraskelsen stod malt i ansiktet hennes / han maler situasjonen temmelig svart",
-                "subDefinition": null,
+                "subDefinitions": [],
                 "subEntries": [
                     {
                         "term": "male fanden på veggen",

@@ -6,10 +6,12 @@
             {
                 "definition": "",
                 "examples": "motviljen hans er bare tilsynelatende stikker ikke så dypt",
-                "subDefinition": {
-                    "definition": "særlig som adverb:",
-                    "examples": "oppgaven er tilsynelatende lett ser enkel ut ved første øyekast"
-                },
+                "subDefinitions": [
+                    {
+                        "definition": "særlig som adverb:",
+                        "examples": "oppgaven er tilsynelatende lett ser enkel ut ved første øyekast"
+                    }
+                ],
                 "subEntries": []
             }
         ]

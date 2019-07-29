@@ -90,7 +90,7 @@ function parseSense(container) {
     return {
         definition: parseDefinition(container),
         examples: parseExamples(container),
-        subDefinition: parseSubDefinition(container),
+        subDefinitions: parseSubDefinitions(container),
         subEntries: parseSubEntries(container)
     };
 }
@@ -118,23 +118,18 @@ function parseExamples(senseContainer) {
     return parseTextContentWithLinks(examplesContainer).trim();
 }
 
-function parseSubDefinition(senseContainer) {
-    const subDefinitionContainer = senseContainer.querySelector(
+function parseSubDefinitions(senseContainer) {
+    const subDefinitionContainers = senseContainer.querySelectorAll(
         ":scope > .tyding.utvidet"
     );
 
-    if (subDefinitionContainer === null) {
-        return null;
-    }
+    return Array.from(subDefinitionContainers).map(parseSubDefinition);
+}
 
-    const definitionNodes = takeChildNodesUntil(
-        subDefinitionContainer,
-        ".doemeliste"
-    );
+function parseSubDefinition(container) {
+    const definitionNodes = takeChildNodesUntil(container, ".doemeliste");
 
-    const examplesContainer = subDefinitionContainer.querySelector(
-        ":scope > .doemeliste"
-    );
+    const examplesContainer = container.querySelector(":scope > .doemeliste");
 
     return {
         definition: parseTextContentWithLinks(...definitionNodes).trim(),
@@ -207,16 +202,19 @@ function getWordLinkedTo(linkElement) {
         .getAttribute("onclick")
         .match(onClickParameterRegex)[1];
 
-    /* Need to remove roman numerals/numbers that precede or follow word in
-     * onclick parameter, as they we do not use them. e.g:
+    /* Need to remove roman numerals and/or numbers that precede or follow word
+     * in onclick parameter, as they we do not use them. e.g:
      *
      *     III for -> for
      *     pynt (II) -> pynt
      *     svive (1) -> svive
+     *     yrke (II,1) -> yrke
      */
     const to = onClickParameter
         .replace(/^[IVX]+\s+/, "")
-        .replace(/\s+\([IVX\d]+\)$/, "");
+        .replace(/\s+\([IVX]+\)$/, "")
+        .replace(/\s+\(\d+\)$/, "")
+        .replace(/\s+\([IVX]+,\d+\)$/, "");
 
     return to;
 }

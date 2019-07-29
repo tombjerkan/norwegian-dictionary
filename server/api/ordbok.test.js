@@ -24,8 +24,11 @@ function resolveDataPath(fileName) {
  *
  *      male:               sub-definition without examples and link with
  *                          number instead of roman numeral (svive (1))
+ *
+ *      ting:               multiple sub-definitions for a single sense and
+ *                          link with number and roman numeral (yrke (II,1))
  */
-test.each(["stas", "for", "tilsynelatende", "male"])(
+test.each(["stas", "for", "tilsynelatende", "male", "ting"])(
     "correctly parses HTML into data structure",
     async word => {
         nock("https://ordbok.uib.no")

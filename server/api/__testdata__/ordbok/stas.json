@@ -6,7 +6,7 @@
             {
                 "definition": "<Link to='pynt'>pynt (II)</Link>, <Link to='prakt'>prakt</Link>",
                 "examples": "være kledd i sin fineste stas",
-                "subDefinition": null,
+                "subDefinitions": [],
                 "subEntries": [
                     { "term": "hele stasen", "definition": "alt sammen" },
                     {
@@ -19,10 +19,12 @@
             {
                 "definition": "<Link to='moro'>moro (I)</Link>, festlighet",
                 "examples": "barna synes det er stas med julen",
-                "subDefinition": {
-                    "definition": "<Link to='glede'>glede (I)</Link>",
-                    "examples": "det ble stor stas da de traff hverandre igjen / gjøre stas på en vise stor oppmerksomhet, hylle"
-                },
+                "subDefinitions": [
+                    {
+                        "definition": "<Link to='glede'>glede (I)</Link>",
+                        "examples": "det ble stor stas da de traff hverandre igjen / gjøre stas på en vise stor oppmerksomhet, hylle"
+                    }
+                ],
                 "subEntries": []
             }
         ]

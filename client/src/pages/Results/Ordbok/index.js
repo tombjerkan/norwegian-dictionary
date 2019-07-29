@@ -49,7 +49,10 @@ function Senses({ senses }) {
                         <TextWithLinks text={sense.examples} />
                     </div>
 
-                    <SubDefinition subDefinition={sense.subDefinition} />
+                    {sense.subDefinitions.map(subDefinition => (
+                        <SubDefinition subDefinition={subDefinition} />
+                    ))}
+
                     <SubEntries subEntries={sense.subEntries} />
                 </li>
             ))}

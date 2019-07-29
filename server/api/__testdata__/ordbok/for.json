@@ -4,8 +4,8 @@
         "etymology": "III for prep. (norrønt fyr(ir), i betydning 2 etter tysk)",
         "senses": [
             {
-                "definition": "foran, framfor, framom",
-                "examples": "for bordenden, alteret / ha for hånden / ha tiden for seg / forsvinne som dugg for sol(en) / stå for tur, fall / ha noe for øye se øye (I) / se seg for",
+                "definition": "<Link to='foran'>foran</Link>, <Link to='framfor'>framfor</Link>, <Link to='framom'>framom</Link>",
+                "examples": "for bordenden, alteret / ha for hånden / ha tiden for seg / forsvinne som dugg for sol(en) / stå for tur, fall / ha noe for øye se <Link to='øye'>øye (I)</Link> / se seg for",
                 "subDefinition": {
                     "definition": "i forhold til",
                     "examples": "øst for elva"
@@ -89,8 +89,8 @@
                 "subEntries": []
             },
             {
-                "definition": "som",
-                "examples": "ta for god fisk godta, tro på ; se fisk (I) / gi seg ut for / ha for vane / si for spøk / for eksempel",
+                "definition": "<Link to='som'>som</Link>",
+                "examples": "ta for god fisk godta, tro på ; se <Link to='fisk'>fisk (I)</Link> / gi seg ut for / ha for vane / si for spøk / for eksempel",
                 "subDefinition": null,
                 "subEntries": []
             },
@@ -107,7 +107,7 @@
     },
     {
         "term": "for",
-        "etymology": "IV for konj. (sammenheng med III for)",
+        "etymology": "IV for konj. (sammenheng med <Link to='for'>III for</Link>)",
         "senses": [
             {
                 "definition": "sideordnende konjunksjon ved grunn, årsak:",
@@ -117,7 +117,7 @@
             },
             {
                 "definition": "som subjunksjon:",
-                "examples": "for di eller fordi se for di",
+                "examples": "for di eller fordi se <Link to='for di'>for di</Link>",
                 "subDefinition": null,
                 "subEntries": []
             }
@@ -129,7 +129,7 @@
         "senses": [
             {
                 "definition": "i handel: fritt på jernbanevogn,  uten kostnad for kjøper",
-                "examples": "varen leveres f.o.r. jamfør fob, cif",
+                "examples": "varen leveres f.o.r. jamfør <Link to='fob'>fob</Link>, <Link to='cif'>cif</Link>",
                 "subDefinition": null,
                 "subEntries": []
             }
@@ -137,7 +137,7 @@
     },
     {
         "term": "forfôr",
-        "etymology": "VI for n1; el. I fôr n1 (norrønt fóðr; trolig beslektet med I føde)",
+        "etymology": "VI for n1; el. I fôr n1 (norrønt fóðr; trolig beslektet med <Link to='føde'>I føde</Link>)",
         "senses": [
             {
                 "definition": "mat til husdyr",

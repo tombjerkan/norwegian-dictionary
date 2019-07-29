@@ -1,6 +1,11 @@
+.container {
+    background: rgb(176, 70, 50);
+    min-height: 100vh;
+}
+
 .searchBar {
     padding: 10px;
-    background: rgb(176, 70, 50);
+    background: rgba(0, 0, 0, 0.15);
 }
 
 .searchBox {

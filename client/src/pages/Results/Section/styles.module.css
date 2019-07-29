@@ -3,8 +3,9 @@
     flex-wrap: wrap;
     align-items: center;
     border-radius: 4px;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
     padding: 0 20px;
+    background: #fff;
 }
 
 .container + .container {

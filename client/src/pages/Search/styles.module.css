@@ -1,27 +1,13 @@
 .container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: center;
     height: 100vh;
-}
-
-.form {
-    display: flex;
-    align-items: center;
-    height: 48px;
-    border-radius: 4px;
-    border: 1px solid #555;
-    padding: 3px 10px;
-}
-
-.queryInput {
-    flex: 1;
-    border: none;
-    height: 90%;
-}
-
-.submitButton {
-    flex: 0;
-    height: 80%;
-    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background: rgb(176, 70, 50);
 }

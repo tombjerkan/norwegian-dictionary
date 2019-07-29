@@ -1,0 +1,30 @@
+.form {
+    position: relative;
+    font-size: 18px;
+}
+
+.queryInput {
+    border-radius: 1.3em; /* 1/2(line-height + padding-top) */
+    border: none;
+    font-size: inherit;
+    line-height: 1em;
+    width: 100%;
+
+    /* left = same as border-radius,
+     * right = padding-left + button width + button right */
+    padding: 0.8em 3.5em 0.8em 1.3em;
+}
+
+.submitButton {
+    position: absolute;
+    font-size: inherit;
+    border-radius: 0.9em; /* 1/2 height */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1.8em;
+    width: 1.8em; /* Same as height to make circular button */
+    right: 0.4em; /* 1/2(input height - button height) */
+    border: none;
+    padding: 0.3em;
+    background: #eee;
+}

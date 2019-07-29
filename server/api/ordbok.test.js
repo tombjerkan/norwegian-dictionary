@@ -12,6 +12,15 @@ function resolveDataPath(fileName) {
     return path.resolve(__dirname, `__testdata__/ordbok/${fileName}`);
 }
 
+/*
+ *  Words are added as test cases when an error is caused parsing their pages.
+ *  The list below outlines what about their page was different to all previous
+ *  test cases that meant that the cause of the error was not caught by an
+ *  existing test case.
+ *
+ *      stas, for:          initial test pages
+ *      tilsynelatende:     only one sense
+ */
 test.each(["stas", "for", "tilsynelatende"])(
     "correctly parses HTML into data structure",
     async word => {

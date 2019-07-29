@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { Router } = require("express");
 const { JSDOM } = require("jsdom");
+const _ = require("lodash");
 const {
     isElementNode,
     isTextNode,
@@ -169,11 +170,11 @@ function parseTextContentWithLinks(...nodes) {
                     ...node.childNodes
                 );
                 const to = getWordLinkedTo(node);
-                return `<Link to='${to}'>${textContent}</Link>`;
+                return `<Link to='${_.escape(to)}'>${textContent}</Link>`;
             } else if (isElementNode(node)) {
                 return parseTextContentWithLinks(...node.childNodes);
             } else if (isTextNode(node)) {
-                return node.data;
+                return _.escape(node.data);
             } else {
                 return "";
             }

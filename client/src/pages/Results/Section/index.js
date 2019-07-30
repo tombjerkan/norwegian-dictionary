@@ -1,13 +1,18 @@
 import React, { useState } from "react";
+import classNames from "classnames";
 import styles from "./styles.module.css";
 import Loading from "components/Loading";
 
 function Section({ id, title, isLoading, error, children }) {
     const [isOpen, setOpen] = useState(false);
 
+    const isContentAvailable = !isLoading && error === null;
+    const isNotFound = !isLoading && error === 404;
+    const isError = !isLoading && error !== null && error !== 404;
+
     function toggleOpen() {
         // Don't want to change isOpen state before there is content to show
-        if (isLoading || error) {
+        if (!isContentAvailable) {
             return;
         }
 
@@ -15,21 +20,23 @@ function Section({ id, title, isLoading, error, children }) {
     }
 
     return (
-        <div id={id} className={styles.container}>
+        <div
+            id={id}
+            className={classNames(
+                styles.container,
+                (isNotFound || isError) && styles.unavailable
+            )}
+        >
             <header className={styles.header} onClick={toggleOpen}>
                 <h2 className={styles.title}>{title}</h2>
 
-                {!isLoading && error === null && (
-                    <div>{isOpen ? "Hide" : "Show"}</div>
-                )}
-                {!isLoading && error === 404 && <div>Not available</div>}
+                {isContentAvailable && <div>{isOpen ? "Hide" : "Show"}</div>}
+                {isNotFound && <div>Not found</div>}
                 {isLoading && <Loading />}
-                {!isLoading && error !== null && error !== 404 && (
-                    <div>Error</div>
-                )}
+                {isError && <div>Error</div>}
             </header>
 
-            {!isLoading && error === null && isOpen && (
+            {isContentAvailable && isOpen && (
                 <div className={styles.content}>{children}</div>
             )}
         </div>

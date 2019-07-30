@@ -6,29 +6,32 @@ function Section({ id, title, isLoading, error, children }) {
     const [isOpen, setOpen] = useState(false);
 
     function toggleOpen() {
+        // Don't want to change isOpen state before there is content to show
+        if (isLoading || error) {
+            return;
+        }
+
         setOpen(!isOpen);
     }
 
     return (
         <div id={id} className={styles.container}>
-            <h2 className={styles.title}>{title}</h2>
+            <header className={styles.header} onClick={toggleOpen}>
+                <h2 className={styles.title}>{title}</h2>
 
-            {!isLoading && error === null && (
-                <React.Fragment>
-                    <button
-                        onClick={toggleOpen}
-                        className={styles.showContentButton}
-                    >
-                        {isOpen ? "Hide" : "Show"}
-                    </button>
+                {!isLoading && error === null && (
+                    <div>{isOpen ? "Hide" : "Show"}</div>
+                )}
+                {!isLoading && error === 404 && <div>Not available</div>}
+                {isLoading && <Loading />}
+                {!isLoading && error !== null && error !== 404 && (
+                    <div>Error</div>
+                )}
+            </header>
 
-                    {isOpen && <div className={styles.content}>{children}</div>}
-                </React.Fragment>
+            {!isLoading && error === null && isOpen && (
+                <div className={styles.content}>{children}</div>
             )}
-
-            {!isLoading && error === 404 && <div>Not available</div>}
-            {isLoading && <Loading />}
-            {!isLoading && error !== null && error !== 404 && <div>Error</div>}
         </div>
     );
 }

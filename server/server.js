@@ -1,9 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+const morgan = require("morgan");
 const path = require("path");
 const api = require("./api");
 
 const app = express();
+
+app.use(morgan("tiny"));
 
 if (process.env.NODE_ENV === "production") {
     app.use(
@@ -15,7 +18,9 @@ app.use("/api", api);
 
 if (process.env.NODE_ENV === "production") {
     app.get("*", (req, res) =>
-        res.sendFile(path.resolve(__dirname, process.env.CLIENT_BUILD_PATH, "index.html"))
+        res.sendFile(
+            path.resolve(__dirname, process.env.CLIENT_BUILD_PATH, "index.html")
+        )
     );
 }
 

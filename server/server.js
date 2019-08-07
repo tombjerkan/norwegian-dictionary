@@ -3,10 +3,11 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 const api = require("./api");
+const logger = require("./logger");
 
 const app = express();
 
-app.use(morgan("tiny"));
+app.use(morgan("tiny", { stream: logger.stream }));
 
 if (process.env.NODE_ENV === "production") {
     app.use(

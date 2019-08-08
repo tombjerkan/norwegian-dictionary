@@ -8,7 +8,12 @@ function Ordbok({ query }) {
     const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`, []);
 
     return (
-        <Section id="ordbok" title="Ordbok" isLoading={isLoading} error={error}>
+        <Section
+            title="Ordbok"
+            isLoading={isLoading}
+            error={error}
+            data-testid="ordbok"
+        >
             <ul className={styles.entriesList}>
                 {data.map(entry => (
                     <Entry entry={entry} />

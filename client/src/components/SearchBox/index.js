@@ -23,6 +23,7 @@ function SearchBox({ history, className }) {
             >
                 <input
                     type="text"
+                    placeholder="Search..."
                     value={inputValue}
                     onChange={handleChange}
                     className={styles.queryInput}

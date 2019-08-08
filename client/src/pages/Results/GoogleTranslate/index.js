@@ -7,10 +7,10 @@ function GoogleTranslate({ query }) {
 
     return (
         <Section
-            id="google-translate"
             title="Google Translate"
             isLoading={isLoading}
             error={error}
+            data-testid="google-translate"
         >
             {data}
         </Section>

@@ -1,32 +1,35 @@
-import { Selector } from "testcafe";
+import {
+    addTestcafeTestingLibrary,
+    getByTestId,
+    getByText,
+    getByPlaceholderText
+} from "@testing-library/testcafe";
 
-fixture`End-to-end tests`.page`http://localhost:3000`;
+fixture`End-to-end tests`.beforeEach(addTestcafeTestingLibrary)
+    .page`http://localhost:3000`;
 
-test("Can search for word and find definition", async t => {
+test("Can search for word from home", async t => {
     await t
-        .typeText("input[type='text']", "nordmann")
-        .click("input[type='submit']")
-        .click(
-            Selector("#ordbok")
-                .find("button")
-                .withText("Show")
-        )
-        .expect(Selector("#ordbok").innerText)
-        .contains("person fra Norge")
-        .click(
-            Selector("#wiktionary")
-                .find("button")
-                .withText("Show")
-        )
-        .expect(Selector("#wiktionary").innerText)
+        .typeText(getByPlaceholderText("Search..."), "nordmann")
+        .pressKey("enter");
+
+    const ordbokSection = getByTestId("ordbok");
+    await t
+        .click(ordbokSection, getByText("Show"))
+        .expect(ordbokSection.innerText)
+        .contains("person fra Norge");
+
+    const wiktionarySection = getByTestId("wiktionary")
+    await t
+        .click(wiktionarySection, getByText("Show"))
+        .expect(wiktionarySection.innerText)
         .contains(
             "a Norwegian (person of Norwegian ancestry or inhabitant of Norway)"
-        )
-        .click(
-            Selector("#google-translate")
-                .find("button")
-                .withText("Show")
-        )
-        .expect(Selector("#google-translate").innerText)
+        );
+
+    const googleTranslateSection = getByTestId("google-translate")
+    await t
+        .click(googleTranslateSection, getByText("Show"))
+        .expect(googleTranslateSection.innerText)
         .contains("Norwegian");
 });

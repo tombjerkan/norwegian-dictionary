@@ -7,10 +7,10 @@ function Wiktionary({ query }) {
 
     return (
         <Section
-            id="wiktionary"
             title="Wiktionary"
             isLoading={isLoading}
             error={error}
+            data-testid="wiktionary"
         >
             <div dangerouslySetInnerHTML={{ __html: data }} />
         </Section>

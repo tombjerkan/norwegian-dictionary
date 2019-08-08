@@ -3,7 +3,13 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 import Loading from "components/Loading";
 
-function Section({ id, title, isLoading, error, children }) {
+function Section({
+    title,
+    isLoading,
+    error,
+    children,
+    "data-testid": dataTestId
+}) {
     const [isOpen, setOpen] = useState(false);
 
     const isContentAvailable = !isLoading && error === null;
@@ -20,12 +26,12 @@ function Section({ id, title, isLoading, error, children }) {
     }
 
     return (
-        <div
-            id={id}
+        <section
             className={classNames(
                 styles.container,
                 (isNotFound || isError) && styles.unavailable
             )}
+            data-testid={dataTestId}
         >
             <header className={styles.header} onClick={toggleOpen}>
                 <h2 className={styles.title}>{title}</h2>
@@ -37,9 +43,9 @@ function Section({ id, title, isLoading, error, children }) {
             </header>
 
             {isContentAvailable && isOpen && (
-                <div className={styles.content}>{children}</div>
+                <article className={styles.content}>{children}</article>
             )}
-        </div>
+        </section>
     );
 }
 

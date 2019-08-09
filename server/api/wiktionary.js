@@ -36,8 +36,13 @@ router.get(
         delete sections["Pronunciation"];
         delete sections["References"];
 
-        const entries = Object.values(sections).map(parseEntry);
-        res.json(entries);
+        if (Object.keys(sections).some(key => /Etymology \d+/.test(key))) {
+            const entries = Object.values(sections).map(parseEntry);
+            res.json(entries);
+        } else {
+            const entries = [parseIndividualEntry(norwegianSection)];
+            res.json(entries);
+        }
     })
 );
 
@@ -86,6 +91,72 @@ function findAllIndices(array, predicate) {
             return accumulator;
         }
     }, []);
+}
+
+function parseIndividualEntry(elements) {
+    const sections = separateByHeaders(elements, 3);
+
+    const etymologySection = sections["Etymology"];
+    const etymology =
+        etymologySection !== undefined
+            ? parseTextContentWithLinks(...etymologySection).trim()
+            : null;
+
+    const types = [
+        "Adjective",
+        "Adverb",
+        "Ambiposition",
+        "Article",
+        "Circumposition",
+        "Classifier",
+        "Conjunction",
+        "Contraction",
+        "Counter",
+        "Determiner",
+        "Ideophone",
+        "Interjection",
+        "Noun",
+        "Numeral",
+        "Participle",
+        "Particle",
+        "Postposition",
+        "Preposition",
+        "Pronoun",
+        "Proper noun",
+        "Verb"
+    ];
+
+    const type = Object.keys(sections).find(key => types.includes(key));
+    const term = parseTextContentWithLinks(sections[type][0]).trim();
+    const senses = Array.from(sections[type][1].children).map(parseSense);
+
+    const subSections = separateByHeaders(sections[type], 4);
+    const synonymsSubSection = subSections["Synonyms"];
+    const synonyms =
+        synonymsSubSection !== undefined
+            ? Array.from(synonymsSubSection[0].children).map(li =>
+                  parseTextContentWithLinks(li).trim()
+              )
+            : [];
+
+    // Header indentation level of 'Derived terms' differs from entry to entry
+    const derivedSubSection =
+        sections["Derived terms"] || subSections["Derived terms"];
+    const derived =
+        derivedSubSection !== undefined
+            ? Array.from(derivedSubSection[0].children).map(li =>
+                  parseTextContentWithLinks(li).trim()
+              )
+            : [];
+
+    return {
+        etymology,
+        type,
+        term,
+        senses,
+        synonyms,
+        derived
+    };
 }
 
 function parseEntry(elements) {

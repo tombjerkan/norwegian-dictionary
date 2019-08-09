@@ -18,21 +18,26 @@ function resolveDataPath(fileName) {
  *  test cases that meant that the cause of the error was not caught by an
  *  existing test case.
  *
- *      for:          initial test page
+ *      for:                initial test page
+ *
+ *      tilsynelatende:     only one entry
  */
-test.each(["for"])("correctly parses HTML into data structure", async word => {
-    nock("https://en.wiktionary.org")
-        .get(`/wiki/${word}`)
-        .replyWithFile(200, resolveDataPath(`${word}.html`));
+test.each(["for", "tilsynelatende"])(
+    "correctly parses HTML into data structure",
+    async word => {
+        nock("https://en.wiktionary.org")
+            .get(`/wiki/${word}`)
+            .replyWithFile(200, resolveDataPath(`${word}.html`));
 
-    const response = await supertest(app).get(`/wiktionary/${word}`);
+        const response = await supertest(app).get(`/wiktionary/${word}`);
 
-    const expectedData = JSON.parse(
-        await fs.promises.readFile(resolveDataPath(`${word}.json`))
-    );
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(expectedData);
-});
+        const expectedData = JSON.parse(
+            await fs.promises.readFile(resolveDataPath(`${word}.json`))
+        );
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual(expectedData);
+    }
+);
 
 test("returns Not Found (404) if 'not found' page is received", async () => {
     nock("https://en.wiktionary.org")

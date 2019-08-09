@@ -21,8 +21,10 @@ function resolveDataPath(fileName) {
  *      for:                initial test page
  *
  *      tilsynelatende:     only one entry
+ *
+ *      stor:               derived terms in hideable table
  */
-test.each(["for", "tilsynelatende"])(
+test.each(["for", "tilsynelatende", "stor"])(
     "correctly parses HTML into data structure",
     async word => {
         nock("https://en.wiktionary.org")

@@ -1,13 +1,5 @@
 const _ = require("lodash");
 
-function isElementNode(node) {
-    return node.nodeType === 1;
-}
-
-function isTextNode(node) {
-    return node.nodeType === 3;
-}
-
 function removeElement(element) {
     element.parentNode.removeChild(element);
 }
@@ -32,8 +24,6 @@ function takeChildNodesUntil(root, querySelector) {
 }
 
 module.exports = {
-    isElementNode,
-    isTextNode,
     removeElement,
     removeChildrenByClassName,
     removeChildrenByTagName,

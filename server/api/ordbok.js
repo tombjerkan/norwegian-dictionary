@@ -3,8 +3,6 @@ const { Router } = require("express");
 const { JSDOM } = require("jsdom");
 const _ = require("lodash");
 const {
-    isElementNode,
-    isTextNode,
     removeChildrenByClassName,
     removeChildrenByTagName,
     takeChildNodesUntil
@@ -15,8 +13,11 @@ const {
     isServiceUnavailableError,
     isNoResponseError
 } = require("./errorHandling");
+const TextContentParser = require("./TextContentParser");
 
 const router = Router();
+
+const textContentParser = new TextContentParser(isLink, getWordLinkedTo);
 
 router.get(
     "/ordbok/:word",
@@ -68,8 +69,8 @@ function parseEntry(container) {
     const senseContainers = articleContent.querySelector(".utvidet");
 
     return {
-        term: parseTextContentWithLinks(container.firstChild).trim(),
-        etymology: parseTextContentWithLinks(...etymologyNodes).trim(),
+        term: textContentParser.parse(container.firstChild),
+        etymology: textContentParser.parse(...etymologyNodes),
         senses: parseSenses(senseContainers)
     };
 }
@@ -101,8 +102,9 @@ function parseDefinition(senseContainer) {
         ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     );
 
-    return parseTextContentWithLinks(...definitionNodes)
-        .trim()
+    return textContentParser
+        .parse(...definitionNodes)
+
         .replace(/^\d+\s/, "");
 }
 
@@ -115,7 +117,7 @@ function parseExamples(senseContainer) {
         return null;
     }
 
-    return parseTextContentWithLinks(examplesContainer).trim();
+    return textContentParser.parse(examplesContainer);
 }
 
 function parseSubDefinitions(senseContainer) {
@@ -132,10 +134,9 @@ function parseSubDefinition(container) {
     const examplesContainer = container.querySelector(":scope > .doemeliste");
 
     return {
-        definition: parseTextContentWithLinks(...definitionNodes).trim(),
+        definition: textContentParser.parse(...definitionNodes),
         examples:
-            examplesContainer &&
-            parseTextContentWithLinks(examplesContainer).trim()
+            examplesContainer && textContentParser.parse(examplesContainer)
     };
 }
 
@@ -154,36 +155,12 @@ function parseSubEntry(container) {
     const definitionContainer = container.querySelector(":scope > .utvidet");
 
     return {
-        term: parseTextContentWithLinks(termContainer).trim(),
-        definition: parseTextContentWithLinks(definitionContainer).trim()
+        term: textContentParser.parse(termContainer),
+        definition: textContentParser.parse(definitionContainer)
     };
 }
 
-function parseTextContentWithLinks(...nodes) {
-    return nodes
-        .map(node => {
-            if (isLinkElement(node)) {
-                const textContent = parseTextContentWithLinks(
-                    ...node.childNodes
-                );
-                const to = getWordLinkedTo(node);
-                return `<Link to='${_.escape(to)}'>${textContent}</Link>`;
-            } else if (isElementNode(node)) {
-                return parseTextContentWithLinks(...node.childNodes);
-            } else if (isTextNode(node)) {
-                return _.escape(node.data);
-            } else {
-                return "";
-            }
-        })
-        .join("");
-}
-
-function isLinkElement(element) {
-    if (!isElementNode(element)) {
-        return false;
-    }
-
+function isLink(element) {
     return (
         element.classList.contains("henvisning") ||
         element.classList.contains("etymtilvising")

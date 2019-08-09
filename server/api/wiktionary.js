@@ -9,14 +9,12 @@ const {
     isNoResponseError
 } = require("./errorHandling");
 const _ = require("lodash");
-const {
-    takeChildNodesUntil,
-    removeChildrenByClassName,
-    isElementNode,
-    isTextNode
-} = require("./dom");
+const { takeChildNodesUntil, removeChildrenByClassName } = require("./dom");
+const TextContentParser = require("./TextContentParser");
 
 const router = Router();
+
+const textContentParser = new TextContentParser(isLink, getWordLinkedTo);
 
 router.get(
     "/wiktionary/:word",
@@ -99,7 +97,7 @@ function parseIndividualEntry(elements) {
     const etymologySection = sections["Etymology"];
     const etymology =
         etymologySection !== undefined
-            ? parseTextContentWithLinks(...etymologySection).trim()
+            ? textContentParser.parse(...etymologySection)
             : null;
 
     const types = [
@@ -127,7 +125,7 @@ function parseIndividualEntry(elements) {
     ];
 
     const type = Object.keys(sections).find(key => types.includes(key));
-    const term = parseTextContentWithLinks(sections[type][0]).trim();
+    const term = textContentParser.parse(sections[type][0]);
     const senses = Array.from(sections[type][1].children).map(parseSense);
 
     const subSections = separateByHeaders(sections[type], 4);
@@ -135,19 +133,14 @@ function parseIndividualEntry(elements) {
     const synonyms =
         synonymsSubSection !== undefined
             ? Array.from(synonymsSubSection[0].children).map(li =>
-                  parseTextContentWithLinks(li).trim()
+                  textContentParser.parse(li)
               )
             : [];
 
     // Header indentation level of 'Derived terms' differs from entry to entry
-    const derivedSubSection =
-        sections["Derived terms"] || subSections["Derived terms"];
-    const derived =
-        derivedSubSection !== undefined
-            ? Array.from(derivedSubSection[0].children).map(li =>
-                  parseTextContentWithLinks(li).trim()
-              )
-            : [];
+    const derived = parseDerivedTerms(
+        sections["Derived terms"] || subSections["Derived terms"]
+    );
 
     return {
         etymology,
@@ -162,14 +155,14 @@ function parseIndividualEntry(elements) {
 function parseEntry(elements) {
     let etymology = null;
     if (elements[0].tagName === "P") {
-        etymology = parseTextContentWithLinks(elements[0]).trim();
+        etymology = textContentParser.parse(elements[0]);
     }
 
-    const type = parseTextContentWithLinks(
+    const type = textContentParser.parse(
         elements.find(e => e.tagName === "H4")
-    ).trim();
+    );
     const sections = separateByHeaders(elements, 4);
-    const term = parseTextContentWithLinks(sections[type][0]).trim();
+    const term = textContentParser.parse(sections[type][0]);
     const senses = Array.from(sections[type][1].children).map(parseSense);
 
     const subSections = separateByHeaders(sections[type], 5);
@@ -177,19 +170,14 @@ function parseEntry(elements) {
     const synonyms =
         synonymsSubSection !== undefined
             ? Array.from(synonymsSubSection[0].children).map(li =>
-                  parseTextContentWithLinks(li).trim()
+                  textContentParser.parse(li)
               )
             : [];
 
-    // 'Derived terms' section can either be headed by 'h4' or 'h5' so need to check both
-    const derivedSubSection =
-        sections["Derived terms"] || subSections["Derived terms"];
-    const derived =
-        derivedSubSection !== undefined
-            ? Array.from(derivedSubSection[0].children).map(li =>
-                  parseTextContentWithLinks(li).trim()
-              )
-            : [];
+    // Header indentation level of 'Derived terms' differs from entry to entry
+    const derived = parseDerivedTerms(
+        sections["Derived terms"] || subSections["Derived terms"]
+    );
 
     return {
         etymology,
@@ -203,10 +191,10 @@ function parseEntry(elements) {
 
 function parseSense(sense) {
     const definitionNodes = takeChildNodesUntil(sense, "dl");
-    const definition = parseTextContentWithLinks(...definitionNodes).trim();
+    const definition = textContentParser.parse(...definitionNodes);
 
     const examples = Array.from(sense.querySelectorAll("dl > dd")).map(
-        example => parseTextContentWithLinks(example).trim()
+        example => textContentParser.parse(example)
     );
 
     return {
@@ -215,32 +203,17 @@ function parseSense(sense) {
     };
 }
 
-function parseTextContentWithLinks(...nodes) {
-    return nodes
-        .map(node => {
-            if (isLinkElement(node)) {
-                const textContent = parseTextContentWithLinks(
-                    ...node.childNodes
-                );
-                const to = getWordLinkedTo(node);
-                return `<Link to='${_.escape(to)}'>${textContent}</Link>`;
-            } else if (isElementNode(node)) {
-                return parseTextContentWithLinks(...node.childNodes);
-            } else if (isTextNode(node)) {
-                return _.escape(node.data);
-            } else {
-                return "";
-            }
-        })
-        .join("");
+function parseDerivedTerms(elements) {
+    if (elements === undefined) {
+        return [];
+    }
+
+    const listItems = Array.from(elements[0].querySelectorAll("li"));
+    return listItems.map(item => textContentParser.parse(item));
 }
 
-function isLinkElement(element) {
-    return (
-        isElementNode(element) &&
-        element.tagName === "A" &&
-        getWordLinkedTo(element) !== null
-    );
+function isLink(element) {
+    return element.tagName === "A" && getWordLinkedTo(element) !== null;
 }
 
 function getWordLinkedTo(anchor) {

@@ -8,7 +8,13 @@ const {
     isServiceUnavailableError,
     isNoResponseError
 } = require("./errorHandling");
-const { removeElement, removeChildrenByClassName } = require("./dom");
+const _ = require("lodash");
+const {
+    takeChildNodesUntil,
+    removeChildrenByClassName,
+    isElementNode,
+    isTextNode
+} = require("./dom");
 
 const router = Router();
 
@@ -17,31 +23,21 @@ router.get(
     withAsyncErrorHandling(async (req, res) => {
         const document = await fetchDocument(req.params.word);
 
-        // Remove parts of the document that should not be included in the
-        // result
         removeChildrenByClassName(document, "mw-editsection");
-        removeSection(document, "Derived terms");
-        removeSection(document, "References");
-        removeSection(document, "Pronunciation");
 
-        replaceLinks(document);
-
-        const norwegianBokmaalElement = document.getElementById(
-            "Norwegian_Bokmål"
-        );
-        if (norwegianBokmaalElement === null) {
+        const content = document.getElementsByClassName("mw-parser-output")[0];
+        const languages = separateByHeaders(Array.from(content.children), 2);
+        const norwegianSection = languages["Norwegian Bokmål"];
+        if (norwegianSection === undefined) {
             throw new ApiError(404);
         }
 
-        const languageHeader = norwegianBokmaalElement.parentElement;
-        const bokmaalElements = [];
-        let currentElement = languageHeader.nextElementSibling;
-        while (currentElement !== null && currentElement.tagName !== "H2") {
-            bokmaalElements.push(currentElement);
-            currentElement = currentElement.nextElementSibling;
-        }
+        const sections = separateByHeaders(norwegianSection, 3);
+        delete sections["Pronunciation"];
+        delete sections["References"];
 
-        res.json(bokmaalElements.map(element => element.outerHTML).join(""));
+        const entries = Object.values(sections).map(parseEntry);
+        res.json(entries);
     })
 );
 
@@ -62,38 +58,117 @@ async function fetchDocument(word) {
     }
 }
 
-function replaceLinks(document) {
-    const linkToAnotherWord = /\/wiki\/(.*)#Norwegian_Bokmål/;
+function separateByHeaders(elements, headerLevel) {
+    const headerIndices = findAllIndices(
+        elements,
+        e => e.tagName === `H${headerLevel}`
+    );
+    const endIndices = headerIndices.slice(1);
+    const startEndIndices = _.zip(headerIndices, endIndices);
 
-    const links = document.querySelectorAll("a[href]");
-    for (const link of links) {
-        const match = link.getAttribute("href").match(linkToAnotherWord);
-        if (match) {
-            // Replace link href to point to own website's page
-            link.setAttribute("href", `/${match[1]}`);
-        } else {
-            // Replace anchor element with its children to remove from document
-            link.replaceWith(...link.childNodes);
-        }
-    }
-}
-
-function removeSection(root, header) {
-    const allHeaders = root.querySelectorAll("h1, h2, h3, h4, h5, h6");
-    const matchingHeaders = Array.from(allHeaders).filter(
-        element => element.textContent === header
+    const sections = startEndIndices.map(([start, end]) =>
+        elements.slice(start, end)
     );
 
-    for (match of matchingHeaders) {
-        let sibling = match.nextElementSibling;
-        removeElement(match);
+    return Object.assign(
+        {},
+        ...sections.map(section => ({
+            [section[0].textContent]: section.slice(1)
+        }))
+    );
+}
 
-        const headerTagRegex = /^H[1-6]$/;
-        while (sibling !== null && headerTagRegex.test(sibling.tagName)) {
-            const nextSibling = sibling.nextElementSibling;
-            removeElement(sibling);
-            sibling = nextSibling;
+function findAllIndices(array, predicate) {
+    return array.reduce((accumulator, current, index) => {
+        if (predicate(current)) {
+            return [...accumulator, index];
+        } else {
+            return accumulator;
         }
+    }, []);
+}
+
+function parseEntry(elements) {
+    let etymology = null;
+    if (elements[0].tagName === "P") {
+        etymology = parseTextContentWithLinks(elements[0]).trim();
+    }
+
+    const type = parseTextContentWithLinks(
+        elements.find(e => e.tagName === "H4")
+    ).trim();
+    const sections = separateByHeaders(elements, 4);
+    const term = parseTextContentWithLinks(sections[type][0]).trim();
+    const senses = Array.from(sections[type][1].children).map(parseSense);
+
+    const subSections = separateByHeaders(sections[type], 5);
+    const synonymsSubSection = subSections["Synonyms"];
+    const synonyms =
+        synonymsSubSection !== undefined
+            ? Array.from(synonymsSubSection[0].children).map(li =>
+                  parseTextContentWithLinks(li).trim()
+              )
+            : [];
+
+    return {
+        etymology,
+        type,
+        term,
+        senses,
+        synonyms
+    };
+}
+
+function parseSense(sense) {
+    const definitionNodes = takeChildNodesUntil(sense, "dl");
+    const definition = parseTextContentWithLinks(...definitionNodes).trim();
+
+    const examples = Array.from(sense.querySelectorAll("dl > dd")).map(
+        example => parseTextContentWithLinks(example).trim()
+    );
+
+    return {
+        definition,
+        examples
+    };
+}
+
+function parseTextContentWithLinks(...nodes) {
+    return nodes
+        .map(node => {
+            if (isLinkElement(node)) {
+                const textContent = parseTextContentWithLinks(
+                    ...node.childNodes
+                );
+                const to = getWordLinkedTo(node);
+                return `<Link to='${_.escape(to)}'>${textContent}</Link>`;
+            } else if (isElementNode(node)) {
+                return parseTextContentWithLinks(...node.childNodes);
+            } else if (isTextNode(node)) {
+                return _.escape(node.data);
+            } else {
+                return "";
+            }
+        })
+        .join("");
+}
+
+function isLinkElement(element) {
+    return (
+        isElementNode(element) &&
+        element.tagName === "A" &&
+        getWordLinkedTo(element) !== null
+    );
+}
+
+function getWordLinkedTo(anchor) {
+    const linkToAnotherWord = /\/wiki\/(.+)#Norwegian_Bokmål/;
+    const match = anchor.getAttribute("href").match(linkToAnotherWord);
+
+    if (match) {
+        return match[1];
+    } else {
+        return null;
     }
 }
 

@@ -13,9 +13,26 @@ function resolveDataPath(fileName) {
 }
 
 /*
- * TODO: Write successful tests, waiting until after redoing how successful
- *       wiktionary response are parsed.
+ *  Words are added as test cases when an error is caused parsing their pages.
+ *  The list below outlines what about their page was different to all previous
+ *  test cases that meant that the cause of the error was not caught by an
+ *  existing test case.
+ *
+ *      for:          initial test page
  */
+test.each(["for"])("correctly parses HTML into data structure", async word => {
+    nock("https://en.wiktionary.org")
+        .get(`/wiki/${word}`)
+        .replyWithFile(200, resolveDataPath(`${word}.html`));
+
+    const response = await supertest(app).get(`/wiktionary/${word}`);
+
+    const expectedData = JSON.parse(
+        await fs.promises.readFile(resolveDataPath(`${word}.json`))
+    );
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(expectedData);
+});
 
 test("returns Not Found (404) if 'not found' page is received", async () => {
     nock("https://en.wiktionary.org")

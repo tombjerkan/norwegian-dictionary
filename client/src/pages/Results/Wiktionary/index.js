@@ -61,8 +61,15 @@ function Entry({ index, entry }) {
 
             {entry.synonyms.length > 0 && (
                 <React.Fragment>
-                    <h4 className={styles.synonymsHeader}>Synonyms</h4>
-                    <TextWithLinks text={entry.synonyms.join()} />
+                    <h4 className={styles.subSectionHeader}>Synonyms</h4>
+                    <TextWithLinks text={entry.synonyms.join(", ")} />
+                </React.Fragment>
+            )}
+
+            {entry.derived.length > 0 && (
+                <React.Fragment>
+                    <h4 className={styles.subSectionHeader}>Derived terms</h4>
+                    <TextWithLinks text={entry.derived.join(", ")} />
                 </React.Fragment>
             )}
         </li>

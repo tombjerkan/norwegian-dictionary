@@ -9,7 +9,8 @@
                 "examples": ["for ung ― too young", "for langt ― too far"]
             }
         ],
-        "synonyms": ["<Link to='altfor'>altfor</Link>"]
+        "synonyms": ["<Link to='altfor'>altfor</Link>"],
+        "derived": []
     },
     {
         "etymology": null,
@@ -21,7 +22,8 @@
                 "examples": []
             }
         ],
-        "synonyms": ["fordi"]
+        "synonyms": ["fordi"],
+        "derived": []
     },
     {
         "etymology": "From Old Norse fóðr",
@@ -33,7 +35,11 @@
                 "examples": []
             }
         ],
-        "synonyms": []
+        "synonyms": [],
+        "derived": [
+            "<Link to='dyrefor'>dyrefor</Link>",
+            "<Link to='fiskefor'>fiskefor</Link>"
+        ]
     },
     {
         "etymology": null,
@@ -45,7 +51,8 @@
                 "examples": []
             }
         ],
-        "synonyms": []
+        "synonyms": [],
+        "derived": ["<Link to='vestenfor'>vestenfor</Link>"]
     },
     {
         "etymology": null,
@@ -57,6 +64,7 @@
                 "examples": []
             }
         ],
-        "synonyms": []
+        "synonyms": [],
+        "derived": []
     }
 ]

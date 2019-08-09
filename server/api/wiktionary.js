@@ -110,12 +110,23 @@ function parseEntry(elements) {
               )
             : [];
 
+    // 'Derived terms' section can either be headed by 'h4' or 'h5' so need to check both
+    const derivedSubSection =
+        sections["Derived terms"] || subSections["Derived terms"];
+    const derived =
+        derivedSubSection !== undefined
+            ? Array.from(derivedSubSection[0].children).map(li =>
+                  parseTextContentWithLinks(li).trim()
+              )
+            : [];
+
     return {
         etymology,
         type,
         term,
         senses,
-        synonyms
+        synonyms,
+        derived
     };
 }
 

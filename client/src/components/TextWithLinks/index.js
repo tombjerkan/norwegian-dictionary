@@ -23,7 +23,7 @@ function TextWithLinks({ text }) {
                     const to = node.getAttribute("to");
 
                     // Do not insert a link if already on linked page
-                    if (`/${to}` === window.location.pathname) {
+                    if (isCurrentPageWord(to)) {
                         return node.textContent;
                     }
 
@@ -42,6 +42,10 @@ function TextWithLinks({ text }) {
             })}
         </React.Fragment>
     );
+}
+
+function isCurrentPageWord(word) {
+    return `/${word}` === window.location.pathname;
 }
 
 export default TextWithLinks;

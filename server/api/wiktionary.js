@@ -16,20 +16,36 @@ const router = Router();
 
 const textContentParser = new TextContentParser(isLink, getWordLinkedTo);
 
+const partOfSpeechTypes = [
+    "Adjective",
+    "Adverb",
+    "Ambiposition",
+    "Article",
+    "Circumposition",
+    "Classifier",
+    "Conjunction",
+    "Contraction",
+    "Counter",
+    "Determiner",
+    "Ideophone",
+    "Interjection",
+    "Noun",
+    "Numeral",
+    "Participle",
+    "Particle",
+    "Postposition",
+    "Preposition",
+    "Pronoun",
+    "Proper noun",
+    "Verb"
+];
+
 router.get(
     "/wiktionary/:word",
     withAsyncErrorHandling(async (req, res) => {
         const document = await fetchDocument(req.params.word);
-
-        removeChildrenByClassName(document, "mw-editsection");
-
-        const content = document.getElementsByClassName("mw-parser-output")[0];
-        const languages = separateByHeaders(Array.from(content.children), 2);
-        const norwegianSection = languages["Norwegian Bokmål"];
-        if (norwegianSection === undefined) {
-            throw new ApiError(404);
-        }
-
+        removeEditButtons(document);
+        const norwegianSection = getNorwegianSection(document);
         const entries = separateEntries(norwegianSection);
         return res.json(entries.map(e => parseEntry(e)));
     })
@@ -50,6 +66,35 @@ async function fetchDocument(word) {
             throw err;
         }
     }
+}
+
+function removeEditButtons(document) {
+    removeChildrenByClassName(document, "mw-editsection");
+}
+
+function getNorwegianSection(document) {
+    const container = document.getElementsByClassName("mw-parser-output")[0];
+    const elements = Array.from(container.children);
+
+    const norwegianHeaderIndex = elements.findIndex(
+        e => isLanguageHeader(e) && e.textContent === "Norwegian Bokmål"
+    );
+
+    if (norwegianHeaderIndex === -1) {
+        throw new ApiError(404);
+    }
+
+    const endIndex = _.findIndex(
+        elements,
+        isLanguageHeader,
+        norwegianHeaderIndex + 1
+    );
+
+    return elements.slice(norwegianHeaderIndex + 1, endIndex);
+}
+
+function isLanguageHeader(element) {
+    return element.tagName === "H2";
 }
 
 function separateEntries(languageEntry) {
@@ -79,103 +124,6 @@ function isEntryHeader(element) {
     return isHeader(element) && /^Etymology \d+$/.test(element.textContent);
 }
 
-function parseEntry(elements) {
-    const headerIndices = findAllIndices(elements, isHeader);
-    const endIndices = headerIndices.slice(1);
-
-    const sections = _.zip(headerIndices, endIndices).map(
-        ([headerIndex, endIndex]) => [
-            elements[headerIndex].textContent,
-            elements.slice(headerIndex + 1, endIndex)
-        ]
-    );
-
-    let etymologySection = sections.find(s => s[0] === "Etymology");
-    if (etymologySection === undefined) {
-        etymologySection = elements.slice(0, headerIndices[0]);
-    } else {
-        etymologySection = etymologySection[1];
-    }
-    const etymology =
-        etymologySection.length !== 0
-            ? textContentParser.parse(...etymologySection)
-            : null;
-
-    const types = [
-        "Adjective",
-        "Adverb",
-        "Ambiposition",
-        "Article",
-        "Circumposition",
-        "Classifier",
-        "Conjunction",
-        "Contraction",
-        "Counter",
-        "Determiner",
-        "Ideophone",
-        "Interjection",
-        "Noun",
-        "Numeral",
-        "Participle",
-        "Particle",
-        "Postposition",
-        "Preposition",
-        "Pronoun",
-        "Proper noun",
-        "Verb"
-    ];
-
-    const subEntries = sections
-        .filter(s => types.includes(s[0]))
-        .map(subEntry => ({
-            type: subEntry[0],
-            term: textContentParser.parse(subEntry[1][0]),
-            senses: Array.from(subEntry[1][1].children).map(parseSense)
-        }));
-
-    const synonymsSubSection = sections.find(s => s[0] === "Synonyms");
-    const synonyms =
-        synonymsSubSection !== undefined
-            ? Array.from(synonymsSubSection[1][0].children).map(li =>
-                  textContentParser.parse(li)
-              )
-            : [];
-
-    // Header indentation level of 'Derived terms' differs from entry to entry
-    require("../logger").debug(sections.map(s => s[0]));
-    const derivedTermsSubSection = sections.find(s => s[0] === "Derived terms");
-    const derived = parseDerivedTerms(
-        derivedTermsSubSection && derivedTermsSubSection[1]
-    );
-
-    return {
-        etymology,
-        subEntries,
-        synonyms,
-        derived
-    };
-}
-
-function separateByHeaders(elements, headerLevel) {
-    const headerIndices = findAllIndices(
-        elements,
-        e => e.tagName === `H${headerLevel}`
-    );
-    const endIndices = headerIndices.slice(1);
-    const startEndIndices = _.zip(headerIndices, endIndices);
-
-    const sections = startEndIndices.map(([start, end]) =>
-        elements.slice(start, end)
-    );
-
-    return Object.assign(
-        {},
-        ...sections.map(section => ({
-            [section[0].textContent]: section.slice(1)
-        }))
-    );
-}
-
 function findAllIndices(array, predicate) {
     return array.reduce((accumulator, current, index) => {
         if (predicate(current)) {
@@ -184,6 +132,58 @@ function findAllIndices(array, predicate) {
             return accumulator;
         }
     }, []);
+}
+
+function parseEntry(elements) {
+    return {
+        etymology: parseEtymology(elements),
+        subEntries: parseSubEntries(elements),
+        synonyms: parseSynonyms(elements),
+        derived: parseDerivedTerms(elements)
+    };
+}
+
+function getSection(elements, header) {
+    const headerIndex = elements.findIndex(
+        e => isHeader(e) && e.textContent === header
+    );
+
+    if (headerIndex === -1) {
+        return null;
+    }
+
+    const nextHeaderIndex = _.findIndex(elements, isHeader, headerIndex + 1);
+
+    return elements.slice(headerIndex + 1, nextHeaderIndex);
+}
+
+function parseEtymology(elements) {
+    let etymologySection = getSection(elements, "Etymology");
+    if (etymologySection === null) {
+        const firstHeaderIndex = elements.findIndex(isHeader);
+        etymologySection = elements.slice(0, firstHeaderIndex);
+    }
+
+    if (etymologySection.length === 0) {
+        return null;
+    }
+
+    return textContentParser.parse(...etymologySection);
+}
+
+function parseSubEntries(elements) {
+    const types = elements.filter(isPartOfSpeechHeader).map(e => e.textContent);
+    const subEntrySections = types.map(t => getSection(elements, t));
+
+    return _.zip(types, subEntrySections).map(([type, section]) => ({
+        type,
+        term: textContentParser.parse(section[0]),
+        senses: Array.from(section[1].children).map(parseSense)
+    }));
+}
+
+function isPartOfSpeechHeader(element) {
+    return isHeader(element) && partOfSpeechTypes.includes(element.textContent);
 }
 
 function parseSense(sense) {
@@ -200,8 +200,20 @@ function parseSense(sense) {
     };
 }
 
+function parseSynonyms(elements) {
+    const section = getSection(elements, "Synonyms");
+
+    if (section === null) {
+        return [];
+    }
+
+    return Array.from(section[0].chidren).map(textContentParser.parse);
+}
+
 function parseDerivedTerms(elements) {
-    if (elements === undefined) {
+    const section = getSection(elements, "Derived terms");
+
+    if (section === null) {
         return [];
     }
 

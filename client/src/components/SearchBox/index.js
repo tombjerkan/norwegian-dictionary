@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 import { ReactComponent as SearchIcon } from "./search-icon.svg";
 
-function SearchBox({ history, className }) {
+export default function SearchBox({ history, className }) {
     const [inputValue, setInputValue] = useState("");
 
     function handleChange(event) {
@@ -35,5 +35,3 @@ function SearchBox({ history, className }) {
         </div>
     );
 }
-
-export default SearchBox;

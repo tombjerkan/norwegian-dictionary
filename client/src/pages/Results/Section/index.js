@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import classNames from "classnames";
 import { Collapse } from "react-collapse";
 import styles from "./styles.module.css";
-import Loading from "components/Loading";
+import Loading from "pages/Results/Section/Loading";
 import { ReactComponent as Error } from "components/Error.svg";
 
-function Section({
+export default function Section({
     title,
     isLoading,
     error,
@@ -52,5 +52,3 @@ function Section({
         </section>
     );
 }
-
-export default Section;

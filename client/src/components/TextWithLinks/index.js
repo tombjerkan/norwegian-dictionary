@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 
-function TextWithLinks({ text }) {
+export default function TextWithLinks({ text }) {
     if (!text) {
         return "";
     }
@@ -47,5 +47,3 @@ function TextWithLinks({ text }) {
 function isCurrentPageWord(word) {
     return `/${word}` === window.location.pathname;
 }
-
-export default TextWithLinks;

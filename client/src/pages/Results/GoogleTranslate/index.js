@@ -2,7 +2,7 @@ import React from "react";
 import Section from "pages/Results/Section";
 import useFetch from "pages/Results/useFetch";
 
-function GoogleTranslate({ query }) {
+export default function GoogleTranslate({ query }) {
     const [data, isLoading, error] = useFetch(`/api/googleTranslate/${query}`);
 
     return (
@@ -16,5 +16,3 @@ function GoogleTranslate({ query }) {
         </Section>
     );
 }
-
-export default GoogleTranslate;

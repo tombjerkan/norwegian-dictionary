@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Search from "./Search";
 import Results from "./Results";
 
-function App() {
+export default function App() {
     return (
         <BrowserRouter>
             <Route exact path="/" component={Search} />
@@ -11,5 +11,3 @@ function App() {
         </BrowserRouter>
     );
 }
-
-export default App;

@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 
-function Loading() {
+export default function Loading() {
     return (
         <div className={styles.container}>
             <div className={classNames(styles.circle, styles.circle1)} />
@@ -11,5 +11,3 @@ function Loading() {
         </div>
     );
 }
-
-export default Loading;

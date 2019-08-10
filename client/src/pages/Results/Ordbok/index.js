@@ -4,7 +4,7 @@ import useFetch from "pages/Results/useFetch";
 import TextWithLinks from "components/TextWithLinks";
 import styles from "./styles.module.css";
 
-function Ordbok({ query }) {
+export default function Ordbok({ query }) {
     const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`, []);
 
     return (
@@ -100,5 +100,3 @@ function SubEntries({ subEntries }) {
         </ul>
     );
 }
-
-export default Ordbok;

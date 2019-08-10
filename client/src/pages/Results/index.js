@@ -5,7 +5,7 @@ import Ordbok from "./Ordbok";
 import Wiktionary from "./Wiktionary";
 import GoogleTranslate from "./GoogleTranslate";
 
-function Results({ history, match }) {
+export default function Results({ history, match }) {
     return (
         <div className={styles.container}>
             <nav className={styles.searchBar}>
@@ -20,5 +20,3 @@ function Results({ history, match }) {
         </div>
     );
 }
-
-export default Results;

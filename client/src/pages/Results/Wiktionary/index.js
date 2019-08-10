@@ -4,7 +4,7 @@ import useFetch from "pages/Results/useFetch";
 import TextWithLinks from "components/TextWithLinks";
 import styles from "./styles.module.css";
 
-function Wiktionary({ query }) {
+export default function Wiktionary({ query }) {
     const [data, isLoading, error] = useFetch(`/api/wiktionary/${query}`, []);
 
     return (
@@ -103,5 +103,3 @@ function WordList({ title, words }) {
         </React.Fragment>
     );
 }
-
-export default Wiktionary;

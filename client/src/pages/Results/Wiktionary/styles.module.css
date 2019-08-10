@@ -21,7 +21,7 @@
     color: #777;
 }
 
-.description {
+.subEntryHeader {
     display: flex;
     margin-top: 1.5em;
 }
@@ -51,7 +51,7 @@
     color: #555;
 }
 
-.subSectionHeader {
+.wordListTitle {
     margin-top: 1.5em;
     margin-bottom: 0.8em;
 }

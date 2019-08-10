@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import classNames from "classnames";
 import { Collapse } from "react-collapse";
 import styles from "./styles.module.css";
-import Loading from "pages/Results/Section/Loading";
+import Loading from "components/Loading";
 import { ReactComponent as Error } from "components/Error.svg";
 
 export default function Section({

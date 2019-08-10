@@ -1,5 +1,32 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.circle {
+    width: 8px;
+    height: 8px;
+    background-color: #666;
+    border-radius: 100%;
+    display: inline-block;
+    animation: circle-pulse 1.4s infinite ease-in-out both;
+}
+
+.circle + .circle {
+    margin-left: 8px;
+}
+
+.circle1 {
+    animation-delay: -0.32s;
+}
+
+.circle2 {
+    animation-delay: -0.16s;
+}
+
+@keyframes circle-pulse {
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1);
+    }
 }

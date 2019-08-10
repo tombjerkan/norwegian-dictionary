@@ -154,7 +154,11 @@ function getSection(elements, header) {
 
     const nextHeaderIndex = _.findIndex(elements, isHeader, headerIndex + 1);
 
-    return elements.slice(headerIndex + 1, nextHeaderIndex);
+    if (nextHeaderIndex !== -1) {
+        return elements.slice(headerIndex + 1, nextHeaderIndex);
+    } else {
+        return elements.slice(headerIndex + 1);
+    }
 }
 
 function parseEtymology(elements) {
@@ -207,7 +211,7 @@ function parseSynonyms(elements) {
         return [];
     }
 
-    return Array.from(section[0].chidren).map(textContentParser.parse);
+    return Array.from(section[0].children).map(textContentParser.parse);
 }
 
 function parseDerivedTerms(elements) {
@@ -217,11 +221,11 @@ function parseDerivedTerms(elements) {
         return [];
     }
 
-    const listItems = elements
+    const listItems = section
         .map(e => Array.from(e.querySelectorAll("li")))
         .flat();
 
-    return listItems.map(item => textContentParser.parse(item));
+    return listItems.map(textContentParser.parse);
 }
 
 function isLink(element) {

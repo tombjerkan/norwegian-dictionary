@@ -23,6 +23,7 @@
 
 .description {
     display: flex;
+    margin-top: 1.5em;
 }
 
 .type {
@@ -37,7 +38,7 @@
 .sensesList {
     padding-left: 25px;
     padding-right: 25px;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .sensesList > li + li {

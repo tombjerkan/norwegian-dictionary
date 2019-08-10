@@ -34,30 +34,34 @@ function Entry({ index, entry }) {
                 </p>
             )}
 
-            <div className={styles.description}>
-                <div className={styles.type}>{entry.type}</div>
-                <div className={styles.term}>
-                    <TextWithLinks text={entry.term} />
-                </div>
-            </div>
+            {entry.subEntries.map(subEntry => (
+                <React.Fragment>
+                    <div className={styles.description}>
+                        <div className={styles.type}>{subEntry.type}</div>
+                        <div className={styles.term}>
+                            <TextWithLinks text={subEntry.term} />
+                        </div>
+                    </div>
 
-            <ol className={styles.sensesList}>
-                {entry.senses.map(sense => (
-                    <li>
-                        <TextWithLinks text={sense.definition} />
+                    <ol className={styles.sensesList}>
+                        {subEntry.senses.map(sense => (
+                            <li>
+                                <TextWithLinks text={sense.definition} />
 
-                        {sense.examples && (
-                            <ul className={styles.examplesList}>
-                                {sense.examples.map(example => (
-                                    <li>
-                                        <TextWithLinks text={example} />
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </li>
-                ))}
-            </ol>
+                                {sense.examples && (
+                                    <ul className={styles.examplesList}>
+                                        {sense.examples.map(example => (
+                                            <li>
+                                                <TextWithLinks text={example} />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </li>
+                        ))}
+                    </ol>
+                </React.Fragment>
+            ))}
 
             {entry.synonyms.length > 0 && (
                 <React.Fragment>

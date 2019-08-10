@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { Collapse } from "react-collapse";
 import styles from "./styles.module.css";
 import Loading from "components/Loading";
+import { ReactComponent as Error } from "components/Error.svg";
 
 function Section({
     title,
@@ -40,7 +41,7 @@ function Section({
                 {isContentAvailable && <div>{isOpen ? "Hide" : "Show"}</div>}
                 {isNotFound && <div>Not found</div>}
                 {isLoading && <Loading />}
-                {isError && <div>Error</div>}
+                {isError && <Error className={styles.error} />}
             </header>
 
             {isContentAvailable && (

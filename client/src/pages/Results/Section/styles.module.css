@@ -16,13 +16,18 @@
     display: flex;
     align-items: center;
     position: relative;
-    padding: 20px;
+    padding: 0 20px;
+    min-height: 70px;
 }
 
 .title {
     flex: 1;
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.error {
+    height: 30px;
 }
 
 .content {

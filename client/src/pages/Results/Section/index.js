@@ -47,6 +47,13 @@ export default function Section({
             {isContentAvailable && (
                 <Collapse isOpened={isOpen}>
                     <article className={styles.content}>{children}</article>
+
+                    <button
+                        onClick={() => setOpen(false)}
+                        className={styles.hideButton}
+                    >
+                        Hide
+                    </button>
                 </Collapse>
             )}
         </section>

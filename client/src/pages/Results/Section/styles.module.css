@@ -36,3 +36,13 @@
     padding-left: 20px;
     padding-right: 20px;
 }
+
+.hideButton {
+    width: 100%;
+    background: none;
+    color: #666;
+    border: none;
+    border-top: 1px solid #eee;
+    height: 3em;
+    margin-top: 30px;
+}

@@ -1,0 +1,15 @@
+.container {
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 15px;
+}
+
+.container > li + li {
+    margin-top: 10px;
+}
+
+.examples {
+    list-style-type: none;
+    padding-left: 0;
+    color: #555;
+}

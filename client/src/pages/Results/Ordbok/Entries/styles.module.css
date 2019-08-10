@@ -21,16 +21,6 @@
     color: #777;
 }
 
-.sensesList {
-    padding-left: 25px;
-    padding-right: 25px;
-    margin-top: 20px;
-}
-
-.sensesList > li + li {
-    margin-top: 20px;
-}
-
 .subEntriesList > li + li {
     margin-top: 10px;
 }
@@ -47,22 +37,6 @@
 
 .examples {
     color: #555;
-}
-
-.subDefinitionContainer {
-    margin-top: 20px;
-    font-size: 0.9em;
-    border-left: 2px solid #565656;
-    background: #f7f7f7;
-    padding: 5px 10px;
-}
-
-.subDefinition {
-    font-weight: 600;
-}
-
-.subDefinitionExamples {
-    color: #404040;
 }
 
 .subEntriesList {

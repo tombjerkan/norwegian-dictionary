@@ -1,12 +1,16 @@
 [
     {
         "etymology": "From the outdated phrase <Link to='late'>late</Link> <Link to='til'>til</Link> <Link to='syne'>syne</Link>.",
-        "type": "Adverb",
-        "term": "tilsynelatende",
-        "senses": [
+        "subEntries": [
             {
-                "definition": "seemingly, apparently",
-                "examples": []
+                "type": "Adverb",
+                "term": "tilsynelatende",
+                "senses": [
+                    {
+                        "definition": "seemingly, apparently",
+                        "examples": []
+                    }
+                ]
             }
         ],
         "synonyms": [],

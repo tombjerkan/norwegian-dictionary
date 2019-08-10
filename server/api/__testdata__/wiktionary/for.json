@@ -1,12 +1,19 @@
 [
     {
         "etymology": null,
-        "type": "Adverb",
-        "term": "for",
-        "senses": [
+        "subEntries": [
             {
-                "definition": "too",
-                "examples": ["for ung ― too young", "for langt ― too far"]
+                "type": "Adverb",
+                "term": "for",
+                "senses": [
+                    {
+                        "definition": "too",
+                        "examples": [
+                            "for ung ― too young",
+                            "for langt ― too far"
+                        ]
+                    }
+                ]
             }
         ],
         "synonyms": ["<Link to='altfor'>altfor</Link>"],
@@ -14,12 +21,16 @@
     },
     {
         "etymology": null,
-        "type": "Conjunction",
-        "term": "for",
-        "senses": [
+        "subEntries": [
             {
-                "definition": "for",
-                "examples": []
+                "type": "Conjunction",
+                "term": "for",
+                "senses": [
+                    {
+                        "definition": "for",
+                        "examples": []
+                    }
+                ]
             }
         ],
         "synonyms": ["fordi"],
@@ -27,12 +38,16 @@
     },
     {
         "etymology": "From Old Norse fóðr",
-        "type": "Noun",
-        "term": "for n (definite singular <Link to='foret'>foret</Link>, indefinite plural for, definite plural <Link to='fora'>fora</Link> or <Link to='forene'>forene</Link>)",
-        "senses": [
+        "subEntries": [
             {
-                "definition": "alternative form of <Link to='f%C3%B4r'>fôr</Link>",
-                "examples": []
+                "type": "Noun",
+                "term": "for n (definite singular <Link to='foret'>foret</Link>, indefinite plural for, definite plural <Link to='fora'>fora</Link> or <Link to='forene'>forene</Link>)",
+                "senses": [
+                    {
+                        "definition": "alternative form of <Link to='f%C3%B4r'>fôr</Link>",
+                        "examples": []
+                    }
+                ]
             }
         ],
         "synonyms": [],
@@ -43,12 +58,16 @@
     },
     {
         "etymology": null,
-        "type": "Preposition",
-        "term": "for",
-        "senses": [
+        "subEntries": [
             {
-                "definition": "for",
-                "examples": []
+                "type": "Preposition",
+                "term": "for",
+                "senses": [
+                    {
+                        "definition": "for",
+                        "examples": []
+                    }
+                ]
             }
         ],
         "synonyms": [],
@@ -56,12 +75,16 @@
     },
     {
         "etymology": null,
-        "type": "Verb",
-        "term": "for",
-        "senses": [
+        "subEntries": [
             {
-                "definition": "past tense of <Link to='fare'>fare</Link>.",
-                "examples": []
+                "type": "Verb",
+                "term": "for",
+                "senses": [
+                    {
+                        "definition": "past tense of <Link to='fare'>fare</Link>.",
+                        "examples": []
+                    }
+                ]
             }
         ],
         "synonyms": [],

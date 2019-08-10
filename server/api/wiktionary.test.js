@@ -23,8 +23,12 @@ function resolveDataPath(fileName) {
  *      tilsynelatende:     only one entry
  *
  *      stor:               derived terms in hideable table
+ *
+ *      lys:                'Pronunciation' section within single 'Etymology'
+ *                          section, multiple types in a single entry, larger
+ *                          list format for 'Derived terms'
  */
-test.each(["for", "tilsynelatende", "stor"])(
+test.each(["for", "tilsynelatende", "stor", "lys"])(
     "correctly parses HTML into data structure",
     async word => {
         nock("https://en.wiktionary.org")

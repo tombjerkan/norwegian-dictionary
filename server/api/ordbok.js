@@ -102,10 +102,7 @@ function parseDefinition(senseContainer) {
         ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     );
 
-    return textContentParser
-        .parse(...definitionNodes)
-
-        .replace(/^\d+\s/, "");
+    return textContentParser.parse(...definitionNodes).replace(/^\d+\s/, "");
 }
 
 function parseExamples(senseContainer) {

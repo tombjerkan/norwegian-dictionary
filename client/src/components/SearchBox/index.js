@@ -21,6 +21,8 @@ export default function SearchBox({ history, className }) {
                 onSubmit={handleSubmit}
                 className={classNames(styles.form, className)}
             >
+                <SearchIcon className={styles.icon} />
+
                 <input
                     type="text"
                     placeholder="Search..."
@@ -28,9 +30,6 @@ export default function SearchBox({ history, className }) {
                     onChange={handleChange}
                     className={styles.queryInput}
                 />
-                <button type="submit" className={styles.submitButton}>
-                    <SearchIcon className={styles.searchIcon} />
-                </button>
             </form>
         </div>
     );

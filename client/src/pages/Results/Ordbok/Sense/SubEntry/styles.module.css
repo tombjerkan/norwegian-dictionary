@@ -1,0 +1,11 @@
+.container + .container {
+    margin-top: 12px;
+}
+
+.term {
+    color: #222;
+}
+
+.definition {
+    color: rgba(34, 34, 34, 0.6);
+}

@@ -2,7 +2,8 @@ import React from "react";
 import Section from "pages/Results/Section";
 import useFetch from "pages/Results/useFetch";
 import Entry from "pages/Results/Entry";
-import Senses from "pages/Results/Ordbok/Senses";
+import Sense from "./Sense";
+import styles from "./styles.module.css";
 
 export default function Ordbok({ query }) {
     const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`, []);
@@ -16,7 +17,11 @@ export default function Ordbok({ query }) {
         >
             {data.map(entry => (
                 <Entry header={entry.term} etymology={entry.etymology}>
-                    <Senses senses={entry.senses} />
+                    <ol className={styles.senses}>
+                        {entry.senses.map(sense => (
+                            <Sense sense={sense} />
+                        ))}
+                    </ol>
                 </Entry>
             ))}
         </Section>

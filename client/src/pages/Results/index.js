@@ -7,7 +7,7 @@ import GoogleTranslate from "./GoogleTranslate";
 
 export default function Results({ history, match }) {
     return (
-        <div className={styles.container}>
+        <div>
             <nav className={styles.searchBar}>
                 <SearchBox history={history} className={styles.searchBox} />
             </nav>

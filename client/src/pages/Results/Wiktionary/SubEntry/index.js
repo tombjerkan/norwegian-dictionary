@@ -1,19 +1,22 @@
 import React from "react";
 import TextWithLinks from "components/TextWithLinks";
-import Senses from "pages/Results/Wiktionary/Senses";
+import Sense from "./Sense";
 import styles from "./styles.module.css";
 
 export default function SubEntry({ subEntry }) {
     return (
-        <React.Fragment>
-            <div className={styles.header}>
-                <div className={styles.type}>{subEntry.type}</div>
-                <div className={styles.term}>
-                    <TextWithLinks text={subEntry.term} />
-                </div>
-            </div>
+        <div className={styles.container}>
+            <h4 className={styles.header}>{subEntry.type}</h4>
 
-            <Senses senses={subEntry.senses} />
-        </React.Fragment>
+            <p className={styles.term}>
+                <TextWithLinks text={subEntry.term} />
+            </p>
+
+            <ol className={styles.senses}>
+                {subEntry.senses.map(sense => (
+                    <Sense sense={sense} />
+                ))}
+            </ol>
+        </div>
     );
 }

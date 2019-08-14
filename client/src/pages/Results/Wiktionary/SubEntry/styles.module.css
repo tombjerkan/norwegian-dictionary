@@ -1,13 +1,24 @@
-.header {
-    display: flex;
-    margin-top: 1.5em;
+.container + .container {
+    margin-top: 22px;
 }
 
-.type {
-    font-weight: 600;
-    margin-right: 20px;
+.header {
+    font-weight: 700;
+    color: #222;
+    margin-top: 0;
+    margin-bottom: 9px;
 }
 
 .term {
-    flex: 1;
+    color: rgba(34, 34, 34, 0.8);
+    margin-bottom: 16px;
+}
+
+.senses {
+    margin: 0 28px;
+    padding-left: 0;
+}
+
+.senses > li + li {
+    margin-top: 12px;
 }

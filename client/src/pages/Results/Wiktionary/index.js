@@ -25,10 +25,13 @@ export default function Wiktionary({ query }) {
                     ))}
 
                     {entry.synonyms.length > 0 && (
-                        <WordList title="Synonyms" words={entry.synonyms} />
+                        <WordList header="Synonyms" words={entry.synonyms} />
                     )}
                     {entry.derived.length > 0 && (
-                        <WordList title="Derived terms" words={entry.derived} />
+                        <WordList
+                            header="Derived terms"
+                            words={entry.derived}
+                        />
                     )}
                 </Entry>
             ))}

@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { Collapse } from "react-collapse";
 import styles from "./styles.module.css";
 import Loading from "components/Loading";
+import { ReactComponent as Chevron } from "components/Chevron.svg";
 import { ReactComponent as Error } from "components/Error.svg";
 
 export default function Section({
@@ -35,10 +36,23 @@ export default function Section({
             )}
             data-testid={dataTestId}
         >
-            <header className={styles.header} onClick={toggleOpen}>
+            <header
+                className={classNames(
+                    styles.header,
+                    isContentAvailable && styles.clickableHeader
+                )}
+                onClick={toggleOpen}
+            >
                 <h2 className={styles.title}>{title}</h2>
 
-                {isContentAvailable && <div>{isOpen ? "Hide" : "Show"}</div>}
+                {isContentAvailable && (
+                    <Chevron
+                        className={classNames(
+                            styles.chevron,
+                            isOpen && styles.openChevron
+                        )}
+                    />
+                )}
                 {isNotFound && <div>Not found</div>}
                 {isLoading && <Loading />}
                 {isError && <Error className={styles.error} />}
@@ -52,7 +66,7 @@ export default function Section({
                         onClick={() => setOpen(false)}
                         className={styles.hideButton}
                     >
-                        Hide
+                        <Chevron className={styles.hideChevron} />
                     </button>
                 </Collapse>
             )}

@@ -1,6 +1,6 @@
 .container {
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
     background: #fff;
 }
 
@@ -12,14 +12,31 @@
     display: flex;
     align-items: center;
     position: relative;
-    padding: 0 20px;
-    min-height: 70px;
+    padding: 0 16px;
+    min-height: 60px;
+}
+
+.clickableHeader:hover {
+    cursor: pointer;
 }
 
 .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.9);
     flex: 1;
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.chevron {
+    width: 14px;
+    height: 6px;
+    transition: transform 0.3s ease-out;
+}
+
+.openChevron {
+    transform: rotate(180deg);
 }
 
 .error {
@@ -27,6 +44,7 @@
 }
 
 .content {
+    border-top: 1px solid #e9ebed;
     width: 100%;
     padding-bottom: 30px;
     padding-left: 20px;
@@ -35,10 +53,23 @@
 
 .hideButton {
     width: 100%;
-    background: none;
-    color: #666;
+    background: rgba(152, 152, 152, 0.1);
+    padding: 0;
     border: none;
-    border-top: 1px solid #eee;
-    height: 3em;
-    margin-top: 30px;
+    height: 43px;
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hideButton:hover {
+    cursor: pointer;
+}
+
+.hideChevron {
+    width: 14px;
+    height: 6px;
+    transform: rotate(180deg);
+    stroke: rgba(34, 34, 34, 0.8);
 }

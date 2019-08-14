@@ -2,9 +2,10 @@ const logger = require("../logger");
 
 function handleErrors(err, req, res, next) {
     if (err instanceof ApiError) {
+        logger.error(`ApiError(${err.code}): ${err.message}`);
         res.status(err.code).send(err.message);
     } else {
-        logger.error(err.message);
+        logger.error(`${err.message}\n${err.stack}`);
         res.status(500).send();
     }
 }

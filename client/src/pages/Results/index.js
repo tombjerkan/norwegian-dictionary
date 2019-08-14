@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./styles.module.css";
+import MaxWidthLimit from "components/MaxWidthLimit";
 import SearchBox from "components/SearchBox";
 import Ordbok from "./Ordbok";
 import Wiktionary from "./Wiktionary";
@@ -9,14 +10,18 @@ export default function Results({ history, match }) {
     return (
         <div>
             <nav className={styles.searchBar}>
-                <SearchBox history={history} className={styles.searchBox} />
+                <MaxWidthLimit>
+                    <SearchBox history={history} className={styles.searchBox} />
+                </MaxWidthLimit>
             </nav>
 
-            <div className={styles.content}>
-                <Ordbok query={match.params.query} />
-                <Wiktionary query={match.params.query} />
-                <GoogleTranslate query={match.params.query} />
-            </div>
+            <MaxWidthLimit>
+                <div className={styles.content}>
+                    <Ordbok query={match.params.query} />
+                    <Wiktionary query={match.params.query} />
+                    <GoogleTranslate query={match.params.query} />
+                </div>
+            </MaxWidthLimit>
         </div>
     );
 }

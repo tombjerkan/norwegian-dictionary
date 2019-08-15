@@ -3,6 +3,14 @@
 }
 
 body {
+    --color-brand-primary: hsl(10, 56%, 44%);
+    --color-brand-secondary: hsl(202, 50%, 50%);
+    --color-brand-secondary-light: hsl(202, 50%, 95%);
+    --color-brand-secondary-dark: hsl(202, 100%, 37%);
+    --color-text-header: rgba(0, 0, 0, 0.85);
+    --color-text-content: rgba(0, 0, 0, 0.75);
+    --color-text-secondary: rgba(0, 0, 0, 0.6);
+
     margin: 0;
     font-family:
         -apple-system,
@@ -18,7 +26,8 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: rgb(176, 70, 50);
+    color: var(--color-text-content);
+    background: var(--color-brand-primary);
 }
 
 code {

@@ -5,9 +5,7 @@ import styles from "./styles.module.css";
 export default function Sense({ sense }) {
     return (
         <li>
-            <span className={styles.definition}>
-                <TextWithLinks text={sense.definition} />
-            </span>
+            <TextWithLinks text={sense.definition} />
 
             {sense.examples && (
                 <ul className={styles.examples}>

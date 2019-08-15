@@ -3,16 +3,16 @@
 }
 
 .header {
+    color: var(--color-text-header);
     font-size: 18px;
-    color: #222;
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 14px;
 }
 
 .etymology {
+    color: var(--color-text-secondary);
     font-size: 13px;
-    color: rgba(34, 34, 34, 0.5);
     margin-top: 0;
     margin-bottom: 22px;
 }

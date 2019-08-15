@@ -3,6 +3,7 @@
 }
 
 .header {
+    color: var(--text-color-header);
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 9px;

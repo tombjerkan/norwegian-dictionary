@@ -23,7 +23,7 @@
 .title {
     font-size: 20px;
     font-weight: 700;
-    color: rgba(0, 0, 0, 0.9);
+    color: var(--color-text-header);
     flex: 1;
     margin-top: 0;
     margin-bottom: 0;
@@ -68,5 +68,5 @@
     width: 14px;
     height: 6px;
     transform: rotate(180deg);
-    stroke: rgba(34, 34, 34, 0.8);
+    stroke: var(--color-text-content);
 }

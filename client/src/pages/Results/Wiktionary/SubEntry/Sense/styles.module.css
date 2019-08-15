@@ -1,12 +1,8 @@
-.definition {
-    color: rgba(34, 34, 34, 0.8);
-}
-
 .examples {
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 0;
-    color: rgba(34, 34, 34, 0.6);
+    color: var(--color-text-secondary);
     list-style-type: none;
 }
 

@@ -2,11 +2,11 @@
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 9px;
-    color: #222;
+    color: var(--color-text-header);
 }
 
 .examples {
-    color: rgba(34, 34, 34, 0.6);
+    color: var(--color-text-secondary);
     margin-top: 0;
     margin-bottom: 16px;
 }

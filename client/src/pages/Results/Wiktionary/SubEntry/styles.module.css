@@ -4,13 +4,12 @@
 
 .header {
     font-weight: 700;
-    color: #222;
+    color: var(--color-text-header);
     margin-top: 0;
     margin-bottom: 9px;
 }
 
 .term {
-    color: rgba(34, 34, 34, 0.8);
     margin-bottom: 16px;
 }
 

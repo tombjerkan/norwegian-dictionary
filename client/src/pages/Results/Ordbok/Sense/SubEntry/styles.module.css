@@ -2,6 +2,10 @@
     margin-top: 12px;
 }
 
+.term {
+    font-weight: 700;
+}
+
 .definition {
     color: var(--color-text-secondary);
 }

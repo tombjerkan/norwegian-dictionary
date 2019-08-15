@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import styles from "./styles.module.css";
 import Header from "./Header";
@@ -13,6 +13,7 @@ export default function Section({
     "data-testid": dataTestId
 }) {
     const [isOpen, setOpen] = useState(false);
+    useEffect(() => setOpen(false), [children]);
 
     const isContentAvailable = !isLoading && error === null;
     const isNotFound = !isLoading && error === 404;

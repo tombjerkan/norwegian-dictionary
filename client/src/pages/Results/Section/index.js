@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import { Collapse } from "react-collapse";
 import styles from "./styles.module.css";
-import Loading from "components/Loading";
-import { ReactComponent as Chevron } from "components/Chevron.svg";
-import { ReactComponent as Error } from "components/Error.svg";
+import Header from "./Header";
+import ExpandableContent from "./ExpandableContent";
 
 export default function Section({
     title,
@@ -41,43 +39,25 @@ export default function Section({
             )}
             data-testid={dataTestId}
         >
-            <header
-                className={classNames(
-                    styles.header,
-                    isContentAvailable && !isInline && styles.clickableHeader
-                )}
+            <Header
+                title={title}
                 onClick={toggleOpen}
+                canExpand={isContentAvailable && !isInline}
+                isOpen={isOpen}
+                isNotFound={isNotFound}
+                isLoading={isLoading}
+                isError={isError}
             >
-                <h2 className={styles.title}>{title}</h2>
-
-                {isContentAvailable && !isInline && (
-                    <Chevron
-                        className={classNames(
-                            styles.chevron,
-                            isOpen && styles.openChevron
-                        )}
-                    />
-                )}
-                {isNotFound && <div>Not found</div>}
-                {isLoading && <Loading />}
-                {isError && <Error className={styles.error} />}
-
-                {isContentAvailable && isInline && (
-                    <div className={styles.inlineContent}>{children}</div>
-                )}
-            </header>
+                {isContentAvailable && isInline && children}
+            </Header>
 
             {isContentAvailable && !isInline && (
-                <Collapse isOpened={isOpen}>
-                    <article className={styles.content}>{children}</article>
-
-                    <button
-                        onClick={() => setOpen(false)}
-                        className={styles.hideButton}
-                    >
-                        <Chevron className={styles.hideChevron} />
-                    </button>
-                </Collapse>
+                <ExpandableContent
+                    isOpen={isOpen}
+                    onCollapse={() => setOpen(false)}
+                >
+                    {children}
+                </ExpandableContent>
             )}
         </section>
     );

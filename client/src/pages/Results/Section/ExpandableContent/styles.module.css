@@ -1,0 +1,27 @@
+.content {
+    padding: 24px 16px 70px;
+    border-top: 1px solid #e9ebed;
+    width: 100%;
+}
+
+.collapseButton {
+    width: 100%;
+    background: rgba(152, 152, 152, 0.1);
+    padding: 0;
+    border: none;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collapseButton:hover {
+    cursor: pointer;
+}
+
+.collapseChevron {
+    width: 14px;
+    height: 6px;
+    transform: rotate(180deg);
+    stroke: var(--color-text-content);
+}

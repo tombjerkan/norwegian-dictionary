@@ -20,16 +20,11 @@ export default function Section({
     const isError = !isLoading && error !== null && error !== 404;
 
     function toggleOpen() {
-        // Don't want to change isOpen state before there is content to show
-        if (!isContentAvailable) {
-            return;
-        }
-
-        if (isInline) {
-            return;
-        }
-
         setOpen(!isOpen);
+    }
+
+    function collapse() {
+        setOpen(false);
     }
 
     return (
@@ -42,7 +37,7 @@ export default function Section({
         >
             <Header
                 title={title}
-                onClick={toggleOpen}
+                onClick={isContentAvailable && !isInline && toggleOpen}
                 canExpand={isContentAvailable && !isInline}
                 isOpen={isOpen}
                 isNotFound={isNotFound}
@@ -53,10 +48,7 @@ export default function Section({
             </Header>
 
             {isContentAvailable && !isInline && (
-                <ExpandableContent
-                    isOpen={isOpen}
-                    onCollapse={() => setOpen(false)}
-                >
+                <ExpandableContent isOpen={isOpen} onCollapse={collapse}>
                     {children}
                 </ExpandableContent>
             )}

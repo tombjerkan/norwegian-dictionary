@@ -17,9 +17,9 @@ export default function Results({ history, match }) {
 
             <MaxWidthLimit>
                 <div className={styles.content}>
-                    <Ordbok query={match.params.query} />
-                    <Wiktionary query={match.params.query} />
                     <GoogleTranslate query={match.params.query} />
+                    <Wiktionary query={match.params.query} />
+                    <Ordbok query={match.params.query} />
                 </div>
             </MaxWidthLimit>
         </div>

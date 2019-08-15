@@ -7,7 +7,8 @@ export default function GoogleTranslate({ query }) {
 
     return (
         <Section
-            title="Google Translate"
+            title="Google"
+            isInline={true}
             isLoading={isLoading}
             error={error}
             data-testid="google-translate"

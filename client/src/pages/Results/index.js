@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./styles.module.css";
+import Page from "components/Page";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import SearchBox from "components/SearchBox";
 import Ordbok from "./Ordbok";
@@ -8,7 +9,7 @@ import GoogleTranslate from "./GoogleTranslate";
 
 export default function Results({ history, match }) {
     return (
-        <div>
+        <Page>
             <nav className={styles.searchBar}>
                 <MaxWidthLimit>
                     <SearchBox history={history} className={styles.searchBox} />
@@ -22,6 +23,6 @@ export default function Results({ history, match }) {
                     <Ordbok query={match.params.query} />
                 </div>
             </MaxWidthLimit>
-        </div>
+        </Page>
     );
 }

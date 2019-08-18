@@ -27,7 +27,6 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--color-text-content);
-    background: var(--color-brand-primary);
 }
 
 code {

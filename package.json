@@ -20,7 +20,8 @@
         "lint:client": "cd client && npm run lint -s",
         "lint": "run-s -c -s lint:*",
         "test:server": "cd server && npm test",
-        "test:e2e": "testcafe firefox testcafe.js"
+        "test:e2e": "testcafe firefox testcafe.js",
+        "storybook": "cd client && npm run storybook"
     },
     "husky": {
         "hooks": {

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 import { ReactComponent as SearchIcon } from "./search-icon.svg";
 
-export default function SearchBox({ history, className }) {
+export default function SearchBox({ onSubmit, className }) {
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef(null);
 
@@ -15,7 +15,7 @@ export default function SearchBox({ history, className }) {
         // Need to manually unfocus input so that keyboard hides on mobile
         inputRef.current.blur();
 
-        history.push(`/${inputValue}`);
+        onSubmit(inputValue);
         event.preventDefault();
     }
 

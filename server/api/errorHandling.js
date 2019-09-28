@@ -2,8 +2,8 @@ const logger = require("../logger");
 
 function handleErrors(err, req, res, next) {
     if (err instanceof ApiError) {
-        logger.error(`ApiError(${err.code}): ${err.message}`);
-        res.status(err.code).send(err.message);
+        logger.error(`ApiError(${err.status}): ${err.message}`);
+        res.status(err.status).send(err.message);
     } else {
         logger.error(`${err.message}\n${err.stack}`);
         res.status(500).send();
@@ -21,9 +21,9 @@ function withAsyncErrorHandling(routeHandler) {
 }
 
 class ApiError extends Error {
-    constructor(code, message) {
+    constructor(status, message) {
         super(message);
-        this.code = code;
+        this.status = status;
         this.name = "ApiError";
     }
 }

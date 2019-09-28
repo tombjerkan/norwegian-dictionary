@@ -4,11 +4,9 @@ const wiktionary = require("./wiktionary");
 const googleTranslate = require("./googleTranslate");
 const { handleErrors } = require("./errorHandling");
 
-const api = express.Router();
-api.use(ordbok);
-api.use(wiktionary);
-api.use(googleTranslate);
+const router = express.Router();
+router.use(ordbok);
+router.use(wiktionary);
+router.use(googleTranslate);
 
-api.use(handleErrors);
-
-module.exports = api;
+module.exports = { router, handleErrors };

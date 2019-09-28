@@ -52,8 +52,10 @@ router.get(
 );
 
 async function fetchDocument(word) {
+    const encodedWord = encodeURIComponent(word);
+    const url = `https://en.wiktionary.org/wiki/${encodedWord}`;
+
     try {
-        const url = `https://en.wiktionary.org/wiki/${word}`;
         const response = await axios.get(url);
         const dom = new JSDOM(response.data);
         return dom.window.document;

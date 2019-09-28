@@ -1,10 +1,10 @@
 const express = require("express");
 const translate = require("@google-cloud/translate");
 const supertest = require("supertest");
-const api = require(".");
+const { router } = require(".");
 
 const app = express();
-app.use("/", api);
+app.use("/", router);
 
 const environmentVariables = process.env;
 

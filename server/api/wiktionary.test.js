@@ -3,10 +3,10 @@ const fs = require("fs");
 const nock = require("nock");
 const path = require("path");
 const supertest = require("supertest");
-const api = require(".");
+const { router } = require(".");
 
 const app = express();
-app.use("/", api);
+app.use("/", router);
 
 function resolveDataPath(fileName) {
     return path.resolve(__dirname, `__testdata__/wiktionary/${fileName}`);

@@ -36,7 +36,7 @@ router.get(
 
         const bokmaalTable = document.querySelector("#byttutBM");
         const entryRows = bokmaalTable.querySelectorAll(
-            ":scope > tbody > tr:not(#resultat_kolonne_overskrift_tr)"
+            ":scope > tbody > tr:not(:first-child)"
         );
         const entries = Array.from(entryRows).map(parseEntry);
 
@@ -69,7 +69,9 @@ function parseEntry(container) {
     const senseContainers = articleContent.querySelector(".utvidet");
 
     return {
-        term: textContentParser.parse(container.firstChild),
+        term: textContentParser
+            .parse(container.firstChild)
+            .replace(/\s\s+/g, " "),
         etymology: textContentParser.parse(...etymologyNodes),
         senses: parseSenses(senseContainers)
     };

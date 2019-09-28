@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!-- Gir beskjed om at koden er XHTML 1.0 Strict og har norsk tegnsett  --><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><!-- Tittel for siden -->
+<title>Bokmålsordboka | Nynorskordboka</title>
+<!-- Her settes inn unike beskrivelser og nøkkelord for sidene -->
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+
+<meta name="robots" content="index,follow" />
+<meta name="revisit-after" content="14 days" />
+<link rel="shortcut icon" href="/apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.8.22.custom.min.js"></script>
+<script type="text/javascript" src="/js/jquery.autocomplete-1.1.3/jquery.autocomplete.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, target-densityDpi=160dpi, initial-scale=1">
+<meta name="MobileOptimized" content="width">
+<meta name="HandheldFriendly" content="true">
+<link href="/static/css/ord-concatenated.css" rel="stylesheet" type="text/css">
+
+<script src="/ajax/eddajax_nr2000.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	  jQuery.noConflict();
+</script>
+<!--
+<script type="text/javascript">
+jQuery(function(){
+jQuery(".tiptip").tipTip({maxWidth: "auto", defaultPosition: "top", delay: "600"});
+});
+</script>
+-->
+
+<script type="text/javascript">
+
+function start_autocomplete(ava,alle_former,spraak){
+if ((alle_former != "")) {
+	init_auto_complete(spraak,'stor');;
+	}
+	else {
+	init_auto_complete(spraak,'liten');
+	}
+
+}
+// Plasserer markør i søkefeltet
+function sentrer(){
+document.forms[0].OPP.select();
+document.forms[0].OPP.focus();
+}
+
+
+function check_value (v,antall_tilslag) {
+	var ny = v;
+
+	var res ;
+	res=ny.match(/^(\d+)$/);
+	if (res == null) {ny = 0;}
+	else ny = parseInt(ny);
+	 if (0 > ny) ny = 0;
+	if (ny > antall_tilslag)  ny = antall_tilslag;
+	return (ny);
+}
+
+
+function SendNavigasjonsskjema_bokmaal(nypos,antall_paa_side){
+	  document.bokmaal_navigator_linje.startpos.value= nypos;
+if (antall_paa_side != "") {
+	  document.bokmaal_navigator_linje.antall_vise.value= antall_paa_side;
+}
+	  document.bokmaal_navigator_linje.submit();
+
+}
+
+function SendNavigasjonsskjema_nynorsk(nypos,antall_paa_side){
+	  document.nynorsk_navigator_linje.startpos.value= nypos;
+if (antall_paa_side != "") {
+	  document.nynorsk_navigator_linje.antall_vise.value= antall_paa_side;
+}
+	  document.nynorsk_navigator_linje.submit();
+
+}
+
+</script>
+<script type="text/javascript">
+   var i_ramme = 0;
+   function sjekk() {
+   // Fjernet sjekk på ramme. E.Gullaksen, 12.10.2018
+   //    var frameEl = window.frameElement;
+   //	 var i = 0;
+   //	 if (window!=window.top) {
+   //		 jQuery('#xyzzy').html('<p>Ordbøkene er satt inn i en ramme der de ikke hører hjemme. Gå heller til <a href="http://ordbok.uib.no" target=_top>ordbok.uib.no</a></p>');
+   //		alert('Ordbøkene er satt inn i en ramme der de ikke hører hjemme. Gå heller til http://ordbok.uib.no');
+   //		 i_ramme = 1;
+   //	}
+   }
+</script>
+
+</head>
+
+<!-- Her starter innholdet og designelementene -->
+<body id='xyzzy'>
+<script type="text/javascript">
+jQuery(document).ready(function(){sjekk();
+   sentrer();start_autocomplete('','','begge');
+});
+
+</script>
+<!-- Ramme holder alle elementene på plass. Klassen kan endre visse elementer på forskjellige sider -->
+
+<div id="ramme" class="sbegge"><!-- Topp er første element hvor du finner menyen øverst til høyre.
+Alle menypunkter settes i uordnet lister og har unik id. "m" betyr at det er et menypunkt + navnet
+-->
+<div id="topp">
+<!-- Hovedmeny -->
+<div id="nav">
+<ul id="menu">
+<li id="mhjelp"><a href="/info/hjelp_bm.html" title="Hjelp"><span>Hjelp</span></a></li>
+<li id="momoss"><a href="/info/om_ordbokene_bm.html" title="Om ordbøkene"><span>Om ordbøkene</span></a></li>
+<li id="mnyttig"><a href="/info/mer_bm.html" title="Nyttig"><span>Nyttig</span></a></li>
+<!--<li id="ma"><a href="#" onclick="setActiveStyleSheet('vanlig'); return false;" title="Velg vanlig skriftstørrelse"><span class="vanlig">A</span></a></li>
+<li id="maa"><a href="#" onclick="setActiveStyleSheet('stor'); return false;" title="Velg stor skriftstørrelse"><span class="stor">A</span></a></li>
+<li id="maaa"><a href="#" onclick="setActiveStyleSheet('ekstrastor'); return false;" title="Velg ekstra stor skriftstørrelse"><span class="ekstrastor">A</span></a></li>
+-->
+</ul>
+</div>
+</div>
+<!-- Hode innholder logoer med aktive lenker til forsiden, bokmål, nynorsk, språkrådet og uio -->
+<div id="hode">
+
+<span id="hode_lnk_forside"><a href="/perl/ordbok.cgi?ordbok=begge" title="Søk i Bokmålsordboka og Nynorskordboka"><span>Søk i Bokmålsordboka og Nynorskordboka</span></a></span>
+<span id="hode_titel">
+<div id="hode_title_inner">
+<span id="hode_titel_bok"  ><a title="Søk i Bokmålsordboka"   href="/perl/ordbok.cgi?OPP=&amp;bokmaal=+&amp;ordbok=bokmaal">Bokmålsordboka</a></span>
+<span id="hode_titel_seperator">|</span>
+<span id="hode_titel_nyn"  ><a title="Søk i Nynorskordboka"   href="/perl/ordbok.cgi?OPP=&amp;nynorsk=+&amp;ordbok=nynorsk">Nynorskordboka</a></span>
+</div>
+</span>
+<!--<span id="logoer">-->
+<span id="spraakraadet_logo" class="hode_logo"><a href="http://www.sprakradet.no/" title="Språkrådet"><img src="/static/img/logo-sprakradet_orange_svart.png"></a></span>
+<span id="uib_logo" class="hode_logo"><a href="http://www.uib.no/" title="Universitetet i Bergen"><img src="/static/img/uib-logo.svg" alt="UiB-logo"></a></span>
+<!--</span>-->
+
+<!--
+<ul id="logo">
+<li id="mforside"><a href="/perl/ordbok.cgi?ordbok=begge" title="Søk i Bokmålsordboka og Nynorskordboka"><span>Søk i Bokmålsordboka og Nynorskordboka</span></a></li>
+<li id="mbm"><a href="/perl/ordbok.cgi?OPP=&amp;bokmaal=+&amp;ordbok=bokmaal" title="Søk i Bokmålsordboka"><span>Søk i Bokmålsordboka</span></a></li>
+<li id="mnn"><a href="/perl/ordbok.cgi?OPP=&amp;nynorsk=+&amp;ordbok=nynorsk" title="Søk i Nynorskordboka"><span>Søk i Nynorskordboka</span></a></li>
+<li id="msr"><a href="http://www.sprakradet.no/" title="Språkrådet"><span>Språkrådet</span></a></li>
+<li id="muib"><a href="http://www.uib.no/" title="Universitetet i Bergen"><span>Universitetet i Bergen</span></a></li>
+</ul>
+-->
+</div>
+
+
+<!-- Soekeramme er området hvor folk skriver inn søkeord og velger hvilken ordbok det skal søkes i -->
+<div class="soekeramme_enkelt" id="soekeramme"><form id="skjema" action="/perl/ordbok.cgi" method="get">
+<span><input name="OPP" type="text" id="felt" class="nob_oppslag" value="skjermen" /></span><input name="ant_bokmaal" type="hidden" id="ant_bokmaal" class="ant_bokmaal" value="5"><input name="ant_nynorsk" type="hidden" id="ant_nynorsk" class="ant_nynorsk" value="5"><span id="bt_buttonrow">
+<span class="bt_span"><button name="begge" type="submit" id="knappbegge" class="aktiv" value=" " />Begge</button></span>
+<span class="bt_span"><button name="bokmaal" type="submit" id="knappbm" value=" " />Bokmål</button></span>
+<span class="bt_span"><button name="nynorsk" type="submit" id="knappnn" value=" " />Nynorsk</button></span>
+<input type="hidden" name="ordbok" value="begge" /></span><span id="mavansertsoek"><a href="/avansertsoek.html" title="Avansert søk"><span>Avansert søk</span></a></span></form>
+
+</div>
+<!-- <div style="clear:both;">&nbsp;</div> -->
+<!--
+Her skal innholdet og søkreresultater listes
+Innholdet legges i fastbestemte kolonner ettersom hvilken side brukeren er på.
+-->
+<div id="innholdsramme"><div id="kolonnebm" class="bob_kolonnenb"><table style="border: 0px;">
+<tr><td colspan="4"><h1>Bokmålsordboka</h1></td></tr>
+<tr><td colspan="4">Ordet 'skjermen' er ikke et oppslagsord i Bokmålsordboka. Men kanskje du tenker på en annen form av et oppslagsord, se nedenfor:</td></tr><tr><td colspan="4"></td></tr><tr><td id="vestrekolBM">&nbsp;</td><td><table id="byttutBM" style="border: 0px;">
+<tr><td class="my"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Oppslagsord</strong></td><td class="pa"><strong>Ordbokartikkel</strong></td></tr>
+<tr><td><table style="border: 0px; width: 100%;"><tr><td style="background-color:#ffffff"><a title="Klikk for alfabetisk liste" style="cursor: pointer; cursor: hand;" onclick="skrivkolonne('bokmaal', 'skjerm', '0', 'bokmaalskjerm0', 'nei', '1'); sentrer();">skjerm</a></td><td style="background-color:#ffffff">&nbsp;</td><td style="background-color:#ffffff">&nbsp;</td></tr>
+<tr><td><span title="Tilslagsord normert">(skjermen)</span></td><td>&nbsp;</td></tr>
+</table>
+</td><td> <div class="artikkel" id="art53066"><div class="artikkeltopp"><div style="text-align: left; color: blue; float: right; margin-right: -25px;"><span class="artikkelformat kompakt tiptip" title="Trykk her for utvida vising" onclick="jQuery('#art53066 .kompakt').hide(); jQuery('#art53066 .utvidet').show();"><img src="/grafikk/Letter-U-blue-icon.png" border="0"/></span><span class="artikkelformat utvidet tiptip" style="margin: 1px;" title="Trykk her for kompakt vising" onclick="jQuery('#art53066 .utvidet').hide(); jQuery('#art53066 .kompakt').show();"><img src="/grafikk/Letter-K-blue-icon.png" border="0"/></span></div></div><div class="artikkelinnhold"> <span class="oppslagsord b" id="62040">skjerm</span> <span class="oppsgramordklasse" onclick="vise_fullformer(&quot;62040&quot;,'bob')">m1</span><span class="oppsgramordklassevindu"><div id="opp_62040">I dette vinduet skal du finne tabell m1 for oppslagsordet skjerm</div></span> (fra lavtysk)<span class="utvidet"><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> innretning som tjener til vern mot noe<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> innretning som tjener til vern mot noe<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glass, metall eller lignende<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span> / </span><span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span> / <span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glass, metall eller lignende<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span> / </span><span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span> / <span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> bot. blomsterstand der blomsterstilkene går ut fra et felles punkt</div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> bot. blomsterstand der blomsterstilkene går ut fra et felles punkt</span></span><span class="tydingC kompakt"><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> innretning som tjener til vern mot noe<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> innretning som tjener til vern mot noe<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">snø<span style="font-style: italic">skjerm</span>, sykkel<span style="font-style: italic">skjerm</span>, lampe<span style="font-style: italic">skjerm</span></span></span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glass, metall eller lignende<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span> / </span><span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span> / <span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glass, metall eller lignende<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span> / </span><span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span><span class="doeme kompakt"><span style="font-style: italic">se et program på <span style="font-style: italic">skjermen</span></span> fjernsynsskjermen</span> / <span class="doeme utvidet"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span><span class="doeme kompakt"><span style="font-style: italic">radar<span style="font-style: italic">skjerm</span></span></span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> bot. blomsterstand der blomsterstilkene går ut fra et felles punkt</div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> bot. blomsterstand der blomsterstilkene går ut fra et felles punkt</span></span></div></div>
+
+
+
+
+</td></tr>
+</table>
+
+<tr><td>
+<p>&nbsp;</p><div align="center"><form name=" _navigator_linje" action="/perl/ordbok.cgi" method="get"><input type="hidden" value="1" name="startpos"/>
+<input type="hidden" value="1" name="startpos_ao"/>
+<input name="ant_bokmaal" type="hidden" id="ant_bokmaal" class="ant_bokmaal" value="5"/><input name="ant_nynorsk" type="hidden" id="ant_nynorsk" class="ant_nynorsk" value="5"/><input type="hidden" value="5" name="antall_vise"/>
+<input type ="hidden" name="OPP" id="felt" value="" />
+<input type="hidden" name="begge" value="+" />
+<input type="hidden" name="spraak" value=" " />
+ <input type="hidden" name="type"  class="check" value="fritekst"/>
+<input type="hidden" name="ava" value="ava" />
+</form>
+
+<table><tr valign="center">
+<td align="center" colspan="10">Resultat pr. side
+<select id=" _ResRowsNum" class="nob_velge_vise_antall" onChange="jQuery('.ant_ ').val(jQuery(this).val());">
+<option value="1" >1</option>
+<option value="5"  selected>5</option>
+<option value="10">10</option>
+<option value="20">20</option>
+<option value="30">30</option>
+<option value="40">40</option>
+<option value="50">50</option>
+<option value="100">100</option>
+</select>
+</td><td>
+<span class="unpressedButt"
+onclick="javascript:SendNavigasjonsskjema_ (1,check_value(jQuery('# _ResRowsNum').val(),1));"> &nbsp;
+<img class="" src="/grafikk/set.png"/></span>
+</td></tr></table>
+</td></tr>
+</table>
+</div><div id="kolonnenn" class="nob_kolonnenn"><table style="border: 0px;">
+<tr><td colspan="4"><h1>Nynorskordboka</h1></td></tr>
+<tr><td colspan="4">Ordet 'skjermen' er ikkje eit oppslagsord i Nynorskordboka. Men kanskje du tenkjer på ei anna form av eit oppslagsord, sjå nedanfor:</td></tr>
+<tr><td colspan="4"></td></tr><table><tr><td id="vestrekolNN">&nbsp;</td><td><table id="byttutNN" style="border: 0px;">
+<tr><td class="my"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Oppslagsord</strong></td><td class="pa"><strong>Ordbokartikkel</strong></td></tr>
+<tr><td><table style="border: 0px; width: 100%;"><tr><td style="background-color:#ffffff"><a title="Klikk for alfabetisk liste" style="cursor: pointer; cursor: hand;" onclick="skrivkolonne('nynorsk', 'skjerm', '0', 'nynorskskjerm0', 'nei', '1'); sentrer();">skjerm</a></td><td style="background-color:#ffffff">&nbsp;</td><td style="background-color:#ffffff">&nbsp;</td></tr>
+<tr><td><span title="Tilslagsord normert">(skjermen)</span></td><td>&nbsp;</td></tr>
+</table>
+</td><td> <div class="artikkel" id="art67917"><div class="artikkeltopp"><div style="text-align: left; color: blue; float: right; margin-right: -25px;"><span class="artikkelformat kompakt tiptip" title="Trykk her for utvida vising" onclick="jQuery('#art67917 .kompakt').hide(); jQuery('#art67917 .utvidet').show();"><img src="/grafikk/Letter-U-blue-icon.png" border="0"/></span><span class="artikkelformat utvidet tiptip" style="margin: 1px;" title="Trykk her for kompakt vising" onclick="jQuery('#art67917 .utvidet').hide(); jQuery('#art67917 .kompakt').show();"><img src="/grafikk/Letter-K-blue-icon.png" border="0"/></span></div></div><div class="artikkelinnhold"> <span class="oppslagsord b" id="85942">skjerm</span> <span class="oppsgramordklasse" onclick="vise_fullformer(&quot;85942&quot;)">m1</span><span class="oppsgramordklassevindu"><div id="opp_85942">I dette vinduet skal du finne tabell m1 for oppslagsordet skjerm</div></span> (frå lågtysk)<span class="utvidet"><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> flate som er innretta til å tene til vern mot noko<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></span><span class="kompakt">; </span><span class="utvidet">​</span>som etterledd i <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '31659', '85942', 'hueskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">hueskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '44316', '85942', 'lampeskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">lampeskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '71429', '85942', 'snøskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">snøskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '75221', '85942', 'støyskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">støyskjerm</span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> flate som er innretta til å tene til vern mot noko<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></span><span class="kompakt">; </span><span class="utvidet">​</span>som etterledd i <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '31659', '85942', 'hueskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">hueskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '44316', '85942', 'lampeskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">lampeskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '71429', '85942', 'snøskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">snøskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '75221', '85942', 'støyskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">støyskjerm</span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glas, metall o.l. knytt til mottak eller sendar av elektroniske signal<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></div><span class="tydingC kompakt"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glas, metall o.l. knytt til mottak eller sendar av elektroniske signal<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></div><span class="tydingC kompakt"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> blomsterstand med fleire blomsterskaft frå same punktet</div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> blomsterstand med fleire blomsterskaft frå same punktet</span></span><span class="tydingC kompakt"><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> flate som er innretta til å tene til vern mot noko<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></span><span class="kompakt">; </span><span class="utvidet">​</span>som etterledd i <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '31659', '85942', 'hueskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">hueskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '44316', '85942', 'lampeskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">lampeskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '71429', '85942', 'snøskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">snøskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '75221', '85942', 'støyskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">støyskjerm</span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">1</span> flate som er innretta til å tene til vern mot noko<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ei huve</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ei huve</span></span></span><span class="kompakt">; </span><span class="utvidet">​</span>som etterledd i <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '31659', '85942', 'hueskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">hueskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '44316', '85942', 'lampeskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">lampeskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '71429', '85942', 'snøskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">snøskjerm</span></span>, <span class="henvisning" onClick="nob_vise_ref_art('67917', '2486', '75221', '85942', 'støyskjerm')"><span style="font-family: Arial, Verdana; font-weight: normal; font-style: italic; font-size: 100%;">støyskjerm</span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glas, metall o.l. knytt til mottak eller sendar av elektroniske signal<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></div><span class="tydingC kompakt"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></span></div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">2</span> flate av glas, metall o.l. knytt til mottak eller sendar av elektroniske signal<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">skjermen på ein radar</span></span><span class="doeme kompakt"><span style="font-style: italic">skjermen på ein radar</span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></div><span class="tydingC kompakt"> <span class="kompakt"><span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">//</span></span><span class="utvidet"><img src="/grafikk/black_circle_e.png" width="6px" height="6px"/></span> framvisar for fjernsynssending, elektronisk programvare o.l.<div class="doemeliste utvidet"><span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></div><span class="doemeliste kompakt">: <span class="doeme utvidet"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span><span class="doeme kompakt"><span style="font-style: italic">kjenne nokon att frå skjermen</span></span></span></span></span><div class="tyding utvidet" style="margin-top: 15px;"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> blomsterstand med fleire blomsterskaft frå same punktet</div><span class="tydingC kompakt"> <span style="font-family:  Arial, Verdana; font-weight: 900; font-size: 100%;">3</span> blomsterstand med fleire blomsterskaft frå same punktet</span></span></div></div>
+
+
+
+
+</td></tr>
+</table>
+
+<tr><td>
+<p>&nbsp;</p><div align="center"><form name=" _navigator_linje" action="/perl/ordbok.cgi" method="get"><input type="hidden" value="1" name="startpos"/>
+<input type="hidden" value="1" name="startpos_ao"/>
+<input name="ant_bokmaal" type="hidden" id="ant_bokmaal" class="ant_bokmaal" value="5"/><input name="ant_nynorsk" type="hidden" id="ant_nynorsk" class="ant_nynorsk" value="5"/><input type="hidden" value="5" name="antall_vise"/>
+<input type ="hidden" name="OPP" id="felt" value="" />
+<input type="hidden" name="begge" value="+" />
+<input type="hidden" name="spraak" value=" " />
+ <input type="hidden" name="type"  class="check" value="fritekst"/>
+<input type="hidden" name="ava" value="ava" />
+</form>
+
+<table><tr valign="center">
+<td align="center" colspan="10">Resultat pr. side
+<select id=" _ResRowsNum" class="nob_velge_vise_antall" onChange="jQuery('.ant_ ').val(jQuery(this).val());">
+<option value="1" >1</option>
+<option value="5"  selected>5</option>
+<option value="10">10</option>
+<option value="20">20</option>
+<option value="30">30</option>
+<option value="40">40</option>
+<option value="50">50</option>
+<option value="100">100</option>
+</select>
+</td><td>
+<span class="unpressedButt"
+onclick="javascript:SendNavigasjonsskjema_ (1,check_value(jQuery('# _ResRowsNum').val(),1));"> &nbsp;
+<img class="" src="/grafikk/set.png"/></span>
+</td></tr></table>
+</td></tr>
+</table>
+</div></div>
+<!-- Slutt passer på å dytte foten ned, slik at innholdet ikke går ut av rammen -->
+<footer>
+<div id="slutt"></div>
+<!-- Fot innholder copyright og informasjon om eier -->
+<div id="fot">
+
+<div id="foot_logo1" class="foot_logo">
+<a href="http://www.dictionaryportal.eu/en/" title="The European Dictionary Portal"><img src="/static/img/dictionaryportal-stamp.gif" alt="The European Dictionary Portal"></a>
+</div>
+<div id="foot_center">
+
+<p><a href="http://www.uib.no">Universitetet i Bergen</a> og <a href="http://www.sprakradet.no/">Språkrådet</a> &copy; 2019<br />
+E-post: <a href="mailto:ordbokene@uib.no" title="Kontakt oss">ordbokene@uib.no</a></p></div>
+<div id="foot_logo2" class="foot_logo"></div>
+
+<!-- siste div som lukker ramme  -->
+</div>
+</footer>
+</body></html><!--
+debug time Sat Sep 28 14:12:58 2019
+debug connect-subrutine 43.47 total-kjøretid 45.95 
+debug skrivhode-subrutine 0.04 total-kjøretid 46.07 
+debug setup-and-prepare-subrutine 0.67 total-kjøretid 46.74 
+debug oppdater-brukerid-subrutine 0.93 total-kjøretid 48.06 
+debug utfoersql-subrutine 6.56 total-kjøretid 54.87 
+debug utfoersql-subrutine 3.75 total-kjøretid 59.55 
+debug utfoersql-subrutine 7.21 total-kjøretid 66.82 
+debug utfoersql-subrutine 3.58 total-kjøretid 70.49 
+debug ViewObject-subrutine 26.25 total-kjøretid 98.13 
+debug hente-artikkel-tekst-subrutine 26.30 total-kjøretid 98.18 
+debug formater-artikkel-subrutine 0.09 total-kjøretid 98.30 
+debug lage-gram-subrutine 0.01 total-kjøretid 98.37 
+debug lage-hopp-panel-subrutine 0.08 total-kjøretid 98.58 
+debug soek-i-ordbok-subrutine 0.39 total-kjøretid 98.89 
+debug oppdater-brukerid-subrutine 0.57 total-kjøretid 99.81 
+debug utfoersql-subrutine 4.77 total-kjøretid 104.71 
+debug utfoersql-subrutine 3.24 total-kjøretid 108.01 
+debug utfoersql-subrutine 6.93 total-kjøretid 114.98 
+debug utfoersql-subrutine 3.22 total-kjøretid 118.28 
+debug ViewObject-subrutine 6.90 total-kjøretid 126.58 
+debug hente-artikkel-tekst-subrutine 6.92 total-kjøretid 126.61 
+debug formater-artikkel-subrutine 0.12 total-kjøretid 126.75 
+debug lage-gram-subrutine 0.01 total-kjøretid 126.81 
+debug lage-hopp-panel-subrutine 0.04 total-kjøretid 126.96 
+debug soek-i-ordbok-subrutine 0.11 total-kjøretid 127.03 
+debug printend-subrutine 0.00 total-kjøretid 127.06 
+debug skrivhale-subrutine 0.01 total-kjøretid 127.06 
+-->

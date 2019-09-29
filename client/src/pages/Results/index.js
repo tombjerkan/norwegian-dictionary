@@ -45,6 +45,16 @@ export default function Results({ history, match }) {
                                 />
 
                                 <button
+                                    className={styles.cancel}
+                                    onClick={() => {
+                                        setStarred(false);
+                                        setEditingNotes(false);
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
                                     className={styles.ok}
                                     onClick={() => {
                                         setEditingNotes(false);

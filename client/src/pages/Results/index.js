@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
@@ -13,6 +13,17 @@ export default function Results({ history, match }) {
     const [isStarred, setStarred] = useState(false);
     const [isEditingNotes, setEditingNotes] = useState(false);
     const [notes, setNotes] = useState("");
+
+    useEffect(() => {
+        const storageEntry = window.localStorage.getItem(match.params.query);
+        if (storageEntry === null) {
+            setStarred(false);
+            setNotes("");
+        } else {
+            setStarred(true);
+            setNotes(storageEntry);
+        }
+    }, [match.params.query]);
 
     return (
         <div>

@@ -15,7 +15,7 @@ export default function SearchBox({ history, className }) {
         // Need to manually unfocus input so that keyboard hides on mobile
         inputRef.current.blur();
 
-        history.push(`/${inputValue}`);
+        history.push(`/results/${inputValue}`);
         event.preventDefault();
     }
 

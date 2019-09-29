@@ -1,9 +1,27 @@
-.searchBar {
-    padding: 7px 8px;
+.navigationBar {
     background: rgba(0, 0, 0, 0.15);
 }
 
+.tabs {
+    height: 40px;
+    display: flex;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    color: #fff;
+    text-decoration: none;
+}
+
+.tab:not(.activeTab) {
+    background: var(--color-brand-primary);
+}
+
 .searchBoxContainer {
+    padding: 7px 8px;
     position: relative;
 }
 

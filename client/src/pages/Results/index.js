@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
+import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import SearchBox from "components/SearchBox";
@@ -15,8 +16,19 @@ export default function Results({ history, match }) {
 
     return (
         <div>
-            <nav className={styles.searchBar}>
+            <nav className={styles.navigationBar}>
                 <MaxWidthLimit>
+                    <div className={styles.tabs}>
+                        <div
+                            className={classNames(styles.tab, styles.activeTab)}
+                        >
+                            Search
+                        </div>
+                        <Link to="/starred" className={styles.tab}>
+                            Starred
+                        </Link>
+                    </div>
+
                     <div className={styles.searchBoxContainer}>
                         <SearchBox
                             history={history}

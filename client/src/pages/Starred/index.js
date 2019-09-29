@@ -33,7 +33,9 @@ export default function Results({ history, match }) {
                     <ul className={styles.entryList}>
                         {entries.map(entry => (
                             <li className={styles.entry}>
-                                <h3>{entry.key}</h3>
+                                <Link to={`/results/${entry.key}`}>
+                                    <h3>{entry.key}</h3>
+                                </Link>
                                 <p>{entry.notes}</p>
                             </li>
                         ))}

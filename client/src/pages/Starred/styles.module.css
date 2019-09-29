@@ -37,6 +37,11 @@
     margin-top: 0;
 }
 
+.entry a {
+    color: hsl(202, 100%, 37%);
+    text-decoration: none;
+}
+
 .entry p {
     margin-bottom: 0;
 }

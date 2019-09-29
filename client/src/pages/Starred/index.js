@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import _ from "lodash";
@@ -6,10 +6,17 @@ import styles from "./styles.module.css";
 import MaxWidthLimit from "components/MaxWidthLimit";
 
 export default function Results({ history, match }) {
-    const numberOfStorageEntries = window.localStorage.length;
-    const entries = _.range(numberOfStorageEntries)
-        .map(n => window.localStorage.key(n))
-        .map(key => ({ key, notes: window.localStorage.getItem(key) }));
+    const [entries, setEntries] = useState([]);
+
+    useEffect(() => {
+        console.log("here");
+        const numberOfStorageEntries = window.localStorage.length;
+        setEntries(
+            _.range(numberOfStorageEntries)
+                .map(n => window.localStorage.key(n))
+                .map(key => ({ key, notes: window.localStorage.getItem(key) }))
+        );
+    }, []);
 
     return (
         <div>
@@ -36,6 +43,20 @@ export default function Results({ history, match }) {
                                 <Link to={`/results/${entry.key}`}>
                                     <h3>{entry.key}</h3>
                                 </Link>
+                                <button
+                                    onClick={() => {
+                                        window.localStorage.removeItem(
+                                            entry.key
+                                        );
+                                        setEntries(
+                                            entries.filter(
+                                                e => e.key !== entry.key
+                                            )
+                                        );
+                                    }}
+                                >
+                                    Remove
+                                </button>
                                 <p>{entry.notes}</p>
                             </li>
                         ))}

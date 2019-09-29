@@ -9,7 +9,6 @@ export default function Results({ history, match }) {
     const [entries, setEntries] = useState([]);
 
     useEffect(() => {
-        console.log("here");
         const numberOfStorageEntries = window.localStorage.length;
         setEntries(
             _.range(numberOfStorageEntries)

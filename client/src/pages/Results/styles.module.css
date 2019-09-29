@@ -24,6 +24,32 @@
     fill: var(--color-brand-secondary-dark);
 }
 
+.notesBubble {
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    transform: translateY(10px);
+    z-index: 5;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.notes {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    resize: none;
+    padding: 10px;
+    font: inherit;
+}
+
+.ok {
+    margin-top: 10px;
+    align-self: flex-end;
+}
+
 .content {
     padding: 0 8px 30px;
 }

@@ -10,6 +10,8 @@ import GoogleTranslate from "./GoogleTranslate";
 
 export default function Results({ history, match }) {
     const [isStarred, setStarred] = useState(false);
+    const [isEditingNotes, setEditingNotes] = useState(false);
+    const [notes, setNotes] = useState("");
 
     return (
         <div>
@@ -23,16 +25,39 @@ export default function Results({ history, match }) {
                         <Star
                             onClick={() => {
                                 setStarred(true);
-                                window.localStorage.setItem(
-                                    match.params.query,
-                                    true
-                                );
+                                setEditingNotes(true);
                             }}
                             className={classNames(
                                 styles.star,
                                 isStarred && styles.filled
                             )}
                         />
+
+                        {isEditingNotes && (
+                            <div className={styles.notesBubble}>
+                                <textarea
+                                    className={styles.notes}
+                                    value={notes}
+                                    placeholder="Enter notes..."
+                                    onChange={event =>
+                                        setNotes(event.target.value)
+                                    }
+                                />
+
+                                <button
+                                    className={styles.ok}
+                                    onClick={() => {
+                                        setEditingNotes(false);
+                                        window.localStorage.setItem(
+                                            match.params.query,
+                                            notes
+                                        );
+                                    }}
+                                >
+                                    Ok
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </MaxWidthLimit>
             </nav>

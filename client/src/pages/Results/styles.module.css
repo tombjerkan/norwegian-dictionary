@@ -20,60 +20,9 @@
     background: var(--color-brand-primary);
 }
 
-.searchBoxContainer {
-    padding: 7px 8px;
-    position: relative;
-}
-
 .searchBox {
+    padding: 7px 8px;
     font-size: 16px;
-}
-
-.star {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%) translateY(1px);
-    width: 20px;
-    stroke: var(--color-brand-secondary-dark);
-}
-
-.filled > polygon {
-    fill: var(--color-brand-secondary-dark);
-}
-
-.notesBubble {
-    display: grid;
-    grid-template: auto 30px / auto 80px 80px;
-    grid-gap: 10px;
-    position: absolute;
-    width: 100%;
-    background: #fff;
-    transform: translateY(10px);
-    z-index: 5;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.25);
-}
-
-.notes {
-    grid-column: 1 / 4;
-    grid-row: 1 / 2;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    resize: none;
-    padding: 10px;
-    font: inherit;
-}
-
-.cancel {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-}
-
-.ok {
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
 }
 
 .content {

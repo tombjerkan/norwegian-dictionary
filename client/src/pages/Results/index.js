@@ -1,30 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import SearchBox from "components/SearchBox";
-import { ReactComponent as Star } from "./star.svg";
 import Ordbok from "./Ordbok";
 import Wiktionary from "./Wiktionary";
 import GoogleTranslate from "./GoogleTranslate";
+import Star from "./Star";
 
 export default function Results({ history, match }) {
-    const [isStarred, setStarred] = useState(false);
-    const [isEditingNotes, setEditingNotes] = useState(false);
-    const [notes, setNotes] = useState("");
-
-    useEffect(() => {
-        const storageEntry = window.localStorage.getItem(match.params.query);
-        if (storageEntry === null) {
-            setStarred(false);
-            setNotes("");
-        } else {
-            setStarred(true);
-            setNotes(storageEntry);
-        }
-    }, [match.params.query]);
-
     return (
         <div>
             <nav className={styles.navigationBar}>
@@ -40,58 +25,7 @@ export default function Results({ history, match }) {
                         </Link>
                     </div>
 
-                    <div className={styles.searchBoxContainer}>
-                        <SearchBox
-                            history={history}
-                            className={styles.searchBox}
-                        />
-                        <Star
-                            onClick={() => {
-                                setStarred(true);
-                                setEditingNotes(true);
-                            }}
-                            className={classNames(
-                                styles.star,
-                                isStarred && styles.filled
-                            )}
-                        />
-
-                        {isEditingNotes && (
-                            <div className={styles.notesBubble}>
-                                <textarea
-                                    className={styles.notes}
-                                    value={notes}
-                                    placeholder="Enter notes..."
-                                    onChange={event =>
-                                        setNotes(event.target.value)
-                                    }
-                                />
-
-                                <button
-                                    className={styles.cancel}
-                                    onClick={() => {
-                                        setStarred(false);
-                                        setEditingNotes(false);
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-
-                                <button
-                                    className={styles.ok}
-                                    onClick={() => {
-                                        setEditingNotes(false);
-                                        window.localStorage.setItem(
-                                            match.params.query,
-                                            notes
-                                        );
-                                    }}
-                                >
-                                    Ok
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                    <SearchBox history={history} className={styles.searchBox} />
                 </MaxWidthLimit>
             </nav>
 
@@ -101,6 +35,8 @@ export default function Results({ history, match }) {
                     <Wiktionary query={match.params.query} />
                     <Ordbok query={match.params.query} />
                 </div>
+
+                <Star query={match.params.query} />
             </MaxWidthLimit>
         </div>
     );

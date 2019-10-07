@@ -29,7 +29,7 @@ function Tab({ to, isCurrent, children }) {
             to={to}
             className={classNames(styles.tab, isCurrent && styles.currentTab)}
         >
-            {children}
+            <div className={styles.circle}>{children}</div>
         </Link>
     );
 }

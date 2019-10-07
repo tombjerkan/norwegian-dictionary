@@ -21,6 +21,8 @@ export default function Starred({ history, match }) {
 
             <MaxWidthLimit>
                 <div className={styles.content}>
+                    <h1 className={styles.header}>Starred</h1>
+
                     <ul className={styles.entryList}>
                         {entries.map(entry => (
                             <li className={styles.entry}>

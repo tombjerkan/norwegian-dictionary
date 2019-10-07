@@ -27,7 +27,8 @@
     align-items: center;
 }
 
-.tab:hover .circle {
+.tab:hover .circle,
+.tab:active .circle {
     background: rgba(255, 255, 255, 0.3);
 }
 

@@ -6,7 +6,7 @@ import styles from "./styles.module.css";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import { getAll, remove } from "storage/starred";
 
-export default function Results({ history, match }) {
+export default function Starred({ history, match }) {
     const [entries, setEntries] = useState([]);
 
     useEffect(() => setEntries(getAll()), []);

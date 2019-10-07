@@ -20,7 +20,9 @@ export default function Results({ history, match }) {
     return (
         <div>
             <nav className={styles.navigationBar}>
-                <Tabs />
+                <MaxWidthLimit>
+                    <Tabs />
+                </MaxWidthLimit>
             </nav>
 
             <MaxWidthLimit>

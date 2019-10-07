@@ -4,18 +4,12 @@ import _ from "lodash";
 import Tabs from "components/Tabs";
 import styles from "./styles.module.css";
 import MaxWidthLimit from "components/MaxWidthLimit";
+import { getAll, remove } from "storage/starred";
 
 export default function Results({ history, match }) {
     const [entries, setEntries] = useState([]);
 
-    useEffect(() => {
-        const numberOfStorageEntries = window.localStorage.length;
-        setEntries(
-            _.range(numberOfStorageEntries)
-                .map(n => window.localStorage.key(n))
-                .map(key => ({ key, notes: window.localStorage.getItem(key) }))
-        );
-    }, []);
+    useEffect(() => setEntries(getAll()), []);
 
     return (
         <div>
@@ -30,17 +24,15 @@ export default function Results({ history, match }) {
                     <ul className={styles.entryList}>
                         {entries.map(entry => (
                             <li className={styles.entry}>
-                                <Link to={`/results/${entry.key}`}>
-                                    <h3>{entry.key}</h3>
+                                <Link to={`/results/${entry.word}`}>
+                                    <h3>{entry.word}</h3>
                                 </Link>
                                 <button
                                     onClick={() => {
-                                        window.localStorage.removeItem(
-                                            entry.key
-                                        );
+                                        remove(entry.word);
                                         setEntries(
                                             entries.filter(
-                                                e => e.key !== entry.key
+                                                e => e.word !== entry.word
                                             )
                                         );
                                     }}

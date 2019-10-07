@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
+import _ from "lodash";
 import { ReactComponent as StarIcon } from "components/Star.svg";
 import styles from "./styles.module.css";
+import { get, add } from "storage/starred";
 
 export default function Star({ query }) {
     const [isStarred, setStarred] = useState(false);
@@ -9,13 +11,10 @@ export default function Star({ query }) {
     const [notes, setNotes] = useState("");
 
     useEffect(() => {
-        const storageEntry = window.localStorage.getItem(query);
-        if (storageEntry === null) {
-            setStarred(false);
-            setNotes("");
-        } else {
-            setStarred(true);
-            setNotes(storageEntry);
+        const starredEntry = get(query);
+        setStarred(starredEntry !== null);
+        if (starredEntry !== null) {
+            setNotes(starredEntry);
         }
     }, [query]);
 
@@ -57,7 +56,7 @@ export default function Star({ query }) {
                         className={styles.ok}
                         onClick={() => {
                             setEditingNotes(false);
-                            window.localStorage.setItem(query, notes);
+                            add(query, notes);
                         }}
                     >
                         Ok

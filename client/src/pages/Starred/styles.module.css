@@ -2,24 +2,6 @@
     background: rgba(0, 0, 0, 0.15);
 }
 
-.tabs {
-    height: 40px;
-    display: flex;
-}
-
-.tab {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    color: #fff;
-    text-decoration: none;
-}
-
-.tab:not(.activeTab) {
-    background: var(--color-brand-primary);
-}
-
 .entryList {
     padding-left: 20px;
     padding-right: 20px;

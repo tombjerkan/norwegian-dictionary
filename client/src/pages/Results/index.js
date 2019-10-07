@@ -1,8 +1,7 @@
 import React from "react";
-import classNames from "classnames";
-import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import MaxWidthLimit from "components/MaxWidthLimit";
+import Tabs from "components/Tabs";
 import SearchBox from "components/SearchBox";
 import Ordbok from "./Ordbok";
 import Wiktionary from "./Wiktionary";
@@ -14,17 +13,7 @@ export default function Results({ history, match }) {
         <div>
             <nav className={styles.navigationBar}>
                 <MaxWidthLimit>
-                    <div className={styles.tabs}>
-                        <div
-                            className={classNames(styles.tab, styles.activeTab)}
-                        >
-                            Search
-                        </div>
-                        <Link to="/starred" className={styles.tab}>
-                            Starred
-                        </Link>
-                    </div>
-
+                    <Tabs />
                     <SearchBox history={history} className={styles.searchBox} />
                 </MaxWidthLimit>
             </nav>

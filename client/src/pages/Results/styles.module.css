@@ -2,26 +2,8 @@
     background: rgba(0, 0, 0, 0.15);
 }
 
-.tabs {
-    height: 40px;
-    display: flex;
-}
-
-.tab {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    color: #fff;
-    text-decoration: none;
-}
-
-.tab:not(.activeTab) {
-    background: var(--color-brand-primary);
-}
-
 .searchBox {
-    padding: 7px 8px;
+    padding: 0 8px 7px 8px;
     font-size: 16px;
 }
 

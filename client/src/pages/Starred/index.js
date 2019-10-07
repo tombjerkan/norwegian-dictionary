@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import classNames from "classnames";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import Tabs from "components/Tabs";
 import styles from "./styles.module.css";
 import MaxWidthLimit from "components/MaxWidthLimit";
 
@@ -20,18 +20,7 @@ export default function Results({ history, match }) {
     return (
         <div>
             <nav className={styles.navigationBar}>
-                <MaxWidthLimit>
-                    <div className={styles.tabs}>
-                        <Link to="/" className={styles.tab}>
-                            Search
-                        </Link>
-                        <div
-                            className={classNames(styles.tab, styles.activeTab)}
-                        >
-                            Starred
-                        </div>
-                    </div>
-                </MaxWidthLimit>
+                <Tabs />
             </nav>
 
             <MaxWidthLimit>

@@ -1,0 +1,24 @@
+.container {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    color: #fff;
+    text-decoration: none;
+    height: 60%;
+    opacity: 0.5;
+}
+
+.tab + .tab {
+    border-left: 1px solid rgba(255, 255, 255, 15%);
+}
+
+.currentTab {
+    opacity: 1;
+}

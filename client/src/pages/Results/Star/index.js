@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import { ReactComponent as StarIcon } from "../star.svg";
+import { ReactComponent as StarIcon } from "components/Star.svg";
 import styles from "./styles.module.css";
 
 export default function Star({ query }) {

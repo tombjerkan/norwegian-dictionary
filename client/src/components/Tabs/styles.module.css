@@ -22,3 +22,9 @@
 .currentTab {
     opacity: 1;
 }
+
+.icon {
+    width: 20px;
+    stroke: #fff;
+    fill: #fff;
+}

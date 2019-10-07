@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import classNames from "classnames";
 import styles from "./styles.module.css";
-import { ReactComponent as SearchIcon } from "./search-icon.svg";
+import { ReactComponent as SearchIcon } from "components/MagnifyingGlass.svg";
 
 export default function SearchBox({ history, className }) {
     const [inputValue, setInputValue] = useState("");

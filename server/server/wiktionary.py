@@ -1,5 +1,5 @@
 from server import app
 
-@app.route("/wiktionary")
-def wiktionary():
+@app.route("/wiktionary/<word>")
+def wiktionary(word):
     return {}

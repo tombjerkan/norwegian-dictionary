@@ -1,5 +1,5 @@
 from server import app
 
-@app.route("/ordbok")
-def ordbok():
+@app.route("/ordbok/<word>")
+def ordbok(word):
     return {}

@@ -37,7 +37,8 @@ def test_correctly_parses_html_into_data_structure(word):
         responses.GET,
         f"https://en.wiktionary.org/wiki/{word}",
         status=200,
-        body=read_data_file(f"{word}.html")
+        body=read_data_file(f"{word}.html"),
+        content_type="text/html; charset=UTF-8"
     )
 
     response = app.test_client().get(f"/wiktionary/{word}")
@@ -55,7 +56,8 @@ def test_returns_not_found_404_if_not_found_page_is_received():
         responses.GET,
         "https://en.wiktionary.org/wiki/notaword",
         status=404,
-        body=read_data_file("not-found.html")
+        body=read_data_file("not-found.html"),
+        content_type="text/html; charset=UTF-8"
     )
 
     response = app.test_client().get("/wiktionary/notaword")
@@ -70,7 +72,8 @@ def test_returns_not_found_404_if_no_norwegian_bokmaal_entry_on_received_page():
         responses.GET,
         "https://en.wiktionary.org/wiki/rain",
         status=200,
-        body=read_data_file("not-norwegian.html")
+        body=read_data_file("not-norwegian.html"),
+        content_type="text/html; charset=UTF-8"
     )
 
     response = app.test_client().get("/wiktionary/rain")

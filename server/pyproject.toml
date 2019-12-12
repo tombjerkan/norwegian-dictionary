@@ -8,6 +8,7 @@ authors = ["Thomas Bjerkan <t.bjerkan@gmail.com>"]
 python = "^3.6"
 flask = "^1.1"
 responses = "^0.10.7"
+beautifulsoup4 = "^4.8"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"

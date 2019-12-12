@@ -1,0 +1,57 @@
+[
+    {
+        "etymology": "From Old Norse stórr (“big, large, tall, great”), from Proto-Germanic *stōraz, whence also Old English stōr, Old Saxon stōri. Ultimately from Proto-Indo-European *stā-r-; compare Pashto ستر‎ (stër) (\"large\"), Lithuanian stóras, Old Church Slavonic старъ (starŭ) (\"old\"), Russian старый (stáryj) (\"old\").",
+        "subEntries": [
+            {
+                "type": "Adjective",
+                "term": "stor (neuter singular <Link to='stort'>stort</Link>, definite singular and plural <Link to='store'>store</Link>, comparative <Link to='st%C3%B8rre'>større</Link>, indefinite superlative <Link to='st%C3%B8rst'>størst</Link>, definite superlative <Link to='st%C3%B8rste'>største</Link>)",
+                "senses": [
+                    {
+                        "definition": "large, big, great",
+                        "examples": ["et stort hus ― a big house"]
+                    },
+                    {
+                        "definition": "of high regard",
+                        "examples": ["en stor mann ― an important man"]
+                    },
+                    {
+                        "definition": "good, real",
+                        "examples": [
+                            "en stor tosk ― (please add an English translation of this usage example)",
+                            "en stor unge ― (please add an English translation of this usage example)"
+                        ]
+                    },
+                    {
+                        "definition": "(law) of the size",
+                        "examples": [
+                            "saksøkte ilegges en bot stor kr. 5000 ― the defendant is given a fine of the size 5000 kr"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "synonyms": [],
+        "derived": [
+            "<Link to='De_store_sj%C3%B8er'>De store sjøer</Link>",
+            "<Link to='forst%C3%B8rre'>forstørre</Link>",
+            "<Link to='kjempestor'>kjempestor</Link>",
+            "<Link to='mellomstor'>mellomstor</Link>",
+            "<Link to='storby'>storby</Link>",
+            "<Link to='storeslem'>storeslem</Link>",
+            "<Link to='storfe'>storfe</Link>",
+            "<Link to='storfugl'>storfugl</Link>",
+            "<Link to='storhet'>storhet</Link>",
+            "<Link to='storindustri'>storindustri</Link>",
+            "<Link to='storjo'>storjo</Link>",
+            "<Link to='Stor-London'>Stor-London</Link>",
+            "<Link to='stormakt'>stormakt</Link>",
+            "<Link to='stormann'>stormann</Link>",
+            "<Link to='storseil'>storseil</Link>",
+            "<Link to='storsirkel'>storsirkel</Link>",
+            "<Link to='storskala'>storskala</Link>",
+            "<Link to='storslagen'>storslagen</Link>",
+            "<Link to='storstilt'>storstilt</Link>",
+            "<Link to='stort%C3%A5'>stortå</Link>"
+        ]
+    }
+]

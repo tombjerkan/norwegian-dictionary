@@ -1,0 +1,76 @@
+[
+    {
+        "term": "male",
+        "etymology": "I male verb (norrønt mala)",
+        "senses": [
+            {
+                "definition": "knuse til mel (med kvern), <Link to='pulverisere'>pulverisere</Link>",
+                "examples": "male kjøtt, korn, mandler / kverna maler fint, grovt / hvordan vil du ha kaffen malt? / skuta ble malt i stykker av isen",
+                "subDefinitions": [
+                    {
+                        "definition": "<Link to='lage'>lage</Link>, <Link to='produsere'>produsere</Link> (mel)",
+                        "examples": "mølla maler mel / Guds kvern maler langsomt"
+                    }
+                ],
+                "subEntries": []
+            },
+            {
+                "definition": "<Link to='svive'>svive (1)</Link> rundt som en kvern",
+                "examples": "tankene mol i hodet hennes",
+                "subDefinitions": [],
+                "subEntries": []
+            },
+            {
+                "definition": "<Link to='dure'>dure</Link> som en kvern",
+                "examples": "katten maler av velvære",
+                "subDefinitions": [],
+                "subEntries": []
+            },
+            {
+                "definition": "gjenta og gjenta noe, <Link to='gnåle'>gnåle</Link> på",
+                "examples": "gå og male på det samme",
+                "subDefinitions": [],
+                "subEntries": []
+            }
+        ]
+    },
+    {
+        "term": "male",
+        "etymology": "II male v2 (norrønt mála, fra lavtysk malen)",
+        "senses": [
+            {
+                "definition": "dekke med <Link to='maling'>maling</Link>",
+                "examples": "male stolen hvit / male huset, hytta",
+                "subDefinitions": [
+                    {
+                        "definition": "refleksivt:",
+                        "examples": null
+                    }
+                ],
+                "subEntries": [
+                    {
+                        "term": "male seg",
+                        "definition": "sminke seg"
+                    }
+                ]
+            },
+            {
+                "definition": "lage et <Link to='maleri'>maleri</Link>",
+                "examples": "Tidemand har malt 'Haugianerne' / male landskapsbilder",
+                "subDefinitions": [],
+                "subEntries": []
+            },
+            {
+                "definition": "<Link to='framstille'>framstille</Link>, <Link to='uttrykke'>uttrykke</Link>",
+                "examples": "overraskelsen stod malt i ansiktet hennes / han maler situasjonen temmelig svart",
+                "subDefinitions": [],
+                "subEntries": [
+                    {
+                        "term": "male fanden på veggen",
+                        "definition": "gi uttrykk for pessimisme"
+                    }
+                ]
+            }
+        ]
+    }
+]

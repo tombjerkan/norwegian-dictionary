@@ -14,14 +14,6 @@ def read_data_file(filename):
         return file.read()
 
 
-def test_ordbok():
-    app.config["TESTING"] = True
-
-    response = app.test_client().get("/ordbok")
-
-    assert json.loads(response.data) == {}
-
-
 #  Words are added as test cases when an error is caused parsing their pages.
 #  The list below outlines what about their page was different to all previous
 #  test cases that meant that the cause of the error was not caught by an
@@ -48,7 +40,8 @@ def test_correctly_parses_html_into_data_structure(word):
         responses.GET,
         f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}",
         status=200,
-        body=read_data_file(f"{word}.html")
+        body=read_data_file(f"{word}.html"),
+        content_type="text/html; charset=UTF-8"
     )
 
     response = app.test_client().get(f"/ordbok/{word}")
@@ -66,7 +59,8 @@ def test_returns_not_found_404_if_not_found_page_is_received():
         responses.GET,
         f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=notaword",
         status=200,
-        body=read_data_file("not-found.html")
+        body=read_data_file("not-found.html"),
+        content_type="text/html; charset=UTF-8"
     )
 
     response = app.test_client().get(f"/ordbok/notaword")
@@ -112,20 +106,5 @@ def test_returns_internal_server_error_500_if_other_http_error_received():
     )
 
     response = app.test_client().get(f"/ordbok/hallo")
-
-    assert response.status_code == 500
-
-
-@responses.activate
-def test_returns_internal_server_error_500_if_html_received_does_not_match_expected_structure():
-    app.config["TESTING"] = True
-    responses.add(
-        responses.GET,
-        f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=tilsynelatende",
-        status=200,
-        body=read_data_file("unexpected-structure.html")
-    )
-
-    response = app.test_client().get(f"/ordbok/tilsynelatende")
 
     assert response.status_code == 500

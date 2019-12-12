@@ -28,8 +28,9 @@ PART_OF_SPEECH_TYPES = [
     "Preposition",
     "Pronoun",
     "Proper noun",
-    "Verb"
+    "Verb",
 ]
+
 
 @app.route("/wiktionary/<word>")
 def wiktionary(word):
@@ -64,7 +65,7 @@ def wiktionary(word):
 
 def index_by_predicate(it, predicate, start=0):
     for i, v in enumerate(itertools.islice(it, start, None), start):
-        if (predicate(v)):
+        if predicate(v):
             return i
 
 
@@ -77,19 +78,20 @@ def get_norwegian_section(soup):
 
     norwegian_header_index = index_by_predicate(
         container.children,
-        lambda child: is_language_header(child) and child.get_text() == "Norwegian Bokmål"
+        lambda child: is_language_header(child)
+        and child.get_text() == "Norwegian Bokmål",
     )
 
     if norwegian_header_index is None:
         raise ApiError(404)
 
     end_index = index_by_predicate(
-        container.children,
-        is_language_header,
-        norwegian_header_index + 1
+        container.children, is_language_header, norwegian_header_index + 1
     )
 
-    return list(itertools.islice(container.children, norwegian_header_index + 1, end_index))
+    return list(
+        itertools.islice(container.children, norwegian_header_index + 1, end_index)
+    )
 
 
 def separate_entries(language_entry):
@@ -98,7 +100,9 @@ def separate_entries(language_entry):
         start_indices = [i + 1 for i in header_indices]
         end_indices = header_indices[1:] + [len(language_entry)]
 
-        return [language_entry[start:end] for start, end in zip(start_indices, end_indices)]
+        return [
+            language_entry[start:end] for start, end in zip(start_indices, end_indices)
+        ]
     else:
         return [language_entry]
 
@@ -120,14 +124,13 @@ def parse_entry(elements):
         "etymology": parse_etymology(elements),
         "subEntries": parse_sub_entries(elements),
         "synonyms": parse_synonyms(elements),
-        "derived": parse_derived_terms(elements)
+        "derived": parse_derived_terms(elements),
     }
 
 
 def get_section(elements, header):
     header_index = index_by_predicate(
-        elements,
-        lambda element: is_header(element) and element.get_text() == header
+        elements, lambda element: is_header(element) and element.get_text() == header
     )
 
     if header_index is None:
@@ -136,9 +139,9 @@ def get_section(elements, header):
     next_header_index = index_by_predicate(elements, is_header, header_index + 1)
 
     if next_header_index is not None:
-        return elements[header_index + 1:next_header_index]
+        return elements[header_index + 1 : next_header_index]
     else:
-        return elements[header_index + 1:]
+        return elements[header_index + 1 :]
 
 
 def parse_etymology(elements):
@@ -161,7 +164,7 @@ def parse_sub_entries(elements):
         {
             "type": type_,
             "term": get_text_content(section[0]),
-            "senses": [parse_sense(sense) for sense in section[1].children]
+            "senses": [parse_sense(sense) for sense in section[1].children],
         }
         for type_, section in zip(types, sub_entry_sections)
     ]
@@ -173,17 +176,13 @@ def is_part_of_speech_header(element):
 
 def parse_sense(sense):
     definition_nodes = itertools.takewhile(
-        lambda element: not element.name == "dl",
-        sense.children
+        lambda element: not element.name == "dl", sense.children
     )
     definition = get_text_content(*definition_nodes)
 
     examples = [get_text_content(example) for example in sense.select("dl > dd")]
 
-    return {
-        "definition": definition,
-        "examples": examples
-    }
+    return {"definition": definition, "examples": examples}
 
 
 def parse_synonyms(elements):
@@ -202,8 +201,7 @@ def parse_derived_terms(elements):
         return []
 
     return [
-        get_text_content(item)
-        for element in section for item in element.find_all("li")
+        get_text_content(item) for element in section for item in element.find_all("li")
     ]
 
 

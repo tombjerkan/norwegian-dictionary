@@ -6,6 +6,7 @@ import requests
 
 from server import app, ApiError
 
+
 @app.route("/ordbok/<word>")
 def ordbok(word):
     try:
@@ -41,18 +42,16 @@ def ordbok(word):
 
 
 def parse_entry(container):
-    article_content = next(container.children).next_sibling.find(class_="artikkelinnhold")
+    article_content = next(container.children).next_sibling.find(
+        class_="artikkelinnhold"
+    )
     senses_container = article_content.find(class_="utvidet")
     etymology_elements = reversed(list(senses_container.previous_siblings))
 
     return {
-        "term": re.sub(
-            "\s\s+",
-            " ",
-            get_text_content(next(container.children))
-        ),
+        "term": re.sub("\s\s+", " ", get_text_content(next(container.children))),
         "etymology": get_text_content(*etymology_elements),
-        "senses": parse_senses(senses_container)
+        "senses": parse_senses(senses_container),
     }
 
 
@@ -70,12 +69,14 @@ def parse_sense(container):
         "definition": parse_definition(container),
         "examples": parse_examples(container),
         "subDefinitions": parse_sub_definitions(container),
-        "subEntries": parse_sub_entries(container)
+        "subEntries": parse_sub_entries(container),
     }
 
 
 def parse_definition(sense_container):
-    end_of_definition = sense_container.select_one(".doemeliste, .tyding.utvidet, .artikkelinnhold")
+    end_of_definition = sense_container.select_one(
+        ".doemeliste, .tyding.utvidet, .artikkelinnhold"
+    )
 
     if end_of_definition is not None:
         definition_elements = reversed(list(end_of_definition.previous_siblings))
@@ -95,7 +96,9 @@ def parse_examples(sense_container):
 
 
 def parse_sub_definitions(sense_container):
-    sub_definition_containers = sense_container.select(".tyding.utvidet", recursive=False)
+    sub_definition_containers = sense_container.select(
+        ".tyding.utvidet", recursive=False
+    )
 
     return [parse_sub_definition(v) for v in sub_definition_containers]
 
@@ -110,12 +113,16 @@ def parse_sub_definition(container):
 
     return {
         "definition": get_text_content(*definition_elements),
-        "examples": get_text_content(examples_container) if examples_container else None
+        "examples": get_text_content(examples_container)
+        if examples_container
+        else None,
     }
 
 
 def parse_sub_entries(sense_container):
-    sub_entry_containers = sense_container.select(".artikkelinnhold > div", recursive=False)
+    sub_entry_containers = sense_container.select(
+        ".artikkelinnhold > div", recursive=False
+    )
     return [parse_sub_entry(v) for v in sub_entry_containers]
 
 
@@ -125,7 +132,7 @@ def parse_sub_entry(container):
 
     return {
         "term": get_text_content(term_container),
-        "definition": get_text_content(definition_container)
+        "definition": get_text_content(definition_container),
     }
 
 
@@ -160,8 +167,7 @@ def is_link(element):
 
 def get_word_linked_to(element):
     on_click_parameter = re.search(
-        "^bob_vise_ref_art\(.*, .*, .*, .*, '(.*)'\)$",
-        element["onclick"]
+        "^bob_vise_ref_art\(.*, .*, .*, .*, '(.*)'\)$", element["onclick"]
     )[1]
 
     on_click_parameter = re.sub("^[IVX]+\s+", "", on_click_parameter)

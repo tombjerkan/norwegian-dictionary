@@ -9,7 +9,9 @@ from server import app
 
 def read_data_file(filename):
     current_file_directory = os.path.dirname(__file__)
-    data_file_path = os.path.join(current_file_directory, "__data__", "wiktionary", filename)
+    data_file_path = os.path.join(
+        current_file_directory, "__data__", "wiktionary", filename
+    )
     with open(data_file_path, mode="r") as file:
         return file.read()
 
@@ -38,7 +40,7 @@ def test_correctly_parses_html_into_data_structure(word):
         f"https://en.wiktionary.org/wiki/{word}",
         status=200,
         body=read_data_file(f"{word}.html"),
-        content_type="text/html; charset=UTF-8"
+        content_type="text/html; charset=UTF-8",
     )
 
     response = app.test_client().get(f"/wiktionary/{word}")
@@ -57,7 +59,7 @@ def test_returns_not_found_404_if_not_found_page_is_received():
         "https://en.wiktionary.org/wiki/notaword",
         status=404,
         body=read_data_file("not-found.html"),
-        content_type="text/html; charset=UTF-8"
+        content_type="text/html; charset=UTF-8",
     )
 
     response = app.test_client().get("/wiktionary/notaword")
@@ -73,7 +75,7 @@ def test_returns_not_found_404_if_no_norwegian_bokmaal_entry_on_received_page():
         "https://en.wiktionary.org/wiki/rain",
         status=200,
         body=read_data_file("not-norwegian.html"),
-        content_type="text/html; charset=UTF-8"
+        content_type="text/html; charset=UTF-8",
     )
 
     response = app.test_client().get("/wiktionary/rain")
@@ -87,7 +89,7 @@ def test_returns_service_unavailable_503_if_network_error():
     responses.add(
         responses.GET,
         "https://en.wiktionary.org/wiki/hallo",
-        body=requests.exceptions.ConnectionError()
+        body=requests.exceptions.ConnectionError(),
     )
 
     response = app.test_client().get("/wiktionary/hallo")
@@ -98,11 +100,7 @@ def test_returns_service_unavailable_503_if_network_error():
 @responses.activate
 def test_returns_service_unavailable_503_if_service_unavailable_received():
     app.config["TESTING"] = True
-    responses.add(
-        responses.GET,
-        "https://en.wiktionary.org/wiki/hallo",
-        status=503
-    )
+    responses.add(responses.GET, "https://en.wiktionary.org/wiki/hallo", status=503)
 
     response = app.test_client().get("/wiktionary/hallo")
 
@@ -112,11 +110,7 @@ def test_returns_service_unavailable_503_if_service_unavailable_received():
 @responses.activate
 def test_returns_internal_server_error_if_other_http_error_received():
     app.config["TESTING"] = True
-    responses.add(
-        responses.GET,
-        "https://en.wiktionary.org/wiki/hallo",
-        status=500
-    )
+    responses.add(responses.GET, "https://en.wiktionary.org/wiki/hallo", status=500)
 
     response = app.test_client().get("/wiktionary/hallo")
 

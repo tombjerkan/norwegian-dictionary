@@ -9,7 +9,9 @@ from server import app
 
 def read_data_file(filename):
     current_file_directory = os.path.dirname(__file__)
-    data_file_path = os.path.join(current_file_directory, "__data__", "ordbok", filename)
+    data_file_path = os.path.join(
+        current_file_directory, "__data__", "ordbok", filename
+    )
     with open(data_file_path, mode="r") as file:
         return file.read()
 
@@ -32,7 +34,9 @@ def read_data_file(filename):
 #      skjermen:           results for another form of the word shown instead,
 #                          in this case 'skjerm'.
 #
-@pytest.mark.parametrize("word", ["stas", "for", "tilsynelatende", "male", "ting", "skjermen"])
+@pytest.mark.parametrize(
+    "word", ["stas", "for", "tilsynelatende", "male", "ting", "skjermen"]
+)
 @responses.activate
 def test_correctly_parses_html_into_data_structure(word):
     app.config["TESTING"] = True
@@ -41,7 +45,7 @@ def test_correctly_parses_html_into_data_structure(word):
         f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}",
         status=200,
         body=read_data_file(f"{word}.html"),
-        content_type="text/html; charset=UTF-8"
+        content_type="text/html; charset=UTF-8",
     )
 
     response = app.test_client().get(f"/ordbok/{word}")
@@ -60,7 +64,7 @@ def test_returns_not_found_404_if_not_found_page_is_received():
         f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=notaword",
         status=200,
         body=read_data_file("not-found.html"),
-        content_type="text/html; charset=UTF-8"
+        content_type="text/html; charset=UTF-8",
     )
 
     response = app.test_client().get(f"/ordbok/notaword")
@@ -74,7 +78,7 @@ def test_returns_service_unavailable_503_if_network_error():
     responses.add(
         responses.GET,
         f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=hallo",
-        body=requests.exceptions.ConnectionError()
+        body=requests.exceptions.ConnectionError(),
     )
 
     response = app.test_client().get("/ordbok/hallo")
@@ -86,9 +90,7 @@ def test_returns_service_unavailable_503_if_network_error():
 def test_returns_service_unavailable_503_if_service_unavailable_is_received():
     app.config["TESTING"] = True
     responses.add(
-        responses.GET,
-        f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=hallo",
-        status=503
+        responses.GET, f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=hallo", status=503
     )
 
     response = app.test_client().get(f"/ordbok/hallo")
@@ -100,9 +102,7 @@ def test_returns_service_unavailable_503_if_service_unavailable_is_received():
 def test_returns_internal_server_error_500_if_other_http_error_received():
     app.config["TESTING"] = True
     responses.add(
-        responses.GET,
-        f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=hallo",
-        status=404
+        responses.GET, f"https://ordbok.uib.no/perl/ordbok.cgi?OPP=hallo", status=404
     )
 
     response = app.test_client().get(f"/ordbok/hallo")

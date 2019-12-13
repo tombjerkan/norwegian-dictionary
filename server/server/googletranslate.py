@@ -10,11 +10,13 @@ def google_translate(word):
     service_account_info = {
         "token_uri": "https://oauth2.googleapis.com/token",
         "client_email": os.getenv("GOOGLE_AUTH_CLIENT_EMAIL"),
-        "private_key": os.getenv("GOOGLE_AUTH_PRIVATE_KEY")
+        "private_key": os.getenv("GOOGLE_AUTH_PRIVATE_KEY"),
     }
 
     try:
-        credentials = google.oauth2.service_account.Credentials.from_service_account_info(service_account_info)
+        credentials = google.oauth2.service_account.Credentials.from_service_account_info(
+            service_account_info
+        )
     except ValueError:
         raise ApiError(500)
 

@@ -24,5 +24,7 @@ def google_translate(word):
         response = client.translate(word, source_language="no")
     except google.auth.exceptions.RefreshError:
         raise ApiError(500)
+    except google.auth.exceptions.TransportError:
+        raise ApiError(503)
 
     return response["translatedText"]

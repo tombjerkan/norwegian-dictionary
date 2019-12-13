@@ -11,7 +11,7 @@ responses = "^0.10.7"
 beautifulsoup4 = "^4.8"
 google-cloud-translate = "^2.0"
 python-dotenv = "^0.10.3"
-
+sentry-sdk = {version = "^0.13.5", extras = ["flask"]}
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
 black = {version = "^18.3-alpha.0", allows-prereleases = true}

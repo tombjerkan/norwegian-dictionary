@@ -7,7 +7,7 @@ import requests
 from server import app, ApiError
 
 
-@app.route("/ordbok/<word>")
+@app.route("/api/ordbok/<word>")
 def ordbok(word):
     try:
         response = requests.get(f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}")

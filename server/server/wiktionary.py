@@ -32,7 +32,7 @@ PART_OF_SPEECH_TYPES = [
 ]
 
 
-@app.route("/wiktionary/<word>")
+@app.route("/api/wiktionary/<word>")
 def wiktionary(word):
     try:
         response = requests.get(f"https://en.wiktionary.org/wiki/{word}")

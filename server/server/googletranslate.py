@@ -5,7 +5,7 @@ import os
 from server import app, ApiError
 
 
-@app.route("/googleTranslate/<word>")
+@app.route("/api/googleTranslate/<word>")
 def google_translate(word):
     service_account_info = {
         "token_uri": "https://oauth2.googleapis.com/token",

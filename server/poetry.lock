@@ -179,6 +179,17 @@ protobuf = ">=3.6.0"
 
 [[package]]
 category = "main"
+description = "WSGI HTTP Server for UNIX"
+name = "gunicorn"
+optional = false
+python-versions = ">=3.4"
+version = "20.0.4"
+
+[package.dependencies]
+setuptools = ">=3.0"
+
+[[package]]
+category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
 optional = false
@@ -430,7 +441,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "5e77761ea4d5af189b4bdf84629debade6e25dc250e63586b5ad607dfdf6b10d"
+content-hash = "3a9dcfefb5544a9bcfedf4f1dd4030a0df73565da4db936caf9ee7ce4230b835"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -451,6 +462,7 @@ google-auth = ["bdf3af2b19368fc50ed0542b891bf64c2e92d8f207d92064a6cf1e1a1014d761
 google-cloud-core = ["49036087c1170c3fad026e45189f17092b8c584a9accb2d73d1854f494e223ae", "63c93d989d92a782efe8d9606ea2ad37673361ab0c3e7f965a5640d30ff14f20"]
 google-cloud-translate = ["85f3c4b4356a71fc3c847ff949b4927657189459c008f6f39e99686f81b4030f", "e5c66712950261a4d8bea4979d430a808ac0cee7efe284479b668a6c9130cc59"]
 googleapis-common-protos = ["e61b8ed5e36b976b487c6e7b15f31bb10c7a0ca7bd5c0e837f4afab64b53a0c6"]
+gunicorn = ["1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626", "cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"]
 idna = ["c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407", "ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"]
 importlib-metadata = ["3a8b2dfd0a2c6a3636e7c016a7e54ae04b997d30e69d5eacdca7a6c2221a1402", "41e688146d000891f32b1669e8573c57e39e5060e7f5f647aa617cd9a9568278"]
 itsdangerous = ["321b033d07f2a4136d3ec762eac9f16a10ccd60f53c0c91af90217ace7ba1f19", "b12271b2047cb23eeb98c8b5622e2e5c5e9abd9784a153e9d8ef9cb4dd09d749"]

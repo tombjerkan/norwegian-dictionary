@@ -13,6 +13,7 @@ google-cloud-translate = "^2.0"
 python-dotenv = "^0.10.3"
 sentry-sdk = {version = "^0.13.5", extras = ["flask"]}
 whitenoise = "^5.0"
+gunicorn = "^20.0"
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
 black = {version = "^18.3-alpha.0", allows-prereleases = true}

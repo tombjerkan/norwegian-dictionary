@@ -43,7 +43,7 @@ def test_correctly_parses_html_into_data_structure(word):
         content_type="text/html; charset=UTF-8",
     )
 
-    response = app.test_client().get(f"/wiktionary/{word}")
+    response = app.test_client().get(f"/api/wiktionary/{word}")
 
     expected_data = json.loads(read_data_file(f"{word}.json"))
     received_data = json.loads(response.data)
@@ -62,7 +62,7 @@ def test_returns_not_found_404_if_not_found_page_is_received():
         content_type="text/html; charset=UTF-8",
     )
 
-    response = app.test_client().get("/wiktionary/notaword")
+    response = app.test_client().get("/api/wiktionary/notaword")
 
     assert response.status_code == 404
 
@@ -78,7 +78,7 @@ def test_returns_not_found_404_if_no_norwegian_bokmaal_entry_on_received_page():
         content_type="text/html; charset=UTF-8",
     )
 
-    response = app.test_client().get("/wiktionary/rain")
+    response = app.test_client().get("/api/wiktionary/rain")
 
     assert response.status_code == 404
 
@@ -92,7 +92,7 @@ def test_returns_service_unavailable_503_if_network_error():
         body=requests.exceptions.ConnectionError(),
     )
 
-    response = app.test_client().get("/wiktionary/hallo")
+    response = app.test_client().get("/api/wiktionary/hallo")
 
     assert response.status_code == 503
 
@@ -102,7 +102,7 @@ def test_returns_service_unavailable_503_if_service_unavailable_received():
     app.config["TESTING"] = True
     responses.add(responses.GET, "https://en.wiktionary.org/wiki/hallo", status=503)
 
-    response = app.test_client().get("/wiktionary/hallo")
+    response = app.test_client().get("/api/wiktionary/hallo")
 
     assert response.status_code == 503
 
@@ -112,6 +112,6 @@ def test_returns_internal_server_error_if_other_http_error_received():
     app.config["TESTING"] = True
     responses.add(responses.GET, "https://en.wiktionary.org/wiki/hallo", status=500)
 
-    response = app.test_client().get("/wiktionary/hallo")
+    response = app.test_client().get("/api/wiktionary/hallo")
 
     assert response.status_code == 500

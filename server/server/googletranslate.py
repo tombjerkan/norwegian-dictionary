@@ -1,4 +1,5 @@
-import google.oauth2
+import google
+from google.oauth2 import service_account
 from google.cloud import translate_v2 as translate
 import os
 
@@ -7,26 +8,20 @@ from server import app, ApiError
 
 @app.route("/api/googleTranslate/<word>")
 def google_translate(word):
-    service_account_info = {
-        "token_uri": "https://oauth2.googleapis.com/token",
-        "client_email": os.getenv("GOOGLE_AUTH_CLIENT_EMAIL"),
-        "private_key": os.getenv("GOOGLE_AUTH_PRIVATE_KEY"),
-    }
-
     try:
-        credentials = google.oauth2.service_account.Credentials.from_service_account_info(
-            service_account_info
+        credentials = service_account.Credentials.from_service_account_info(
+            {
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "client_email": os.getenv("GOOGLE_AUTH_CLIENT_EMAIL"),
+                "private_key": os.getenv("GOOGLE_AUTH_PRIVATE_KEY"),
+            }
         )
-    except ValueError:
-        raise ApiError(500)
 
-    client = translate.Client(credentials=credentials)
-
-    try:
+        client = translate.Client(credentials=credentials)
         response = client.translate(word, source_language="no")
-    except google.auth.exceptions.RefreshError:
-        raise ApiError(500)
-    except google.auth.exceptions.TransportError:
-        raise ApiError(503)
+    except (ValueError, google.auth.exceptions.RefreshError) as e:
+        raise ApiError(500) from e
+    except google.auth.exceptions.TransportError as e:
+        raise ApiError(503) from e
 
     return response["translatedText"]

@@ -42,11 +42,11 @@ def wiktionary(word):
         if e.response.status_code == 404:
             raise ApiError(404)
         elif e.response.status_code == 503:
-            raise ApiError(503)
+            raise ApiError(503) from e
         else:
-            raise ApiError(500)
-    except requests.exceptions.ConnectionError:
-        raise ApiError(503)
+            raise ApiError(500) from e
+    except requests.exceptions.ConnectionError as e:
+        raise ApiError(503) from e
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 

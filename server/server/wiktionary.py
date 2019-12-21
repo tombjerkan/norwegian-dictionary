@@ -5,7 +5,7 @@ import re
 import requests
 
 from server import app, ApiError
-from server.utils import remove_all
+from server.utils import remove_all, TextParser
 
 
 PART_OF_SPEECH_TYPES = [
@@ -31,6 +31,22 @@ PART_OF_SPEECH_TYPES = [
     "Proper noun",
     "Verb",
 ]
+
+
+def is_link(element):
+    return element.name == "a" and get_word_linked_to(element) is not None
+
+
+def get_word_linked_to(anchor):
+    match = re.search("\/wiki\/(.+)#Norwegian_Bokmål", anchor["href"])
+
+    if match:
+        return match[1]
+    else:
+        return None
+
+
+text_parser = TextParser(is_link, get_word_linked_to)
 
 
 @app.route("/api/wiktionary/<word>")
@@ -153,7 +169,7 @@ def parse_etymology(elements):
     if len(etymology_section) == 0:
         return None
 
-    return get_text_content(*etymology_section)
+    return text_parser.parse(*etymology_section)
 
 
 def parse_sub_entries(elements):
@@ -163,7 +179,7 @@ def parse_sub_entries(elements):
     return [
         {
             "type": type_,
-            "term": get_text_content(section[0]),
+            "term": text_parser.parse(section[0]),
             "senses": [parse_sense(sense) for sense in section[1].children],
         }
         for type_, section in zip(types, sub_entry_sections)
@@ -178,9 +194,9 @@ def parse_sense(sense):
     definition_nodes = itertools.takewhile(
         lambda element: not element.name == "dl", sense.children
     )
-    definition = get_text_content(*definition_nodes)
+    definition = text_parser.parse(*definition_nodes)
 
-    examples = [get_text_content(example) for example in sense.select("dl > dd")]
+    examples = [text_parser.parse(example) for example in sense.select("dl > dd")]
 
     return {"definition": definition, "examples": examples}
 
@@ -191,7 +207,7 @@ def parse_synonyms(elements):
     if section is None:
         return []
 
-    return [get_text_content(element) for element in section[0].children]
+    return [text_parser.parse(element) for element in section[0].children]
 
 
 def parse_derived_terms(elements):
@@ -201,36 +217,5 @@ def parse_derived_terms(elements):
         return []
 
     return [
-        get_text_content(item) for element in section for item in element.find_all("li")
+        text_parser.parse(item) for element in section for item in element.find_all("li")
     ]
-
-
-def get_text_content(*args):
-    return "".join(__get_text_content(arg) for arg in args).strip()
-
-
-def __get_text_content(element):
-    if isinstance(element, bs4.element.Tag):
-        if is_link(element):
-            text_content = get_text_content(*element.children)
-            to = get_word_linked_to(element)
-            return f"<Link to='{to}'>{text_content}</Link>"
-        else:
-            return get_text_content(*element.children)
-    elif isinstance(element, bs4.element.NavigableString):
-        return element.string
-    else:
-        return ""
-
-
-def is_link(element):
-    return element.name == "a" and get_word_linked_to(element) is not None
-
-
-def get_word_linked_to(anchor):
-    match = re.search("\/wiki\/(.+)#Norwegian_Bokmål", anchor["href"])
-
-    if match:
-        return match[1]
-    else:
-        return None

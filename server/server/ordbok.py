@@ -5,7 +5,30 @@ import re
 import requests
 
 from server import app, ApiError
-from server.utils import remove_all, take_children_until
+from server.utils import remove_all, take_children_until, TextParser
+
+
+def is_link(element):
+    if not element.has_attr("class"):
+        return False
+
+    return "henvisning" in element["class"] or "etymtilvising" in element["class"]
+
+
+def get_word_linked_to(element):
+    on_click_parameter = re.search(
+        "^bob_vise_ref_art\(.*, .*, .*, .*, '(.*)'\)$", element["onclick"]
+    )[1]
+
+    on_click_parameter = re.sub("^[IVX]+\s+", "", on_click_parameter)
+    on_click_parameter = re.sub("\s+\([IVX]+\)$", "", on_click_parameter)
+    on_click_parameter = re.sub("\s+\(\d+\)$", "", on_click_parameter)
+    on_click_parameter = re.sub("\s+\([IVX]+,\d+\)$", "", on_click_parameter)
+
+    return on_click_parameter
+
+
+text_parser = TextParser(is_link, get_word_linked_to)
 
 
 @app.route("/api/ordbok/<word>")
@@ -44,8 +67,8 @@ def parse_entry(container):
     senses_container = article_content.find(class_="utvidet")
 
     return {
-        "term": re.sub("\s\s+", " ", get_text_content(term_column)),
-        "etymology": get_text_content(*etymology_elements),
+        "term": re.sub("\s\s+", " ", text_parser.parse(term_column)),
+        "etymology": text_parser.parse(*etymology_elements),
         "senses": parse_senses(senses_container),
     }
 
@@ -73,7 +96,7 @@ def parse_definition(sense_container):
     definition_elements = take_children_until(
         sense_container, ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     )
-    return re.sub("^\d+\s", "", get_text_content(*definition_elements))
+    return re.sub("^\d+\s", "", text_parser.parse(*definition_elements))
 
 
 def parse_examples(sense_container):
@@ -82,7 +105,7 @@ def parse_examples(sense_container):
     if example_list is None:
         return None
 
-    return get_text_content(example_list)
+    return text_parser.parse(example_list)
 
 
 def parse_subdefinitions(sense_container):
@@ -98,8 +121,8 @@ def parse_subdefinition(container):
     examples_container = container.find(class_="doemeliste", recursive=False)
 
     return {
-        "definition": get_text_content(*definition_elements),
-        "examples": get_text_content(examples_container)
+        "definition": text_parser.parse(*definition_elements),
+        "examples": text_parser.parse(examples_container)
         if examples_container
         else None,
     }
@@ -115,48 +138,6 @@ def parse_subentry(container):
     definition_container = container.find(class_="utvidet", recursive=False)
 
     return {
-        "term": get_text_content(term_container),
-        "definition": get_text_content(definition_container),
+        "term": text_parser.parse(term_container),
+        "definition": text_parser.parse(definition_container),
     }
-
-
-def get_text_content(*args):
-    return __get_text_content_nodes(*args).strip()
-
-
-def __get_text_content_nodes(*args):
-    return "".join(__get_text_content_node(arg) for arg in args)
-
-
-def __get_text_content_node(element):
-    if isinstance(element, bs4.element.Tag):
-        if is_link(element):
-            text_content = __get_text_content_nodes(*element.children)
-            to = get_word_linked_to(element)
-            return f"<Link to='{to}'>{text_content}</Link>"
-        else:
-            return __get_text_content_nodes(*element.children)
-    elif isinstance(element, bs4.element.NavigableString):
-        return re.sub("\s+", " ", element.string)
-    else:
-        return ""
-
-
-def is_link(element):
-    if not element.has_attr("class"):
-        return False
-
-    return "henvisning" in element["class"] or "etymtilvising" in element["class"]
-
-
-def get_word_linked_to(element):
-    on_click_parameter = re.search(
-        "^bob_vise_ref_art\(.*, .*, .*, .*, '(.*)'\)$", element["onclick"]
-    )[1]
-
-    on_click_parameter = re.sub("^[IVX]+\s+", "", on_click_parameter)
-    on_click_parameter = re.sub("\s+\([IVX]+\)$", "", on_click_parameter)
-    on_click_parameter = re.sub("\s+\(\d+\)$", "", on_click_parameter)
-    on_click_parameter = re.sub("\s+\([IVX]+,\d+\)$", "", on_click_parameter)
-
-    return on_click_parameter

@@ -5,6 +5,7 @@ import re
 import requests
 
 from server import app, ApiError
+from server.utils import remove_all, take_children_until
 
 
 @app.route("/api/ordbok/<word>")
@@ -34,16 +35,6 @@ def ordbok(word):
     entries = [parse_entry(v) for v in entry_rows]
 
     return jsonify(entries)
-
-
-def remove_all(root, selector):
-    for element in root.select(selector):
-        element.decompose()
-
-
-def take_children_until(root, selector):
-    match = root.select_one(selector)
-    return itertools.takewhile(lambda e: e != match, root.children)
 
 
 def parse_entry(container):

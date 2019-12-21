@@ -14,53 +14,58 @@ def ordbok(word):
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 503:
-            raise ApiError(503)
+            raise ApiError(503) from e
         else:
-            raise ApiError(500)
-    except requests.exceptions.ConnectionError:
-        raise ApiError(503)
+            raise ApiError(500) from e
+    except requests.exceptions.ConnectionError as e:
+        raise ApiError(503) from e
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 
-    for hidden_element in soup.find_all(class_="kompakt"):
-        hidden_element.decompose()
-
-    for hidden_element in soup.find_all(class_="oppsgramordklassevindu"):
-        hidden_element.decompose()
-
-    for style_element in soup.find_all("style"):
-        style_element.decompose()
-
-    if len(soup.select("#kolonnebm .ikkefunnet")) != 0:
-        raise ApiError(404)
+    remove_all(soup, ".kompakt")
+    remove_all(soup, ".oppsgramordklassevindu")
+    remove_all(soup, "style")
 
     bokmaal_table = soup.find(id="byttutBM")
+    if not bokmaal_table:
+        raise ApiError(404)
+
     entry_rows = bokmaal_table.find_all("tr", recursive=False)[1:]
-    entries = [parse_entry(row) for row in entry_rows]
+    entries = [parse_entry(v) for v in entry_rows]
 
     return jsonify(entries)
 
 
+def remove_all(root, selector):
+    for element in root.select(selector):
+        element.decompose()
+
+
+def take_children_until(root, selector):
+    match = root.select_one(selector)
+    return itertools.takewhile(lambda e: e != match, root.children)
+
+
 def parse_entry(container):
-    article_content = next(container.children).next_sibling.find(
-        class_="artikkelinnhold"
-    )
+    term_column = next(container.children)
+    article_content = container.find(class_="artikkelinnhold")
+    etymology_elements = take_children_until(article_content, ".utvidet")
     senses_container = article_content.find(class_="utvidet")
-    etymology_elements = reversed(list(senses_container.previous_siblings))
 
     return {
-        "term": re.sub("\s\s+", " ", get_text_content(next(container.children))),
+        "term": re.sub("\s\s+", " ", get_text_content(term_column)),
         "etymology": get_text_content(*etymology_elements),
         "senses": parse_senses(senses_container),
     }
 
 
 def parse_senses(container):
-    is_single_sense = len(container.find_all(class_="tyding", recursive=False)) <= 1
+    sense_containers = container.find_all(class_="tyding", recursive=False)
+    is_single_sense = len(sense_containers) <= 1
+
     if is_single_sense:
         return [parse_sense(container)]
     else:
-        sense_containers = container.find_all(class_="tyding", recursive=False)
         return [parse_sense(v) for v in sense_containers]
 
 
@@ -68,21 +73,15 @@ def parse_sense(container):
     return {
         "definition": parse_definition(container),
         "examples": parse_examples(container),
-        "subDefinitions": parse_sub_definitions(container),
-        "subEntries": parse_sub_entries(container),
+        "subDefinitions": parse_subdefinitions(container),
+        "subEntries": parse_subentries(container),
     }
 
 
 def parse_definition(sense_container):
-    end_of_definition = sense_container.select_one(
-        ".doemeliste, .tyding.utvidet, .artikkelinnhold"
+    definition_elements = take_children_until(
+        sense_container, ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     )
-
-    if end_of_definition is not None:
-        definition_elements = reversed(list(end_of_definition.previous_siblings))
-    else:
-        definition_elements = sense_container.children
-
     return re.sub("^\d+\s", "", get_text_content(*definition_elements))
 
 
@@ -95,21 +94,17 @@ def parse_examples(sense_container):
     return get_text_content(example_list)
 
 
-def parse_sub_definitions(sense_container):
-    sub_definition_containers = sense_container.select(
+def parse_subdefinitions(sense_container):
+    subdefinition_containers = sense_container.select(
         ".tyding.utvidet", recursive=False
     )
 
-    return [parse_sub_definition(v) for v in sub_definition_containers]
+    return [parse_subdefinition(v) for v in subdefinition_containers]
 
 
-def parse_sub_definition(container):
+def parse_subdefinition(container):
+    definition_elements = take_children_until(container, ":scope > .doemeliste")
     examples_container = container.find(class_="doemeliste", recursive=False)
-
-    if examples_container:
-        definition_elements = reversed(list(examples_container.previous_siblings))
-    else:
-        definition_elements = container.children
 
     return {
         "definition": get_text_content(*definition_elements),
@@ -119,14 +114,12 @@ def parse_sub_definition(container):
     }
 
 
-def parse_sub_entries(sense_container):
-    sub_entry_containers = sense_container.select(
-        ".artikkelinnhold > div", recursive=False
-    )
-    return [parse_sub_entry(v) for v in sub_entry_containers]
+def parse_subentries(sense_container):
+    subentry_containers = sense_container.select(".artikkelinnhold > div")
+    return [parse_subentry(v) for v in subentry_containers]
 
 
-def parse_sub_entry(container):
+def parse_subentry(container):
     term_container = container.find(class_="artikkeloppslagsord", recursive=False)
     definition_container = container.find(class_="utvidet", recursive=False)
 

@@ -5,6 +5,7 @@ import re
 import requests
 
 from server import app, ApiError
+from server.utils import remove_all
 
 
 PART_OF_SPEECH_TYPES = [
@@ -49,8 +50,7 @@ def wiktionary(word):
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 
-    for edit_button in soup.find_all(class_="mw-editsection"):
-        edit_button.decompose()
+    remove_all(soup, ".mw-editsection")
 
     # Navigable strings with only '\n' are purely syntactic
     # Removal makes parsing easier

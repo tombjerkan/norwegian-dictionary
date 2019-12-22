@@ -1,0 +1,24 @@
+{
+    "name": "test",
+    "version": "1.0.0",
+    "engines": {
+        "node": "12.6.0"
+    },
+    "scripts": {
+        "test": "testcafe firefox tests.js",
+        "lint": "lint-staged"
+    },
+    "lint-staged": {
+        "*.js": "prettier --tab-width 4 --check",
+        "*.json": [
+            "prettier --tab-width 4 --write",
+            "git add"
+        ]
+    },
+    "devDependencies": {
+        "@testing-library/testcafe": "^3.3.1",
+        "lint-staged": "^9.5.0",
+        "prettier": "^1.19.1",
+        "testcafe": "^1.7.0"
+    }
+}

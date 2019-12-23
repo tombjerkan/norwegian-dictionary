@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask, send_file
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -39,8 +41,14 @@ def index(path):
     )
 
 
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URI"]
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+
 from .googletranslate import google_translate
 from .wiktionary import wiktionary
 from .ordbok import ordbok
+from .starred import starred, Starred
 
 __version__ = "0.1.0"

@@ -1,29 +1,51 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import classNames from "classnames";
-import _ from "lodash";
 import { ReactComponent as StarIcon } from "components/Star.svg";
 import styles from "./styles.module.css";
-import { get, add } from "storage/starred";
+
+function useStarredEntry(term) {
+    const [entry, setEntry] = useState(null);
+    const [isLoading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        setEntry(null);
+        setLoading(true);
+        setError(null);
+
+        axios.get(`/api/starred/${term}`)
+            .then(response => setEntry(response.data))
+            .catch(error => setError(error.response.status))
+            .finally(() => setLoading(false));
+    }, [term]);
+
+    function postEntry(term, notes) {
+        setEntry({ term, notes });
+        axios.post("/api/starred", { term, notes });
+    }
+
+    return [entry, postEntry, isLoading, error]
+}
 
 export default function Star({ query }) {
-    const [isStarred, setStarred] = useState(false);
+    const [entry, postEntry] = useStarredEntry(query);
     const [isEditingNotes, setEditingNotes] = useState(false);
     const [notes, setNotes] = useState("");
 
+    const isStarred = isEditingNotes || entry !== null;
+
     useEffect(() => {
-        const starredEntry = get(query);
-        setStarred(starredEntry !== null);
-        if (starredEntry !== null) {
-            setNotes(starredEntry);
+        if (entry !== null) {
+            setNotes(entry.notes);
         }
-    }, [query]);
+    }, [entry]);
 
     return (
         <div className={styles.container}>
             <div className={styles.starButton}>
                 <StarIcon
                     onClick={() => {
-                        setStarred(true);
                         setEditingNotes(true);
                     }}
                     className={classNames(
@@ -45,7 +67,6 @@ export default function Star({ query }) {
                     <button
                         className={styles.cancel}
                         onClick={() => {
-                            setStarred(false);
                             setEditingNotes(false);
                         }}
                     >
@@ -56,7 +77,7 @@ export default function Star({ query }) {
                         className={styles.ok}
                         onClick={() => {
                             setEditingNotes(false);
-                            add(query, notes);
+                            postEntry(query, notes);
                         }}
                     >
                         Ok

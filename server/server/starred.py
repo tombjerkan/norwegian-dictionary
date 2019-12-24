@@ -1,6 +1,6 @@
 import flask
 
-from server import app, db, ApiError
+from server import app, db, marshmallow
 
 class Starred(db.Model):
     term = db.Column(db.Text(), primary_key=True)
@@ -8,6 +8,14 @@ class Starred(db.Model):
 
     def __repr__(self):
         return f"<Starred term=\"{self.term}\" notes=\"{self.notes}\">"
+
+
+class StarredSchema(marshmallow.Schema):
+    class Meta:
+        fields = ("term", "notes")
+
+
+starred_schema = StarredSchema(many=True)
 
 
 @app.route("/api/starred", methods=["GET", "POST"])
@@ -28,7 +36,4 @@ def starred():
         return "", 200
 
     else:
-        return flask.jsonify([
-            { "term": v.term, "notes": v.notes }
-            for v in Starred.query.all()
-        ])
+        return flask.jsonify(starred_schema.dump(Starred.query.all()))

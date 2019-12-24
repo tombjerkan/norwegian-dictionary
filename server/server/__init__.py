@@ -41,7 +41,7 @@ def index(path):
     )
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URI"]
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 

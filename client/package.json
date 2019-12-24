@@ -20,7 +20,9 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint": "lint-staged"
+        "lint": "lint-staged",
+        "storybook": "start-storybook -p 9009 -s public",
+        "build-storybook": "build-storybook -s public"
     },
     "lint-staged": {
         "*.js": "prettier --tab-width 4 --check",
@@ -47,6 +49,10 @@
     },
     "proxy": "http://localhost:5000/",
     "devDependencies": {
+        "@storybook/addon-actions": "^5.2.8",
+        "@storybook/addon-links": "^5.2.8",
+        "@storybook/addons": "^5.2.8",
+        "@storybook/react": "^5.2.8",
         "lint-staged": "^9.2.1",
         "prettier": "^1.18.2",
         "stylelint": "^10.1.0",

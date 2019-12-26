@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 
-export default function TextWithLinks({ text }) {
+export default function Text({ text }) {
     if (!text) {
         return "";
     }
@@ -17,7 +16,7 @@ export default function TextWithLinks({ text }) {
     const textNodes = xmlDocument.childNodes[0].childNodes;
 
     return (
-        <React.Fragment>
+        <>
             {Array.from(textNodes).map(node => {
                 if (node.nodeType === 1 && node.tagName === "Link") {
                     const to = node.getAttribute("to");
@@ -33,14 +32,28 @@ export default function TextWithLinks({ text }) {
                         </Link>
                     );
                 } else if (node.nodeType === 1) {
-                    return "<Invalid element>";
+                    console.warn(`Invalid element in text: ${text}`);
+                    return node.textContent;
                 } else if (node.nodeType === 3) {
                     return node.textContent;
                 } else {
                     return "";
                 }
             })}
-        </React.Fragment>
+        </>
+    );
+}
+
+function Link({ to, className, children }) {
+    function handleClick(event) {
+        event.preventDefault();
+        window.history.pushState(null, null, to);
+    }
+
+    return (
+        <a href={to} onClick={handleClick}>
+            {children}
+        </a>
     );
 }
 

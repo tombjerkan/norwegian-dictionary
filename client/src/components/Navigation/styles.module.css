@@ -1,0 +1,8 @@
+.outerContainer {
+    background-color: #993d2b;
+}
+
+.innerContainer {
+    display: flex;
+    padding: 12px;
+}

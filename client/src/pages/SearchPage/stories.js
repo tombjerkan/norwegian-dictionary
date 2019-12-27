@@ -61,7 +61,8 @@ const wiktionaryData = [
 const ordbokData = [
     {
         term: "Lorem",
-        etymology: "Maecenas <Link to='odio'>odio</Link> lorem, volutpat ac imperdiet pulvinar, rutrum eget risus.",
+        etymology:
+            "Maecenas <Link to='odio'>odio</Link> lorem, volutpat ac imperdiet pulvinar, rutrum eget risus.",
         senses: [
             {
                 definition: "Maecenas odio lorem",

@@ -14,9 +14,15 @@ export default function SearchPageContainer() {
     const [location, push] = useHistory();
     const query = location.pathname.slice(1);
 
-    const [googleData, googleIsLoading, googleError] = useFetch(`/api/googleTranslate/${query}`);
-    const [wiktionaryData, wiktionaryIsLoading, wiktionaryError] = useFetch(`/api/wiktionary/${query}`);
-    const [ordbokData, ordbokIsLoading, ordbokError] = useFetch(`/api/ordbok/${query}`);
+    const [googleData, googleIsLoading, googleError] = useFetch(
+        `/api/googleTranslate/${query}`
+    );
+    const [wiktionaryData, wiktionaryIsLoading, wiktionaryError] = useFetch(
+        `/api/wiktionary/${query}`
+    );
+    const [ordbokData, ordbokIsLoading, ordbokError] = useFetch(
+        `/api/ordbok/${query}`
+    );
 
     return (
         <SearchPageView
@@ -41,6 +47,7 @@ export default function SearchPageContainer() {
             onClickStarred={() => {
                 push("/starred");
             }}
+            isQuerySet={query !== ""}
         />
     );
 }
@@ -50,7 +57,8 @@ export function SearchPageView({
     wiktionary,
     ordbok,
     onSearch,
-    onClickStarred
+    onClickStarred,
+    isQuerySet
 }) {
     return (
         <div>
@@ -59,25 +67,27 @@ export function SearchPageView({
                 <Button onClick={onClickStarred}>Starred</Button>
             </Navigation>
 
-            <Content>
-                <GoogleTranslate
-                    data={googleTranslate.data}
-                    isLoading={googleTranslate.isLoading}
-                    error={googleTranslate.error}
-                />
+            {isQuerySet && (
+                <Content>
+                    <GoogleTranslate
+                        data={googleTranslate.data}
+                        isLoading={googleTranslate.isLoading}
+                        error={googleTranslate.error}
+                    />
 
-                <Wiktionary
-                    data={wiktionary.data}
-                    isLoading={wiktionary.isLoading}
-                    error={wiktionary.error}
-                />
+                    <Wiktionary
+                        data={wiktionary.data}
+                        isLoading={wiktionary.isLoading}
+                        error={wiktionary.error}
+                    />
 
-                <Ordbok
-                    data={ordbok.data}
-                    isLoading={ordbok.isLoading}
-                    error={ordbok.error}
-                />
-            </Content>
+                    <Ordbok
+                        data={ordbok.data}
+                        isLoading={ordbok.isLoading}
+                        error={ordbok.error}
+                    />
+                </Content>
+            )}
         </div>
     );
 }
@@ -85,9 +95,7 @@ export function SearchPageView({
 function Content({ children }) {
     return (
         <MaxWidthLimit>
-            <div className={styles.content}>
-                {children}
-            </div>
+            <div className={styles.content}>{children}</div>
         </MaxWidthLimit>
     );
 }

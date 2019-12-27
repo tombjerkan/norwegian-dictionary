@@ -54,7 +54,9 @@ export function ExpandableSection({ title, isLoading, error, children }) {
             {isContentAvailable && isOpen && (
                 <>
                     <div className={styles.expandableContent}>{children}</div>
-                    <button onClick={close} className={styles.closeButton}><Chevron className={styles.buttonChevron} /></button>
+                    <button onClick={close} className={styles.closeButton}>
+                        <Chevron className={styles.buttonChevron} />
+                    </button>
                 </>
             )}
         </Section>

@@ -35,7 +35,11 @@ export default function Text({ text }) {
                     }
 
                     return (
-                        <a href={to} onClick={handleClick} className={styles.link}>
+                        <a
+                            href={to}
+                            onClick={handleClick}
+                            className={styles.link}
+                        >
                             {node.textContent}
                         </a>
                     );

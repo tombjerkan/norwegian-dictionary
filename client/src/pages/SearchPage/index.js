@@ -13,21 +13,7 @@ import useFetch from "./useFetch";
 import styles from "./styles.module.css";
 
 function useStarredEntry(term) {
-    const [entry, setEntry] = useState(null);
-    const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        setEntry(null);
-        setLoading(true);
-        setError(null);
-
-        axios
-            .get(`/api/starred/${term}`)
-            .then(response => setEntry(response.data))
-            .catch(error => setError(error.response.status))
-            .finally(() => setLoading(false));
-    }, [term]);
+    const [entry, isLoading, error] = useFetch(`/api/starred/${term}`);
 
     function postEntry(term, notes) {
         setEntry({ term, notes });

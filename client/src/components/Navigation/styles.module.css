@@ -4,5 +4,6 @@
 
 .innerContainer {
     display: flex;
-    padding: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
 }

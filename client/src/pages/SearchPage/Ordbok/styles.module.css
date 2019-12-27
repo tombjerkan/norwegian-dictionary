@@ -1,0 +1,54 @@
+.entry + .entry {
+	margin-top: 70px;
+}
+
+.etymology {
+	color: rgba(0, 0, 0, 0.6);
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 22px;
+}
+
+.senses {
+    margin: 0 28px;
+    padding-left: 0;
+}
+
+.senses > li + li {
+    margin-top: 22px;
+}
+
+.examples {
+	color: rgba(0, 0, 0, 0.6);
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.subDefinition {
+    padding: 12px 16px;
+    margin-top: 22px;
+    margin-bottom: 22px;
+    border-left: 3px solid hsl(202, 50%, 50%);;
+    background: hsl(202, 50%, 95%);
+}
+
+.subDefinitionDefinition {
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.subDefinitionExamples {
+	color: rgba(0, 0, 0, 0.6);
+}
+
+.subEntry + .subEntry {
+    margin-top: 12px;
+}
+
+.subEntryTerm {
+    font-weight: 700;
+}
+
+.subEntryDefinition {
+	color: rgba(0, 0, 0, 0.6);
+}

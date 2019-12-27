@@ -26,8 +26,8 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: #af4631;
     color: var(--color-text-content);
-    background: var(--color-brand-primary);
 }
 
 code {

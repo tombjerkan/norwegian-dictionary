@@ -1,6 +1,6 @@
 import React from "react";
-import Search from "./Search";
+import SearchPage from "./SearchPage";
 
 export default function App() {
-    return <Search />;
+    return <SearchPage />;
 }

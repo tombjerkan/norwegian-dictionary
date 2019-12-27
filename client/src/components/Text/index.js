@@ -1,7 +1,10 @@
 import React from "react";
+import useHistory from "components/useHistory";
 import styles from "./styles.module.css";
 
 export default function Text({ text }) {
+    const [location, push] = useHistory();
+
     if (!text) {
         return "";
     }
@@ -22,14 +25,19 @@ export default function Text({ text }) {
                     const to = node.getAttribute("to");
 
                     // Do not insert a link if already on linked page
-                    if (isCurrentPageWord(to)) {
+                    if (`/${to}` === location.pathname) {
                         return node.textContent;
                     }
 
+                    function handleClick(event) {
+                        event.preventDefault();
+                        push(`/${to}`);
+                    }
+
                     return (
-                        <Link to={to} className={styles.link}>
+                        <a href={to} onClick={handleClick} className={styles.link}>
                             {node.textContent}
-                        </Link>
+                        </a>
                     );
                 } else if (node.nodeType === 1) {
                     console.warn(`Invalid element in text: ${text}`);
@@ -42,21 +50,4 @@ export default function Text({ text }) {
             })}
         </>
     );
-}
-
-function Link({ to, className, children }) {
-    function handleClick(event) {
-        event.preventDefault();
-        window.history.pushState(null, null, to);
-    }
-
-    return (
-        <a href={to} onClick={handleClick}>
-            {children}
-        </a>
-    );
-}
-
-function isCurrentPageWord(word) {
-    return `/${word}` === window.location.pathname;
 }

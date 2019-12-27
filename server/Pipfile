@@ -16,6 +16,10 @@ python-dotenv = "*"
 sentry-sdk = {extras = ["flask"],version = "*"}
 whitenoise = "*"
 gunicorn = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+psycopg2 = "*"
+flask-marshmallow = "*"
 
 [requires]
 python_version = "3.6"

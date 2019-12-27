@@ -1,33 +1,4 @@
-.entry + .entry {
-	margin-top: 70px;
-}
-
-.etymology {
-	color: rgba(0, 0, 0, 0.6);
-    font-size: 13px;
-    margin-top: 0;
-    margin-bottom: 22px;
-}
-
-.subEntry + .subEntry {
-	margin-top: 22px;
-}
-
-.term {
-	margin-top: 0;
-	margin-bottom: 16px;
-}
-
-.senses {
-    margin: 0 28px;
-    padding-left: 0;
-}
-
-.senses > li + li {
-    margin-top: 12px;
-}
-
-.example {
-	color: rgba(0, 0, 0, 0.6);
-    margin-top: 2px;
+.examples {
+    margin-top: 6px;
+    margin-bottom: 6px;
 }

@@ -1,41 +1,88 @@
 import React from "react";
 import Text from "components/Text";
 import { ExpandableSection } from "../Section";
-import { Header, SubHeader } from "../Header";
+import {
+    Entry,
+    Header,
+    SubHeader,
+    Etymology,
+    SenseList,
+    Sense,
+    Paragraph,
+    Examples
+} from "../common";
 import styles from "./styles.module.css";
 
 export default function Ordbok({ data, isLoading, error }) {
     return (
         <ExpandableSection title="Ordbok" isLoading={isLoading} error={error}>
-            {data && data.map(entry => (
-            	<div className={styles.entry}>
-	            	<Header>{entry.term}</Header>
-	            	<p className={styles.etymology}><Text text={entry.etymology} /></p>
+            {data &&
+                data.map(entry => (
+                    <Entry>
+                        <Header>{entry.term}</Header>
 
-	            	<ol className={styles.senses}>
-		            	{entry.senses.map(sense => (
-		            		<li>
-		            			<SubHeader><Text text={sense.definition} /></SubHeader>
-		            			<p className={styles.examples}><Text text={sense.examples} /></p>
+                        <Etymology>
+                            <Text text={entry.etymology} />
+                        </Etymology>
 
-		            			{sense.subDefinitions.map(subDefinition => (
-		            				<div className={styles.subDefinition}>
-		            					<div className={styles.subDefinitionDefinition}><Text text={subDefinition.definition} /></div>
-		            					<div className={styles.subDefinitionExamples}><Text text={subDefinition.examples} /></div>
-		            				</div>
-		            			))}
+                        <SenseList>
+                            {entry.senses.map(sense => (
+                                <Sense>
+                                    <SubHeader>
+                                        <Text text={sense.definition} />
+                                    </SubHeader>
 
-		            			{sense.subEntries.map(subEntry => (
-		            				<div className={styles.subEntry}>
-		            					<span className={styles.subEntryTerm}><Text text={subEntry.term} /></span>{" "}
-		            					<span className={styles.subEntryDefinition}><Text text={subEntry.definition} /></span>
-		            				</div>
-		            			))}
-		            		</li>
-		            	))}
-	            	</ol>
-	            </div>
-            ))}
+                                    <Examples>
+                                        <Text text={sense.examples} />
+                                    </Examples>
+
+                                    {sense.subDefinitions.map(subDefinition => (
+                                        <SubDefinition
+                                            definition={
+                                                subDefinition.definition
+                                            }
+                                            examples={subDefinition.examples}
+                                        />
+                                    ))}
+
+                                    {sense.subEntries.map(subEntry => (
+                                        <SubEntry
+                                            term={subEntry.term}
+                                            definition={subEntry.definition}
+                                        />
+                                    ))}
+                                </Sense>
+                            ))}
+                        </SenseList>
+                    </Entry>
+                ))}
         </ExpandableSection>
+    );
+}
+
+function SubDefinition({ definition, examples }) {
+    return (
+        <div className={styles.subDefinition}>
+            <SubHeader>
+                <Text text={definition} />
+            </SubHeader>
+
+            <Examples>
+                <Text text={examples} />
+            </Examples>
+        </div>
+    );
+}
+
+function SubEntry({ term, definition }) {
+    return (
+        <Paragraph>
+            <span className={styles.subEntryTerm}>
+                <Text text={term} />
+            </span>{" "}
+            <span className={styles.subEntryDefinition}>
+                <Text text={definition} />
+            </span>
+        </Paragraph>
     );
 }

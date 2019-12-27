@@ -1,7 +1,16 @@
 import React from "react";
 import Text from "components/Text";
 import { ExpandableSection } from "../Section";
-import { Header, SubHeader } from "../Header";
+import {
+    Entry,
+    Header,
+    SubHeader,
+    Etymology,
+    SenseList,
+    Sense,
+    Paragraph,
+    Examples
+} from "../common";
 import styles from "./styles.module.css";
 
 export default function Wiktionary({ data, isLoading, error }) {
@@ -11,52 +20,59 @@ export default function Wiktionary({ data, isLoading, error }) {
             isLoading={isLoading}
             error={error}
         >
-            {data && data.map((entry, index) => (
-                <div className={styles.entry}>
-                    <Header>Etymology {index + 1}</Header>
+            {data &&
+                data.map((entry, index) => (
+                    <Entry>
+                        <Header>Etymology {index + 1}</Header>
 
-                    <p className={styles.etymology}>
-                        <Text text={entry.etymology} />
-                    </p>
+                        <Etymology>
+                            <Text text={entry.etymology} />
+                        </Etymology>
 
-                    {entry.subEntries.map(subEntry => (
-                        <div className={styles.subEntry}>
-                            <SubHeader>{subEntry.type}</SubHeader>
+                        {entry.subEntries.map(subEntry => (
+                            <>
+                                <SubHeader>{subEntry.type}</SubHeader>
 
-                            <p className={styles.term}>
-                                <Text text={subEntry.term} />
-                            </p>
+                                <Paragraph>
+                                    <Text text={subEntry.term} />
+                                </Paragraph>
 
-                            <ol className={styles.senses}>
-                                {subEntry.senses.map(sense => (
-                                    <li>
-                                        <Text text={sense.definition} />
-                                        {sense.examples.map(example => (
-                                            <div className={styles.example}>
-                                                <Text text={example} />
-                                            </div>
-                                        ))}
-                                    </li>
-                                ))}
-                            </ol>
-                        </div>
-                    ))}
+                                <SenseList>
+                                    {subEntry.senses.map(sense => (
+                                        <Sense>
+                                            <Text text={sense.definition} />
+                                            {sense.examples.map(example => (
+                                                <Examples
+                                                    className={styles.examples}
+                                                >
+                                                    <Text text={example} />
+                                                </Examples>
+                                            ))}
+                                        </Sense>
+                                    ))}
+                                </SenseList>
+                            </>
+                        ))}
 
-                    {entry.synonyms.length > 0 && (
-                        <>
-                            <SubHeader>Synonyms</SubHeader>
-                            <Text text={entry.synonyms.join(", ")} />
-                        </>
-                    )}
+                        {entry.synonyms.length > 0 && (
+                            <>
+                                <SubHeader>Synonyms</SubHeader>
+                                <Paragraph>
+                                    <Text text={entry.synonyms.join(", ")} />
+                                </Paragraph>
+                            </>
+                        )}
 
-                    {entry.derived.length > 0 && (
-                        <>
-                            <SubHeader>Derived</SubHeader>
-                            <Text text={entry.derived.join(", ")} />
-                        </>
-                    )}
-                </div>
-            ))}
+                        {entry.derived.length > 0 && (
+                            <>
+                                <SubHeader>Derived</SubHeader>
+                                <Paragraph>
+                                    <Text text={entry.derived.join(", ")} />
+                                </Paragraph>
+                            </>
+                        )}
+                    </Entry>
+                ))}
         </ExpandableSection>
     );
 }

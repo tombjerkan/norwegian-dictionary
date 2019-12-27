@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import useHistory from "components/useHistory";
 import Navigation from "components/Navigation";
 import Search from "components/Search";
@@ -7,12 +8,40 @@ import MaxWidthLimit from "components/MaxWidthLimit";
 import GoogleTranslate from "./GoogleTranslate";
 import Ordbok from "./Ordbok";
 import Wiktionary from "./Wiktionary";
+import Star from "./Star";
 import useFetch from "./useFetch";
 import styles from "./styles.module.css";
 
+function useStarredEntry(term) {
+    const [entry, setEntry] = useState(null);
+    const [isLoading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        setEntry(null);
+        setLoading(true);
+        setError(null);
+
+        axios
+            .get(`/api/starred/${term}`)
+            .then(response => setEntry(response.data))
+            .catch(error => setError(error.response.status))
+            .finally(() => setLoading(false));
+    }, [term]);
+
+    function postEntry(term, notes) {
+        setEntry({ term, notes });
+        axios.post("/api/starred", { term, notes });
+    }
+
+    return [entry, postEntry, isLoading, error];
+}
+
 export default function SearchPageContainer() {
     const [location, push] = useHistory();
-    const query = location.pathname.slice(1);
+    const query = location.pathname.startsWith("/search/")
+        ? location.pathname.slice(8)
+        : "";
 
     const [googleData, googleIsLoading, googleError] = useFetch(
         `/api/googleTranslate/${query}`
@@ -23,6 +52,7 @@ export default function SearchPageContainer() {
     const [ordbokData, ordbokIsLoading, ordbokError] = useFetch(
         `/api/ordbok/${query}`
     );
+    const [starredEntry, postStarredEntry] = useStarredEntry(query);
 
     return (
         <SearchPageView
@@ -41,8 +71,10 @@ export default function SearchPageContainer() {
                 isLoading: wiktionaryIsLoading,
                 error: wiktionaryError
             }}
+            starredEntry={starredEntry}
+            postStarredEntry={notes => postStarredEntry(query, notes)}
             onSearch={query => {
-                push(`/${query}`);
+                push(`/search/${query}`);
             }}
             onClickStarred={() => {
                 push("/starred");
@@ -56,8 +88,11 @@ export function SearchPageView({
     googleTranslate,
     wiktionary,
     ordbok,
+    starredEntry,
+    postStarredEntry,
     onSearch,
     onClickStarred,
+    query,
     isQuerySet
 }) {
     return (
@@ -86,6 +121,8 @@ export function SearchPageView({
                         isLoading={ordbok.isLoading}
                         error={ordbok.error}
                     />
+
+                    <Star entry={starredEntry} postEntry={postStarredEntry} />
                 </Content>
             )}
         </div>

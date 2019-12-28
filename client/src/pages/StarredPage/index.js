@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navigation from "components/Navigation";
-import NavigationButton from "components/NavigationButton";
 import Link from "components/Link";
 import MaxWidthLimit from "components/MaxWidthLimit";
+import SearchNavigationButton from "./SearchNavigationButton";
 import styles from "./styles.module.css";
 
 export default function StarredPageContainer() {
@@ -34,7 +34,7 @@ export function StarredPageView({ entries, onDelete }) {
     return (
         <div>
             <Navigation>
-                <NavigationButton to="/">Search</NavigationButton>
+                <SearchNavigationButton />
             </Navigation>
 
             <MaxWidthLimit>

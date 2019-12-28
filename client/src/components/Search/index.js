@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import classNames from "classnames";
-import { ReactComponent as Magnifier } from "./Magnifier.svg";
+import { ReactComponent as Magnifier } from "components/Magnifier.svg";
 import styles from "./styles.module.css";
 
 export default function Search({ initialValue, onSubmit, className }) {

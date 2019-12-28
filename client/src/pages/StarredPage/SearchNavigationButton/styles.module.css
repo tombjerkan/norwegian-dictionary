@@ -1,0 +1,16 @@
+.container {
+	display: flex;
+	align-items: center;
+}
+
+.chevron {
+	height: 12px;
+	margin-right: 10px;
+	stroke: var(--color-text-secondary);
+	transform: rotate(180deg);
+}
+
+.magnifier {
+	height: 15px;
+    stroke: var(--color-brand-secondary-dark);
+}

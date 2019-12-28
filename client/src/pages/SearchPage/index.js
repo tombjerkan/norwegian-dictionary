@@ -3,7 +3,7 @@ import axios from "axios";
 import { history, useLocation } from "routing";
 import Navigation from "components/Navigation";
 import Search from "components/Search";
-import NavigationButton from "components/NavigationButton";
+import StarredNavigationButton from "./StarredNavigationButton";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import GoogleTranslate from "./GoogleTranslate";
 import Ordbok from "./Ordbok";
@@ -66,7 +66,7 @@ export function SearchPageView({
         <div>
             <Navigation className={styles.navigation}>
                 <Search onSubmit={onSearch} className={styles.search} />
-                <NavigationButton to="/starred">Starred</NavigationButton>
+                <StarredNavigationButton />
             </Navigation>
 
             {query !== "" && (

@@ -1,10 +1,10 @@
 import React from "react";
-import useHistory from "components/useHistory";
+import { useLocation } from "routing";
 import SearchPage from "./SearchPage";
 import StarredPage from "./StarredPage";
 
 export default function App() {
-    const [location] = useHistory();
+	const location = useLocation();
 
     if (location.pathname === "/" || location.pathname.startsWith("/search")) {
         return <SearchPage />;

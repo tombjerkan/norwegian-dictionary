@@ -1,14 +1,12 @@
 import React from "react";
 import classNames from "classnames";
-import useHistory from "components/useHistory";
+import { history } from "routing";
 import styles from "./styles.module.css";
 
 export default function Link({ to, children, className }) {
-    const [, push] = useHistory();
-
     function handleClick(event) {
         event.preventDefault();
-        push(to);
+        history.push(to);
     }
 
     return (

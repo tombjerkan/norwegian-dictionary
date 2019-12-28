@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import useHistory from "components/useHistory";
+import { history } from "routing";
 import Navigation from "components/Navigation";
 import Button from "components/Button";
 import MaxWidthLimit from "components/MaxWidthLimit";
@@ -8,7 +8,6 @@ import Link from "components/Link";
 import styles from "./styles.module.css";
 
 export default function StarredPageContainer() {
-    const [, push] = useHistory();
     const [entries, setEntries] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,7 +31,7 @@ export default function StarredPageContainer() {
     return (
         <StarredPageView
             entries={entries}
-            onClickSearch={() => push("/")}
+            onClickSearch={() => history.push("/")}
             onDelete={deleteEntry}
         />
     );

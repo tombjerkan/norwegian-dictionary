@@ -1,9 +1,9 @@
 import React from "react";
-import useHistory from "components/useHistory";
+import { history, useLocation } from "routing";
 import styles from "./styles.module.css";
 
 export default function Text({ text }) {
-    const [location, push] = useHistory();
+    const location = useLocation();
 
     if (!text) {
         return "";
@@ -31,12 +31,12 @@ export default function Text({ text }) {
 
                     function handleClick(event) {
                         event.preventDefault();
-                        push(`/${to}`);
+                        history.push(`/search/${to}`);
                     }
 
                     return (
                         <a
-                            href={to}
+                            href={`/search/${to}`}
                             onClick={handleClick}
                             className={styles.link}
                         >

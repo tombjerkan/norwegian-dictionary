@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import useHistory from "components/useHistory";
+import { history, useLocation } from "routing";
 import Navigation from "components/Navigation";
 import Search from "components/Search";
 import Button from "components/Button";
@@ -13,7 +13,20 @@ import useFetch from "./useFetch";
 import styles from "./styles.module.css";
 
 function useStarredEntry(term) {
-    const [entry, isLoading, error] = useFetch(`/api/starred/${term}`);
+    const [entry, setEntry] = useState(null);
+    const [isLoading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        setLoading(true);
+        setError(null);
+
+        axios
+            .get(`/api/starred/${term}`)
+            .then(response => setEntry(response.data))
+            .catch(error => setError(error.response.status))
+            .finally(() => setLoading(false));
+    }, [term]);
 
     function postEntry(term, notes) {
         setEntry({ term, notes });
@@ -24,7 +37,8 @@ function useStarredEntry(term) {
 }
 
 export default function SearchPageContainer() {
-    const [location, push] = useHistory();
+    const location = useLocation();
+
     const query = location.pathname.startsWith("/search/")
         ? location.pathname.slice(8)
         : "";
@@ -60,10 +74,10 @@ export default function SearchPageContainer() {
             starredEntry={starredEntry}
             postStarredEntry={notes => postStarredEntry(query, notes)}
             onSearch={query => {
-                push(`/search/${query}`);
+                history.push(`/search/${query}`);
             }}
             onClickStarred={() => {
-                push("/starred");
+                history.push("/starred");
             }}
             isQuerySet={query !== ""}
         />

@@ -3,7 +3,7 @@ import axios from "axios";
 import { history, useLocation } from "routing";
 import Navigation from "components/Navigation";
 import Search from "components/Search";
-import Button from "components/Button";
+import NavigationButton from "components/NavigationButton";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import GoogleTranslate from "./GoogleTranslate";
 import Ordbok from "./Ordbok";
@@ -51,9 +51,6 @@ export default function SearchPageContainer() {
             onSearch={query => {
                 history.push(`/search/${query}`);
             }}
-            onClickStarred={() => {
-                history.push("/starred");
-            }}
             query={query}
         />
     );
@@ -63,14 +60,13 @@ export function SearchPageView({
     starredEntry,
     postStarredEntry,
     onSearch,
-    onClickStarred,
     query
 }) {
     return (
         <div>
             <Navigation className={styles.navigation}>
                 <Search onSubmit={onSearch} className={styles.search} />
-                <Button onClick={onClickStarred}>Starred</Button>
+                <NavigationButton to="/starred">Starred</NavigationButton>
             </Navigation>
 
             {query !== "" && (

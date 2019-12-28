@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { history } from "routing";
 import Navigation from "components/Navigation";
-import Button from "components/Button";
-import MaxWidthLimit from "components/MaxWidthLimit";
+import NavigationButton from "components/NavigationButton";
 import Link from "components/Link";
+import MaxWidthLimit from "components/MaxWidthLimit";
 import styles from "./styles.module.css";
 
 export default function StarredPageContainer() {
@@ -28,20 +27,14 @@ export default function StarredPageContainer() {
         axios.delete(`/api/starred/${term}`);
     }
 
-    return (
-        <StarredPageView
-            entries={entries}
-            onClickSearch={() => history.push("/")}
-            onDelete={deleteEntry}
-        />
-    );
+    return <StarredPageView entries={entries} onDelete={deleteEntry} />;
 }
 
-export function StarredPageView({ entries, onClickSearch, onDelete }) {
+export function StarredPageView({ entries, onDelete }) {
     return (
         <div>
             <Navigation>
-                <Button onClick={onClickSearch}>Search</Button>
+                <NavigationButton to="/">Search</NavigationButton>
             </Navigation>
 
             <MaxWidthLimit>

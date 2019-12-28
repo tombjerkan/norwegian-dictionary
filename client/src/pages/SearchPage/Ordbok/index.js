@@ -1,5 +1,6 @@
 import React from "react";
 import Text from "components/Text";
+import useFetch from "../useFetch";
 import { ExpandableSection } from "../Section";
 import {
     Entry,
@@ -13,7 +14,13 @@ import {
 } from "../common";
 import styles from "./styles.module.css";
 
-export default function Ordbok({ data, isLoading, error }) {
+export default function OrdbokContainer({ query }) {
+    const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`);
+
+    return <OrdbokView data={data} isLoading={isLoading} error={error} />;
+}
+
+export function OrdbokView({ data, isLoading, error }) {
     return (
         <ExpandableSection title="Ordbok" isLoading={isLoading} error={error}>
             {data &&

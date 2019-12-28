@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import Wiktionary from ".";
+import { WiktionaryView } from ".";
 
 const data = [
     {
@@ -58,5 +58,5 @@ const data = [
 ];
 
 storiesOf("Wiktionary", module).add("default", () => (
-    <Wiktionary data={data} isLoading={false} error={null} />
+    <WiktionaryView data={data} isLoading={false} error={null} />
 ));

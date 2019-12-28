@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import Ordbok from ".";
+import { OrdbokView } from ".";
 
 const data = [
     {
@@ -29,5 +29,5 @@ const data = [
 ];
 
 storiesOf("Ordbok", module).add("default", () => (
-    <Ordbok data={data} isLoading={false} error={null} />
+    <OrdbokView data={data} isLoading={false} error={null} />
 ));

@@ -9,7 +9,6 @@ import GoogleTranslate from "./GoogleTranslate";
 import Ordbok from "./Ordbok";
 import Wiktionary from "./Wiktionary";
 import Star from "./Star";
-import useFetch from "./useFetch";
 import styles from "./styles.module.css";
 
 function useStarredEntry(term) {
@@ -43,34 +42,10 @@ export default function SearchPageContainer() {
         ? location.pathname.slice(8)
         : "";
 
-    const [googleData, googleIsLoading, googleError] = useFetch(
-        `/api/googleTranslate/${query}`
-    );
-    const [wiktionaryData, wiktionaryIsLoading, wiktionaryError] = useFetch(
-        `/api/wiktionary/${query}`
-    );
-    const [ordbokData, ordbokIsLoading, ordbokError] = useFetch(
-        `/api/ordbok/${query}`
-    );
     const [starredEntry, postStarredEntry] = useStarredEntry(query);
 
     return (
         <SearchPageView
-            googleTranslate={{
-                data: googleData,
-                isLoading: googleIsLoading,
-                error: googleError
-            }}
-            ordbok={{
-                data: ordbokData,
-                isLoading: ordbokIsLoading,
-                error: ordbokError
-            }}
-            wiktionary={{
-                data: wiktionaryData,
-                isLoading: wiktionaryIsLoading,
-                error: wiktionaryError
-            }}
             starredEntry={starredEntry}
             postStarredEntry={notes => postStarredEntry(query, notes)}
             onSearch={query => {
@@ -79,21 +54,17 @@ export default function SearchPageContainer() {
             onClickStarred={() => {
                 history.push("/starred");
             }}
-            isQuerySet={query !== ""}
+            query={query}
         />
     );
 }
 
 export function SearchPageView({
-    googleTranslate,
-    wiktionary,
-    ordbok,
     starredEntry,
     postStarredEntry,
     onSearch,
     onClickStarred,
-    query,
-    isQuerySet
+    query
 }) {
     return (
         <div>
@@ -102,25 +73,11 @@ export function SearchPageView({
                 <Button onClick={onClickStarred}>Starred</Button>
             </Navigation>
 
-            {isQuerySet && (
+            {query !== "" && (
                 <Content>
-                    <GoogleTranslate
-                        data={googleTranslate.data}
-                        isLoading={googleTranslate.isLoading}
-                        error={googleTranslate.error}
-                    />
-
-                    <Wiktionary
-                        data={wiktionary.data}
-                        isLoading={wiktionary.isLoading}
-                        error={wiktionary.error}
-                    />
-
-                    <Ordbok
-                        data={ordbok.data}
-                        isLoading={ordbok.isLoading}
-                        error={ordbok.error}
-                    />
+                    <GoogleTranslate query={query} />
+                    <Wiktionary query={query} />
+                    <Ordbok query={query} />
 
                     <Star entry={starredEntry} postEntry={postStarredEntry} />
                 </Content>

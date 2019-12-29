@@ -6,3 +6,7 @@
     padding-left: 13px;
     padding-right: 13px;
 }
+
+.button:hover {
+    cursor: pointer;
+}

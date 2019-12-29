@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import classNames from "classnames";
 import { ReactComponent as Magnifier } from "components/Magnifier.svg";
+import { ReactComponent as Clear } from "./Clear.svg";
 import styles from "./styles.module.css";
 
 export default function Search({ initialValue, onSubmit, className }) {
@@ -9,6 +10,10 @@ export default function Search({ initialValue, onSubmit, className }) {
 
     function handleChange(event) {
         setValue(event.target.value);
+    }
+
+    function handleClear() {
+        setValue("");
     }
 
     function handleSubmit(event) {
@@ -35,6 +40,8 @@ export default function Search({ initialValue, onSubmit, className }) {
                 ref={inputRef}
                 className={styles.input}
             />
+
+            <Clear className={styles.clear} onClick={handleClear} />
         </form>
     );
 }

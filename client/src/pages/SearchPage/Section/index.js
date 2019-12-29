@@ -4,8 +4,10 @@ import Loading from "components/Loading";
 import { ReactComponent as Chevron } from "components/Chevron.svg";
 import styles from "./styles.module.css";
 
-export function Section({ children }) {
-    return <section className={styles.section}>{children}</section>;
+export function Section({ isLoading, error, children }) {
+    const isUnavailable = !isLoading && error !== null;
+
+    return <section className={classNames(styles.section, isUnavailable && styles.unavailable)}>{children}</section>;
 }
 
 export function Header({ title, isLoading, error, onClick, children, className }) {
@@ -34,7 +36,7 @@ export function ExpandableSection({ title, isLoading, error, children }) {
     const isContentAvailable = !isLoading && error === null;
 
     return (
-        <Section>
+        <Section isLoading={isLoading} error={error}>
             <Header
                 title={title}
                 isLoading={isLoading}

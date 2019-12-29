@@ -14,7 +14,7 @@ export function GoogleTranslateView({ data, isLoading, error }) {
     const isContentAvailable = !isLoading && error === null;
 
     return (
-        <Section>
+        <Section isLoading={isLoading} error={error}>
             <Header title="Google" isLoading={isLoading} error={error}>
                 {isContentAvailable && data}
             </Header>

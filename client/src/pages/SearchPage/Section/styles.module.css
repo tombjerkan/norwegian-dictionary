@@ -5,6 +5,10 @@
     overflow: hidden;
 }
 
+.unavailable {
+    opacity: 60%;
+}
+
 .header {
 	display: flex;
 	align-items: center;

@@ -17,7 +17,7 @@ import styles from "./styles.module.css";
 export default function WiktionaryContainer({ query }) {
     const [data, isLoading, error] = useFetch(`/api/wiktionary/${query}`);
 
-    return <WiktionaryView data={data} isLoading={isLoading} error={error} />;
+    return <WiktionaryView data={data} isLoading={isLoading} error={error} key={query} />;
 }
 
 export function WiktionaryView({ data, isLoading, error }) {

@@ -17,7 +17,7 @@ import styles from "./styles.module.css";
 export default function OrdbokContainer({ query }) {
     const [data, isLoading, error] = useFetch(`/api/ordbok/${query}`);
 
-    return <OrdbokView data={data} isLoading={isLoading} error={error} />;
+    return <OrdbokView data={data} isLoading={isLoading} error={error} key={query} />;
 }
 
 export function OrdbokView({ data, isLoading, error }) {

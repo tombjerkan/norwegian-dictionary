@@ -17,6 +17,7 @@ function useStarredEntry(term) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        setEntry(null);
         setLoading(true);
         setError(null);
 

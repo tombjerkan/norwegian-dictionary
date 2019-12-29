@@ -12,6 +12,8 @@ export default function Star({ entry, postEntry }) {
     useEffect(() => {
         if (entry !== null) {
             setNotes(entry.notes);
+        } else {
+            setNotes("");
         }
     }, [entry]);
 

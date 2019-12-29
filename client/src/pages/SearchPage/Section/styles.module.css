@@ -19,6 +19,10 @@
 	flex: 1;
 }
 
+.error {
+    height: 30px;
+}
+
 .chevron {
 	height: 6px;
 }

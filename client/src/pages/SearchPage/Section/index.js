@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import Loading from "components/Loading";
+import { ReactComponent as Error } from "components/Error.svg";
 import { ReactComponent as Chevron } from "components/Chevron.svg";
 import styles from "./styles.module.css";
 
@@ -20,7 +21,7 @@ export function Header({ title, isLoading, error, onClick, children, className }
 
             {isLoading && <Loading />}
             {isNotFound && <div>Not available</div>}
-            {isError && <div>Error</div>}
+            {isError && <Error className={styles.error} />}
 
             {children}
         </div>

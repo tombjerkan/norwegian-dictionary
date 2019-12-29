@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import { ReactComponent as Magnifier } from "components/Magnifier.svg";
 import { ReactComponent as Clear } from "./Clear.svg";
@@ -7,6 +7,10 @@ import styles from "./styles.module.css";
 export default function Search({ initialValue, onSubmit, className }) {
     const [value, setValue] = useState(initialValue || "");
     const inputRef = useRef(null);
+
+    useEffect(() => {
+        setValue(initialValue);
+    }, [initialValue]);
 
     function handleChange(event) {
         setValue(event.target.value);

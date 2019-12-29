@@ -42,9 +42,6 @@ export default function SearchPageContainer({ query }) {
         <SearchPageView
             starredEntry={starredEntry}
             postStarredEntry={notes => postStarredEntry(query, notes)}
-            onSearch={query => {
-                history.push(`/search/${query}`);
-            }}
             query={query}
         />
     );
@@ -56,10 +53,14 @@ export function SearchPageView({
     onSearch,
     query
 }) {
+    function handleSearch(query) {
+        history.push(`/search/${query}`);
+    }
+
     return (
         <div>
             <Navigation className={styles.navigation}>
-                <Search onSubmit={onSearch} className={styles.search} />
+                <Search onSubmit={handleSearch} initialValue={query} className={styles.search} />
                 <StarredNavigationButton />
             </Navigation>
 

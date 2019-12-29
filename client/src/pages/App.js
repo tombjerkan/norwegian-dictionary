@@ -4,10 +4,13 @@ import SearchPage from "./SearchPage";
 import StarredPage from "./StarredPage";
 
 export default function App() {
-	const location = useLocation();
+    const location = useLocation();
 
-    if (location.pathname === "/" || location.pathname.startsWith("/search")) {
+    if (location.pathname === "/") {
         return <SearchPage />;
+    } else if (location.pathname.startsWith("/search/")) {
+        const query = location.pathname.slice(8);
+        return <SearchPage query={query} />;
     } else if (location.pathname === "/starred") {
         return <StarredPage />;
     }

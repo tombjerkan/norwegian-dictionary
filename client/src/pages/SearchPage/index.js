@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { history, useLocation } from "routing";
+import { history } from "routing";
 import Navigation from "components/Navigation";
 import Search from "components/Search";
 import StarredNavigationButton from "./StarredNavigationButton";
@@ -35,13 +35,7 @@ function useStarredEntry(term) {
     return [entry, postEntry, isLoading, error];
 }
 
-export default function SearchPageContainer() {
-    const location = useLocation();
-
-    const query = location.pathname.startsWith("/search/")
-        ? location.pathname.slice(8)
-        : "";
-
+export default function SearchPageContainer({ query }) {
     const [starredEntry, postStarredEntry] = useStarredEntry(query);
 
     return (
@@ -69,7 +63,7 @@ export function SearchPageView({
                 <StarredNavigationButton />
             </Navigation>
 
-            {query !== "" && (
+            {query && (
                 <Content>
                     <GoogleTranslate query={query} />
                     <Wiktionary query={query} />

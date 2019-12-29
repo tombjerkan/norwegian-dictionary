@@ -8,12 +8,12 @@ export function Section({ children }) {
     return <section className={styles.section}>{children}</section>;
 }
 
-export function Header({ title, isLoading, error, onClick, children }) {
+export function Header({ title, isLoading, error, onClick, children, className }) {
     const isNotFound = !isLoading && error === 404;
     const isError = !isLoading && error !== null && error !== 404;
 
     return (
-        <div onClick={onClick} className={styles.header}>
+        <div onClick={onClick} className={classNames(styles.header, className)}>
             <h2 className={styles.title}>{title}</h2>
 
             {isLoading && <Loading />}
@@ -40,6 +40,7 @@ export function ExpandableSection({ title, isLoading, error, children }) {
                 isLoading={isLoading}
                 error={error}
                 onClick={toggleOpen}
+                className={isContentAvailable && styles.expandableHeader}
             >
                 {isContentAvailable && (
                     <Chevron

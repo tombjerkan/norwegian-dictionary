@@ -61,7 +61,11 @@ export function SearchPageView({
     return (
         <div>
             <Navigation className={styles.navigation}>
-                <Search onSubmit={handleSearch} initialValue={query} className={styles.search} />
+                <Search
+                    onSubmit={handleSearch}
+                    initialValue={query}
+                    className={styles.search}
+                />
                 <StarredNavigationButton />
             </Navigation>
 

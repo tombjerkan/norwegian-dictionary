@@ -22,6 +22,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "lint-staged",
+        "prettier": "prettier --tab-width 4 --write \"**/*.js\" \"**/*.json\"",
         "storybook": "start-storybook -p 9009 -s public",
         "build-storybook": "build-storybook -s public"
     },

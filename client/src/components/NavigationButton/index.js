@@ -6,7 +6,9 @@ import styles from "./styles.module.css";
 export default function NavigationButton({ to, children, className }) {
     return (
         <Link to={to}>
-            <button className={classNames(styles.button, className)}>{children}</button>
+            <button className={classNames(styles.button, className)}>
+                {children}
+            </button>
         </Link>
     );
 }

@@ -57,9 +57,7 @@ function StarredEntries({ children }) {
         <div className={styles.starred}>
             <h2 className={styles.header}>Starred</h2>
 
-            <ul className={styles.entries}>
-                {children}
-            </ul>
+            <ul className={styles.entries}>{children}</ul>
         </div>
     );
 }
@@ -68,15 +66,10 @@ function StarredEntry({ term, notes, onDelete }) {
     return (
         <li className={styles.entry}>
             <h3 className={styles.term}>
-                <Link to={`/search/${term}`}>
-                    {term}
-                </Link>
+                <Link to={`/search/${term}`}>{term}</Link>
             </h3>
 
-            <button
-                onClick={onDelete}
-                className={styles.removeButton}
-            >
+            <button onClick={onDelete} className={styles.removeButton}>
                 Remove
             </button>
 

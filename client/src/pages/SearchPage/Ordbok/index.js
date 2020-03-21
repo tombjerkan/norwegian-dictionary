@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import classNames from "classnames";
 import Section from "components/Section";
 import Text from "components/Text";
+import ExpandChevron from "components/ExpandChevron";
 import Loading from "components/Loading";
 import { ReactComponent as Error } from "components/Error.svg";
-import { ReactComponent as Chevron } from "components/Chevron.svg";
+import CloseButton from "components/CloseButton";
 import useFetch from "../useFetch";
 import {
     Entry,
@@ -54,14 +54,7 @@ export function OrdbokView({ data, isLoading, error }) {
                 {isLoading && <Loading />}
                 {isNotFound && <div>Not available</div>}
                 {isError && <Error style={{ height: "30px" }} />}
-                {isContentAvailable && (
-                    <Chevron
-                        className={classNames(
-                            styles.chevron,
-                            isOpen && styles.closeChevron
-                        )}
-                    />
-                )}
+                {isContentAvailable && <ExpandChevron isOpen={isOpen} />}
             </div>
 
             {isContentAvailable && isOpen && (
@@ -121,9 +114,7 @@ export function OrdbokView({ data, isLoading, error }) {
                             ))}
                     </div>
 
-                    <button onClick={close} className={styles.closeButton}>
-                        <Chevron className={styles.buttonChevron} />
-                    </button>
+                    <CloseButton onClose={close} />
                 </>
             )}
         </Section>

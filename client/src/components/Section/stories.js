@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 
 import Section from ".";
 
-storiesOf("Section2", module)
+storiesOf("Section", module)
     .add("default", () => (
         <Section>
             <h2>Lorem</h2>

@@ -1,0 +1,10 @@
+.section {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    padding: 0 16px;
+}
+
+.title {
+    flex: 1;
+}

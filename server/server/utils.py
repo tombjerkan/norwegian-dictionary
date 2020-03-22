@@ -32,6 +32,8 @@ class TextParser:
             if self._is_link(item):
                 to = self._get_word_linked_to(item)
                 return f"<Link to='{to}'>{text}</Link>"
+            elif item.name == 'br':
+                return '\n'
             else:
                 return text
         elif isinstance(item, bs4.element.NavigableString):

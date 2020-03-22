@@ -17,13 +17,13 @@ def is_link(element):
 
 def get_word_linked_to(element):
     on_click_parameter = re.search(
-        "^bob_vise_ref_art\(.*, .*, .*, .*, '(.*)'\)$", element["onclick"]
+        "^bob_vise_ref_art\\(.*, .*, .*, .*, '(.*)'\\)$", element["onclick"]
     )[1]
 
-    on_click_parameter = re.sub("^[IVX]+\s+", "", on_click_parameter)
-    on_click_parameter = re.sub("\s+\([IVX]+\)$", "", on_click_parameter)
-    on_click_parameter = re.sub("\s+\(\d+\)$", "", on_click_parameter)
-    on_click_parameter = re.sub("\s+\([IVX]+,\d+\)$", "", on_click_parameter)
+    on_click_parameter = re.sub("^[IVX]+\\s+", "", on_click_parameter)
+    on_click_parameter = re.sub("\\s+\\([IVX]+\\)$", "", on_click_parameter)
+    on_click_parameter = re.sub("\\s+\\(\\d+\\)$", "", on_click_parameter)
+    on_click_parameter = re.sub("\\s+\\([IVX]+,\\d+\\)$", "", on_click_parameter)
 
     return on_click_parameter
 
@@ -67,7 +67,7 @@ def parse_entry(container):
     senses_container = article_content.find(class_="utvidet")
 
     return {
-        "term": re.sub("\s\s+", " ", text_parser.parse(term_column)),
+        "term": re.sub("\\s\\s+", " ", text_parser.parse(term_column)),
         "etymology": text_parser.parse(*etymology_elements),
         "senses": parse_senses(senses_container),
     }
@@ -96,7 +96,7 @@ def parse_definition(sense_container):
     definition_elements = take_children_until(
         sense_container, ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     )
-    return re.sub("^\d+\s", "", text_parser.parse(*definition_elements))
+    return re.sub("^\\d+\\s", "", text_parser.parse(*definition_elements))
 
 
 def parse_examples(sense_container):

@@ -21,7 +21,7 @@ class TextParser:
 
     def parse(self, *items):
         result = self._parse_items(*items)
-        return re.sub("\s+", " ", result).strip()
+        return re.sub("\\s+", " ", result).strip()
 
     def _parse_items(self, *items):
         return "".join(self._parse_item(v) for v in items)

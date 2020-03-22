@@ -38,7 +38,7 @@ def is_link(element):
 
 
 def get_word_linked_to(anchor):
-    match = re.search("\/wiki\/(.+)#Norwegian_Bokmål", anchor["href"])
+    match = re.search("\\/wiki\\/(.+)#Norwegian_Bokmål", anchor["href"])
 
     if match:
         return match[1]
@@ -132,7 +132,7 @@ def has_multiple_entries(language_entry):
 
 
 def is_entry_header(element):
-    return is_header(element) and re.match("^Etymology \d+$", element.get_text())
+    return is_header(element) and re.match("^Etymology \\d+$", element.get_text())
 
 
 def parse_entry(elements):

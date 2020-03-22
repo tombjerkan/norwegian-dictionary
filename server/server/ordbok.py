@@ -5,7 +5,7 @@ import re
 import requests
 
 from server import app, ApiError
-from server.utils import remove_all, take_children_until, TextParser
+from server.utils import remove_all, take_children_until, create_text_parser
 
 
 def is_link(element):
@@ -28,7 +28,7 @@ def get_word_linked_to(element):
     return on_click_parameter
 
 
-text_parser = TextParser(is_link, get_word_linked_to)
+parse = create_text_parser(is_link, get_word_linked_to)
 
 
 @app.route("/api/ordbok/<word>")
@@ -62,7 +62,7 @@ def ordbok(word):
 
 def parse_entry(container):
     term_column = next(container.children)
-    term = re.sub("\\s\\s+", " ", text_parser.parse(term_column))
+    term = re.sub("\\s\\s+", " ", parse(term_column))
 
     article_content = container.find(class_="artikkelinnhold")
 
@@ -73,11 +73,11 @@ def parse_entry(container):
     is_single_sense = len(sense_containers) <= 1
 
     if is_single_sense:
-        etymology = text_parser.parse(*etymology_elements)
+        etymology = parse(*etymology_elements)
         senses = [parse_sense(senses_container)]
     else:
         pre_senses_text = take_children_until(senses_container, ".tyding")
-        etymology = text_parser.parse(*etymology_elements, *pre_senses_text)
+        etymology = parse(*etymology_elements, *pre_senses_text)
         senses = [parse_sense(v) for v in sense_containers]
 
     return {
@@ -100,7 +100,7 @@ def parse_definition(sense_container):
     definition_elements = take_children_until(
         sense_container, ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     )
-    return re.sub("^\\d+", "", text_parser.parse(*definition_elements)).strip()
+    return re.sub("^\\d+", "", parse(*definition_elements)).strip()
 
 
 def parse_examples(sense_container):
@@ -109,7 +109,7 @@ def parse_examples(sense_container):
     if example_list is None:
         return None
 
-    return text_parser.parse(example_list)
+    return parse(example_list)
 
 
 def parse_subdefinitions(sense_container):
@@ -125,8 +125,8 @@ def parse_subdefinition(container):
     examples_container = container.find(class_="doemeliste", recursive=False)
 
     return {
-        "definition": text_parser.parse(*definition_elements),
-        "examples": text_parser.parse(examples_container)
+        "definition": parse(*definition_elements),
+        "examples": parse(examples_container)
         if examples_container
         else None,
     }
@@ -142,6 +142,6 @@ def parse_subentry(container):
     definition_container = container.find(class_="utvidet", recursive=False)
 
     return {
-        "term": text_parser.parse(*term_items),
-        "definition": text_parser.parse(definition_container),
+        "term": parse(*term_items),
+        "definition": parse(definition_container),
     }

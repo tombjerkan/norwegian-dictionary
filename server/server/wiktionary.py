@@ -5,7 +5,7 @@ import re
 import requests
 
 from server import app, ApiError
-from server.utils import remove_all, TextParser
+from server.utils import remove_all, create_text_parser
 
 
 PART_OF_SPEECH_TYPES = [
@@ -46,7 +46,7 @@ def get_word_linked_to(anchor):
         return None
 
 
-text_parser = TextParser(is_link, get_word_linked_to)
+parse = create_text_parser(is_link, get_word_linked_to)
 
 
 @app.route("/api/wiktionary/<word>")
@@ -181,7 +181,7 @@ def parse_etymology(elements):
     if len(etymology_section) == 0:
         return None
 
-    return text_parser.parse(*etymology_section)
+    return parse(*etymology_section)
 
 
 def parse_sub_entries(elements):
@@ -191,7 +191,7 @@ def parse_sub_entries(elements):
     return [
         {
             "type": type_,
-            "term": text_parser.parse(section[0]),
+            "term": parse(section[0]),
             "senses": [parse_sense(sense) for sense in section[1].children],
         }
         for type_, section in zip(types, sub_entry_sections)
@@ -206,9 +206,9 @@ def parse_sense(sense):
     definition_nodes = itertools.takewhile(
         lambda element: not element.name == "dl", sense.children
     )
-    definition = text_parser.parse(*definition_nodes)
+    definition = parse(*definition_nodes)
 
-    examples = [text_parser.parse(example) for example in sense.select("dl > dd")]
+    examples = [parse(example) for example in sense.select("dl > dd")]
 
     return {"definition": definition, "examples": examples}
 
@@ -219,14 +219,14 @@ def parse_synonyms(elements):
     if section is None:
         return []
 
-    return [text_parser.parse(element) for element in section[0].children]
+    return [parse(element) for element in section[0].children]
 
 
 def parse_derived_terms(elements):
     all_sections = get_all_sections(elements, "Derived terms")
 
     parsed_items = [
-        text_parser.parse(item)
+        parse(item)
         for section in all_sections
         for element in section
         for item in element.find_all("li")

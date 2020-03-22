@@ -13,24 +13,15 @@ def take_children_until(root, selector):
     return itertools.takewhile(lambda e: e != match, root.children)
 
 
-class TextParser:
+def create_text_parser(is_link, get_word_linked_to):
+    def parse_items(*items):
+        return "".join(parse_item(v) for v in items)
 
-    def __init__(self, is_link, get_word_linked_to):
-        self._is_link = is_link
-        self._get_word_linked_to = get_word_linked_to
-
-    def parse(self, *items):
-        result = self._parse_items(*items)
-        return re.sub("\\s+", " ", result).strip()
-
-    def _parse_items(self, *items):
-        return "".join(self._parse_item(v) for v in items)
-
-    def _parse_item(self, item):
+    def parse_item(item):
         if isinstance(item, bs4.element.Tag):
-            text = self._parse_items(*item.children)
-            if self._is_link(item):
-                to = self._get_word_linked_to(item)
+            text = parse_items(*item.children)
+            if is_link(item):
+                to = get_word_linked_to(item)
                 return f"<Link to='{to}'>{text}</Link>"
             elif item.name == 'br':
                 return '\n'
@@ -40,3 +31,9 @@ class TextParser:
             return item.string
         else:
             return ""
+
+    def parse(*items):
+        result = parse_items(*items)
+        return re.sub(r"\s+", " ", result).strip()
+
+    return parse

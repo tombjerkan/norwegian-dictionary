@@ -23,8 +23,8 @@ def create_text_parser(is_link, get_word_linked_to):
             if is_link(item):
                 to = get_word_linked_to(item)
                 return f"<Link to='{to}'>{text}</Link>"
-            elif item.name == 'br':
-                return '\n'
+            elif item.name == "br":
+                return "\n"
             else:
                 return text
         elif isinstance(item, bs4.element.NavigableString):

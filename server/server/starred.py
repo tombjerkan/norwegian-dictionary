@@ -2,12 +2,13 @@ import flask
 
 from server import app, db, marshmallow
 
+
 class Starred(db.Model):
     term = db.Column(db.Text(), primary_key=True)
     notes = db.Column(db.Text())
 
     def __repr__(self):
-        return f"<Starred term=\"{self.term}\" notes=\"{self.notes}\">"
+        return f'<Starred term="{self.term}" notes="{self.notes}">'
 
 
 class StarredSchema(marshmallow.Schema):

@@ -31,7 +31,7 @@ def handle_api_error(error):
     return "", error.code
 
 
-@app.route("/", defaults={ "path": None })
+@app.route("/", defaults={"path": None})
 @app.route("/<path:path>")
 def index(path):
     if os.environ["FLASK_ENV"] == "development":

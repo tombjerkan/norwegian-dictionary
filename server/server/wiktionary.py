@@ -165,7 +165,7 @@ def get_all_sections(elements, header):
 
     if next_header_index is not None:
         section = elements[header_index + 1 : next_header_index]
-        next_sections = get_all_sections(elements[next_header_index :], header)
+        next_sections = get_all_sections(elements[next_header_index:], header)
         return [section, *next_sections]
     else:
         section = elements[header_index + 1 :]

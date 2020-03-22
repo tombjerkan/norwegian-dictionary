@@ -40,7 +40,8 @@ def read_data_file(filename):
 #      begrep:             extra text before main sub-entry term
 #
 @pytest.mark.parametrize(
-    "word", ["stas", "for", "tilsynelatende", "male", "ting", "skjermen", "overfor", "begrep"]
+    "word",
+    ["stas", "for", "tilsynelatende", "male", "ting", "skjermen", "overfor", "begrep"],
 )
 @responses.activate
 def test_correctly_parses_html_into_data_structure(word):

@@ -126,9 +126,7 @@ def parse_subdefinition(container):
 
     return {
         "definition": parse(*definition_elements),
-        "examples": parse(examples_container)
-        if examples_container
-        else None,
+        "examples": parse(examples_container) if examples_container else None,
     }
 
 

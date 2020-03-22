@@ -20,6 +20,7 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 psycopg2 = "*"
 flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
 
 [requires]
 python_version = "3.6"

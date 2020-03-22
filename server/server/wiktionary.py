@@ -145,19 +145,31 @@ def parse_entry(elements):
 
 
 def get_section(elements, header):
+    all_sections = get_all_sections(elements, header)
+
+    if len(all_sections) == 0:
+        return None
+
+    return all_sections[0]
+
+
+def get_all_sections(elements, header):
     header_index = index_by_predicate(
         elements, lambda element: is_header(element) and element.get_text() == header
     )
 
     if header_index is None:
-        return None
+        return []
 
     next_header_index = index_by_predicate(elements, is_header, header_index + 1)
 
     if next_header_index is not None:
-        return elements[header_index + 1 : next_header_index]
+        section = elements[header_index + 1 : next_header_index]
+        next_sections = get_all_sections(elements[next_header_index :], header)
+        return [section, *next_sections]
     else:
-        return elements[header_index + 1 :]
+        section = elements[header_index + 1 :]
+        return [section]
 
 
 def parse_etymology(elements):
@@ -211,11 +223,18 @@ def parse_synonyms(elements):
 
 
 def parse_derived_terms(elements):
-    section = get_section(elements, "Derived terms")
+    all_sections = get_all_sections(elements, "Derived terms")
 
-    if section is None:
-        return []
-
-    return [
-        text_parser.parse(item) for element in section for item in element.find_all("li")
+    parsed_items = [
+        text_parser.parse(item)
+        for section in all_sections
+        for element in section
+        for item in element.find_all("li")
     ]
+
+    unique_items = []
+    for item in parsed_items:
+        if not item in unique_items:
+            unique_items.append(item)
+
+    return unique_items

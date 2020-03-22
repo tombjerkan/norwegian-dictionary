@@ -1,0 +1,49 @@
+[
+    {
+        "etymology": "From Old Norse virki (noun), and German wirken (verb)",
+        "subEntries": [
+            {
+                "type": "Noun",
+                "term": "virke n (definite singular <Link to='virket'>virket</Link>, uncountable)",
+                "senses": [
+                    {
+                        "definition": "(uncountable) business; work",
+                        "examples": []
+                    },
+                    {
+                        "definition": "of or related to woodwork",
+                        "examples": []
+                    }
+                ]
+            },
+            {
+                "type": "Verb",
+                "term": "virke (imperative <Link to='virk'>virk</Link>, present tense <Link to='virker'>virker</Link>, passive <Link to='virkes'>virkes</Link>, simple past and past participle <Link to='virka'>virka</Link> or <Link to='virket'>virket</Link>, present participle <Link to='virkende'>virkende</Link>)",
+                "senses": [
+                    {
+                        "definition": "to work",
+                        "examples": []
+                    },
+                    {
+                        "definition": "to affect",
+                        "examples": []
+                    },
+                    {
+                        "definition": "to seem",
+                        "examples": [
+                            "det virker som en evighet ― it seems like an eternity"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "synonyms": [],
+        "derived": [
+            "<Link to='samvirke'>samvirke</Link>",
+            "<Link to='medvirke'>medvirke</Link>",
+            "<Link to='p%C3%A5virke'>påvirke</Link>",
+            "<Link to='virkemiddel'>virkemiddel</Link>",
+            "<Link to='virkning'>virkning</Link>"
+        ]
+    }
+]

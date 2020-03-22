@@ -31,7 +31,9 @@ def read_data_file(filename):
 #                          section, multiple types in a single entry, larger
 #                          list format for 'Derived terms'
 #
-@pytest.mark.parametrize("word", ["for", "tilsynelatende", "stor", "lys"])
+#      virke:              Multiple 'Derived terms' sections
+#
+@pytest.mark.parametrize("word", ["for", "tilsynelatende", "stor", "lys", "virke"])
 @responses.activate
 def test_correctly_parses_html_into_data_structure(word):
     app.config["TESTING"] = True

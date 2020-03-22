@@ -34,8 +34,11 @@ def read_data_file(filename):
 #      skjermen:           results for another form of the word shown instead,
 #                          in this case 'skjerm'.
 #
+#      overfor:            extra text at the end of etymology, senses with
+#                          empty definitions.
+#
 @pytest.mark.parametrize(
-    "word", ["stas", "for", "tilsynelatende", "male", "ting", "skjermen"]
+    "word", ["stas", "for", "tilsynelatende", "male", "ting", "skjermen", "overfor"]
 )
 @responses.activate
 def test_correctly_parses_html_into_data_structure(word):

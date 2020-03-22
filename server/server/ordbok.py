@@ -62,25 +62,29 @@ def ordbok(word):
 
 def parse_entry(container):
     term_column = next(container.children)
+    term = re.sub("\\s\\s+", " ", text_parser.parse(term_column))
+
     article_content = container.find(class_="artikkelinnhold")
+
     etymology_elements = take_children_until(article_content, ".utvidet")
+
     senses_container = article_content.find(class_="utvidet")
-
-    return {
-        "term": re.sub("\\s\\s+", " ", text_parser.parse(term_column)),
-        "etymology": text_parser.parse(*etymology_elements),
-        "senses": parse_senses(senses_container),
-    }
-
-
-def parse_senses(container):
-    sense_containers = container.find_all(class_="tyding", recursive=False)
+    sense_containers = senses_container.find_all(class_="tyding", recursive=False)
     is_single_sense = len(sense_containers) <= 1
 
     if is_single_sense:
-        return [parse_sense(container)]
+        etymology = text_parser.parse(*etymology_elements)
+        senses = [parse_sense(senses_container)]
     else:
-        return [parse_sense(v) for v in sense_containers]
+        pre_senses_text = take_children_until(senses_container, ".tyding")
+        etymology = text_parser.parse(*etymology_elements, *pre_senses_text)
+        senses = [parse_sense(v) for v in sense_containers]
+
+    return {
+        "term": term,
+        "etymology": etymology,
+        "senses": senses,
+    }
 
 
 def parse_sense(container):
@@ -96,7 +100,7 @@ def parse_definition(sense_container):
     definition_elements = take_children_until(
         sense_container, ".doemeliste, .tyding.utvidet, .artikkelinnhold"
     )
-    return re.sub("^\\d+\\s", "", text_parser.parse(*definition_elements))
+    return re.sub("^\\d+", "", text_parser.parse(*definition_elements)).strip()
 
 
 def parse_examples(sense_container):

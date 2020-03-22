@@ -8,6 +8,7 @@ A Norwegian dictionary aggregator that collects definitions and translations for
 - Pipenv
 - Node 12
 - heroku CLI
+- Postgresql
 
 Other versions may work, but have not been tested.
 

@@ -5,7 +5,7 @@
 .magnifier {
 	height: 14px;
 	stroke: #424242;
-	opacity: 60%;
+	opacity: 0.6;
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);

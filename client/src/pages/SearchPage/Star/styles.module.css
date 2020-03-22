@@ -27,38 +27,3 @@
 .filled > polygon {
     fill: var(--color-brand-secondary-dark);
 }
-
-.notesBubble {
-    display: grid;
-    grid-template: auto 30px / auto 80px 80px;
-    grid-gap: 10px;
-    position: absolute;
-    bottom: 100%;
-    width: 100%;
-    background: #fff;
-    transform: translateY(-10px);
-    z-index: 2;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.25);
-}
-
-.notes {
-    grid-column: 1 / 4;
-    grid-row: 1 / 2;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    resize: none;
-    padding: 10px;
-    font: inherit;
-}
-
-.cancel {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-}
-
-.ok {
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
-}

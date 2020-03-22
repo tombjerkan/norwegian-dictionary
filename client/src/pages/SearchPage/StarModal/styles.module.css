@@ -1,0 +1,44 @@
+.outerContainer {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.innerContainer {
+    background: #fff;
+    padding: 32px;
+    min-width: 500px;
+    max-width: 500px;
+    border-radius: 8px;
+    display: grid;
+    grid-template: auto 32px / auto 80px 80px;
+    grid-gap: 24px;
+}
+
+.notes {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    resize: none;
+    padding: 12px;
+    font: inherit;
+    min-height: 120px;
+}
+
+.cancel {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+.ok {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}

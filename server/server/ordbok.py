@@ -138,10 +138,10 @@ def parse_subentries(sense_container):
 
 
 def parse_subentry(container):
-    term_container = container.find(class_="artikkeloppslagsord", recursive=False)
+    term_items = take_children_until(container, ".utvidet")
     definition_container = container.find(class_="utvidet", recursive=False)
 
     return {
-        "term": text_parser.parse(term_container),
+        "term": text_parser.parse(*term_items),
         "definition": text_parser.parse(definition_container),
     }

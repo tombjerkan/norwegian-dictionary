@@ -1,0 +1,31 @@
+[
+    {
+        "term": "begrep",
+        "etymology": "begrep n3 (fra lavtysk, tysk; av <Link to='begripe'>begripe</Link>)",
+        "senses": [
+            {
+                "definition": "<Link to='anelse'>anelse</Link>, <Link to='forestilling'>forestilling</Link>, <Link to='idé'>idé</Link>",
+                "examples": "hun har ikke begrep om hvordan hun skal oppføre seg / toleranse er et ukjent begrep for dem / oljebyen Stavanger er blitt et begrep",
+                "subDefinitions": [],
+                "subEntries": []
+            },
+            {
+                "definition": "klart avgrenset og allmenngyldig forestilling",
+                "examples": "begrepet angst, kjærlighet / et filosofisk, grammatisk begrep",
+                "subDefinitions": [],
+                "subEntries": []
+            },
+            {
+                "definition": "",
+                "examples": null,
+                "subDefinitions": [
+                ],
+                "subEntries": [
+                    {
+                        "term": "i uttrykket stå i begrep med",
+                        "definition": "nettopp skulle til å"
+                    }]
+            }
+        ]
+    }
+]

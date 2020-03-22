@@ -37,8 +37,10 @@ def read_data_file(filename):
 #      overfor:            extra text at the end of etymology, senses with
 #                          empty definitions.
 #
+#      begrep:             extra text before main sub-entry term
+#
 @pytest.mark.parametrize(
-    "word", ["stas", "for", "tilsynelatende", "male", "ting", "skjermen", "overfor"]
+    "word", ["stas", "for", "tilsynelatende", "male", "ting", "skjermen", "overfor", "begrep"]
 )
 @responses.activate
 def test_correctly_parses_html_into_data_structure(word):

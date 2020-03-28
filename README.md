@@ -50,6 +50,9 @@ To deploy to Heroku:
 # Ensure you are logged in to the deployment Heroku account
 heroku login
 
+# Set-up the Heroku remote for your local repository
+heroku git:remote -a peaceful-castle-58905
+
 # Publish local commits to the Heroku server.
 git push heroku master
 ```

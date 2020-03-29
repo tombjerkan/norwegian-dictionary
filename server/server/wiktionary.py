@@ -1,52 +1,10 @@
 import bs4
-from flask import jsonify
 import itertools
 import re
 import requests
 
 from server import app, ApiError
-from server.utils import remove_all, create_text_parser
-
-
-PART_OF_SPEECH_TYPES = [
-    "Adjective",
-    "Adverb",
-    "Ambiposition",
-    "Article",
-    "Circumposition",
-    "Classifier",
-    "Conjunction",
-    "Contraction",
-    "Counter",
-    "Determiner",
-    "Ideophone",
-    "Interjection",
-    "Noun",
-    "Numeral",
-    "Participle",
-    "Particle",
-    "Postposition",
-    "Preposition",
-    "Pronoun",
-    "Proper noun",
-    "Verb",
-]
-
-
-def is_link(element):
-    return element.name == "a" and get_word_linked_to(element) is not None
-
-
-def get_word_linked_to(anchor):
-    match = re.search("\\/wiki\\/(.+)#Norwegian_Bokmål", anchor["href"])
-
-    if match:
-        return match[1]
-    else:
-        return None
-
-
-parse = create_text_parser(is_link, get_word_linked_to)
+from server.utils import remove_all
 
 
 @app.route("/api/wiktionary/<word>")
@@ -93,9 +51,10 @@ def unwrap_all(root, selector):
 def transform_links(root):
     anchors = root.select("a")
     for anchor in anchors:
-        word_linked_to = get_word_linked_to(anchor)
-        if word_linked_to is not None:
-            anchor["href"] = word_linked_to
+        match = re.search("\\/wiki\\/(.+)#Norwegian_Bokmål", anchor["href"])
+
+        if match:
+            anchor["href"] = match[1]
         else:
             anchor.unwrap()
 
@@ -108,38 +67,24 @@ def remove_unwanted_attributes(root):
             del element[attribute]
 
 
-def index_by_predicate(it, predicate, start=0):
-    for i, v in enumerate(itertools.islice(it, start, None), start):
-        if predicate(v):
-            return i
-
-
-def is_language_header(element):
-    return element.name == "h2"
-
-
 def get_norwegian_section(soup):
     container = soup.find(class_="mw-parser-output")
 
-    norwegian_header_index = index_by_predicate(
-        container.children,
-        lambda child: is_language_header(child)
-        and child.get_text() == "Norwegian Bokmål",
-    )
+    language_headers = container.find_all("h2")
+    norwegian_bokmal_headers = [
+        v for v in language_headers if v.get_text() == "Norwegian Bokmål"
+    ]
 
-    if norwegian_header_index is None:
+    if len(norwegian_bokmal_headers) == 0:
         raise ApiError(404)
 
-    end_index = index_by_predicate(
-        container.children, is_language_header, norwegian_header_index + 1
+    norwegian_header = norwegian_bokmal_headers[0]
+    norwegian_section = itertools.takewhile(
+        lambda v: v.name != "h2", norwegian_header.next_siblings
     )
 
-    norwegian_elements = container.contents[norwegian_header_index + 1 : end_index]
-
     soup = bs4.BeautifulSoup("<div />", "html.parser")
-
-    for element in norwegian_elements:
-        soup.div.append(element)
+    soup.div.extend(list(norwegian_section))
 
     return soup
 

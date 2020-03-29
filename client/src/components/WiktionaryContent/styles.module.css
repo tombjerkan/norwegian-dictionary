@@ -1,0 +1,85 @@
+.header3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: hsl(206, 39.5%, 14.9%);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+.header3:not(:first-child) {
+    margin-top: 48px;
+}
+
+.header4, .header5 {
+    font-size: 16px;
+    font-weight: bold;
+    color: hsl(206, 39.5%, 14.9%);
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+.orderedList {
+    padding-left: 0;
+    margin-left: 48px;
+    color: hsl(204, 19.2%, 30.6%);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.unorderedList {
+    padding-left: 0;
+    color: hsl(204, 19.2%, 30.6%);
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.listItem {
+    color: hsl(204, 19.2%, 30.6%);
+}
+
+.listItem + .listItem {
+    margin-top: 4px;
+}
+
+.descriptionList {
+    color: hsl(204, 19.2%, 30.6%);
+    margin-top: 8px;
+}
+
+.descriptionDetails {
+    margin-left: 24px;
+    margin-top: 4px;
+    color: hsl(204, 19.2%, 30.6%);
+}
+
+.descriptionTerm {
+    color: hsl(204, 19.2%, 30.6%);
+}
+
+.paragraph {
+    color: hsl(204, 19.2%, 30.6%);
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.italics {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.strong {
+    font-weight: bold;
+}
+
+.anchor {
+    color: hsl(202, 100%, 37%);
+    text-decoration: none;
+}
+
+.anchor:hover {
+    text-decoration: underline;
+}

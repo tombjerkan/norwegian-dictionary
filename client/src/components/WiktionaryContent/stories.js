@@ -1,9 +1,9 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import { WiktionaryView } from ".";
+import WiktionaryContent from ".";
 
-storiesOf("Wiktionary", module).add("default", () => (
-    <WiktionaryView data={testData} isLoading={false} error={null} />
+storiesOf("WiktionaryContent", module).add("for", () => (
+    <WiktionaryContent data={testData} />
 ));
 
 const testData = `

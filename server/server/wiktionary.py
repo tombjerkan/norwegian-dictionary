@@ -75,8 +75,37 @@ def wiktionary(word):
 
     norwegian_section = get_norwegian_section(soup)
 
-    entries = separate_entries(norwegian_section)
-    return jsonify([parse_entry(entry) for entry in entries])
+    remove_unwanted_sections(norwegian_section.div)
+    unwrap_all(norwegian_section.div, "span")
+    unwrap_all(norwegian_section.div, "div")
+    transform_links(norwegian_section.div)
+    remove_unwanted_attributes(norwegian_section.div)
+
+    return norwegian_section.prettify()
+
+
+def unwrap_all(root, selector):
+    elements = root.select(selector)
+    for element in elements:
+        element.unwrap()
+
+
+def transform_links(root):
+    anchors = root.select("a")
+    for anchor in anchors:
+        word_linked_to = get_word_linked_to(anchor)
+        if word_linked_to is not None:
+            anchor["href"] = word_linked_to
+        else:
+            anchor.unwrap()
+
+
+def remove_unwanted_attributes(root):
+    for element in root.find_all():
+        attributes = element.attrs.keys()
+        attributes_to_delete = [v for v in attributes if v != "href"]
+        for attribute in attributes_to_delete:
+            del element[attribute]
 
 
 def index_by_predicate(it, predicate, start=0):
@@ -105,136 +134,37 @@ def get_norwegian_section(soup):
         container.children, is_language_header, norwegian_header_index + 1
     )
 
-    return list(
-        itertools.islice(container.children, norwegian_header_index + 1, end_index)
-    )
+    norwegian_elements = container.contents[norwegian_header_index + 1 : end_index]
 
+    soup = bs4.BeautifulSoup("<div />", "html.parser")
 
-def separate_entries(language_entry):
-    if has_multiple_entries(language_entry):
-        header_indices = [i for i, v in enumerate(language_entry) if is_entry_header(v)]
-        start_indices = [i + 1 for i in header_indices]
-        end_indices = header_indices[1:] + [len(language_entry)]
+    for element in norwegian_elements:
+        soup.div.append(element)
 
-        return [
-            language_entry[start:end] for start, end in zip(start_indices, end_indices)
-        ]
-    else:
-        return [language_entry]
+    return soup
 
 
 def is_header(element):
     return element.name in ["h1", "h2", "h3", "h4", "h5", "h6"]
 
 
-def has_multiple_entries(language_entry):
-    return any(is_entry_header(element) for element in language_entry)
+def remove_unwanted_sections(elements):
+    is_current_section_wanted = True
+    unwanted_sections = ["Pronunciation", "References"]
 
+    # Keep list of elements to remove rather than removing within loop, as
+    # list cannot be mutated while looping over it.
+    elements_to_remove = []
 
-def is_entry_header(element):
-    return is_header(element) and re.match("^Etymology \\d+$", element.get_text())
+    for element in list(elements.children):
+        if is_header(element):
+            if element.get_text() in unwanted_sections:
+                is_current_section_wanted = False
+            else:
+                is_current_section_wanted = True
 
+        if not is_current_section_wanted:
+            elements_to_remove.append(element)
 
-def parse_entry(elements):
-    return {
-        "etymology": parse_etymology(elements),
-        "subEntries": parse_sub_entries(elements),
-        "synonyms": parse_synonyms(elements),
-        "derived": parse_derived_terms(elements),
-    }
-
-
-def get_section(elements, header):
-    all_sections = get_all_sections(elements, header)
-
-    if len(all_sections) == 0:
-        return None
-
-    return all_sections[0]
-
-
-def get_all_sections(elements, header):
-    header_index = index_by_predicate(
-        elements, lambda element: is_header(element) and element.get_text() == header
-    )
-
-    if header_index is None:
-        return []
-
-    next_header_index = index_by_predicate(elements, is_header, header_index + 1)
-
-    if next_header_index is not None:
-        section = elements[header_index + 1 : next_header_index]
-        next_sections = get_all_sections(elements[next_header_index:], header)
-        return [section, *next_sections]
-    else:
-        section = elements[header_index + 1 :]
-        return [section]
-
-
-def parse_etymology(elements):
-    etymology_section = get_section(elements, "Etymology")
-    if etymology_section is None:
-        first_header_index = index_by_predicate(elements, is_header)
-        etymology_section = elements[:first_header_index]
-
-    if len(etymology_section) == 0:
-        return None
-
-    return parse(*etymology_section)
-
-
-def parse_sub_entries(elements):
-    types = [e.get_text() for e in elements if is_part_of_speech_header(e)]
-    sub_entry_sections = [get_section(elements, t) for t in types]
-
-    return [
-        {
-            "type": type_,
-            "term": parse(section[0]),
-            "senses": [parse_sense(sense) for sense in section[1].children],
-        }
-        for type_, section in zip(types, sub_entry_sections)
-    ]
-
-
-def is_part_of_speech_header(element):
-    return is_header(element) and element.get_text() in PART_OF_SPEECH_TYPES
-
-
-def parse_sense(sense):
-    definition_nodes = itertools.takewhile(
-        lambda element: not element.name == "dl", sense.children
-    )
-    definition = parse(*definition_nodes)
-
-    examples = [parse(example) for example in sense.select("dl > dd")]
-
-    return {"definition": definition, "examples": examples}
-
-
-def parse_synonyms(elements):
-    section = get_section(elements, "Synonyms")
-
-    if section is None:
-        return []
-
-    return [parse(element) for element in section[0].children]
-
-
-def parse_derived_terms(elements):
-    all_sections = get_all_sections(elements, "Derived terms")
-
-    parsed_items = [
-        parse(item)
-        for section in all_sections
-        for element in section
-        for item in element.find_all("li")
-    ]
-
-    unique_items = []
-    for item in parsed_items:
-        if not item in unique_items:
-            unique_items.append(item)
-
-    return unique_items
+    for element in elements_to_remove:
+        element.decompose()

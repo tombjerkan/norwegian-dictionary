@@ -16,40 +16,21 @@ def read_data_file(filename):
         return file.read()
 
 
-#  Words are added as test cases when an error is caused parsing their pages.
-#  The list below outlines what about their page was different to all previous
-#  test cases that meant that the cause of the error was not caught by an
-#  existing test case.
-#
-#      for:                initial test page
-#
-#      tilsynelatende:     only one entry
-#
-#      stor:               derived terms in hideable table
-#
-#      lys:                'Pronunciation' section within single 'Etymology'
-#                          section, multiple types in a single entry, larger
-#                          list format for 'Derived terms'
-#
-#      virke:              Multiple 'Derived terms' sections
-#
-@pytest.mark.parametrize("word", ["for", "tilsynelatende", "stor", "lys", "virke"])
 @responses.activate
-def test_correctly_parses_html_into_data_structure(word):
+def test_correctly_returns_norwegian_bokmal_part_of_html():
     app.config["TESTING"] = True
     responses.add(
         responses.GET,
-        f"https://en.wiktionary.org/wiki/{word}",
+        f"https://en.wiktionary.org/wiki/for",
         status=200,
-        body=read_data_file(f"{word}.html"),
+        body=read_data_file(f"for-original.html"),
         content_type="text/html; charset=UTF-8",
     )
 
-    response = app.test_client().get(f"/api/wiktionary/{word}")
+    response = app.test_client().get(f"/api/wiktionary/for")
 
-    expected_data = json.loads(read_data_file(f"{word}.json"))
-    received_data = json.loads(response.data)
-    assert expected_data == received_data
+    expected_data = read_data_file(f"for-parsed.html")
+    assert expected_data == response.data.decode("utf-8")
     assert response.status_code == 200
 
 

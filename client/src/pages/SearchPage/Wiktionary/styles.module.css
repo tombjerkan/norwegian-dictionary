@@ -11,11 +11,6 @@
 }
 
 .expandableContent {
-    padding: 24px 16px 70px;
+    padding: 24px 16px 64px;
     border-top: 1px solid #e9ebed;
-}
-
-.examples {
-    margin-top: 6px;
-    margin-bottom: 6px;
 }

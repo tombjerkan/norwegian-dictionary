@@ -43,14 +43,12 @@ def wiktionary(word):
 
 
 def unwrap_all(root, selector):
-    elements = root.select(selector)
-    for element in elements:
+    for element in root.select(selector):
         element.unwrap()
 
 
 def transform_links(root):
-    anchors = root.select("a")
-    for anchor in anchors:
+    for anchor in root.select("a"):
         match = re.search("\\/wiki\\/(.+)#Norwegian_Bokmål", anchor["href"])
 
         if match:

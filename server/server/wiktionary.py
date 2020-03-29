@@ -4,7 +4,7 @@ import re
 import requests
 
 from server import app, ApiError
-from server.utils import remove_all
+from server.utils import remove_all, remove_attributes
 
 
 @app.route("/api/wiktionary/<word>")
@@ -37,7 +37,7 @@ def wiktionary(word):
     unwrap_all(norwegian_section.div, "span")
     unwrap_all(norwegian_section.div, "div")
     transform_links(norwegian_section.div)
-    remove_unwanted_attributes(norwegian_section.div)
+    remove_attributes(norwegian_section, exceptions=["href"])
 
     return norwegian_section.prettify()
 
@@ -57,14 +57,6 @@ def transform_links(root):
             anchor["href"] = match[1]
         else:
             anchor.unwrap()
-
-
-def remove_unwanted_attributes(root):
-    for element in root.find_all():
-        attributes = element.attrs.keys()
-        attributes_to_delete = [v for v in attributes if v != "href"]
-        for attribute in attributes_to_delete:
-            del element[attribute]
 
 
 def get_norwegian_section(soup):

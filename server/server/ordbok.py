@@ -1,34 +1,9 @@
 import bs4
-from flask import jsonify
-import itertools
 import re
 import requests
 
 from server import app, ApiError
-from server.utils import remove_all, take_children_until, create_text_parser
-
-
-def is_link(element):
-    if not element.has_attr("class"):
-        return False
-
-    return "henvisning" in element["class"] or "etymtilvising" in element["class"]
-
-
-def get_word_linked_to(element):
-    on_click_parameter = re.search(
-        "^bob_vise_ref_art\\(.*, .*, .*, .*, '(.*)'\\)$", element["onclick"]
-    )[1]
-
-    on_click_parameter = re.sub("^[IVX]+\\s+", "", on_click_parameter)
-    on_click_parameter = re.sub("\\s+\\([IVX]+\\)$", "", on_click_parameter)
-    on_click_parameter = re.sub("\\s+\\(\\d+\\)$", "", on_click_parameter)
-    on_click_parameter = re.sub("\\s+\\([IVX]+,\\d+\\)$", "", on_click_parameter)
-
-    return on_click_parameter
-
-
-parse = create_text_parser(is_link, get_word_linked_to)
+from server.utils import remove_all, remove_attributes
 
 
 @app.route("/api/ordbok/<word>")
@@ -45,101 +20,73 @@ def ordbok(word):
         raise ApiError(503) from e
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
-
-    remove_all(soup, ".kompakt")
-    remove_all(soup, ".oppsgramordklassevindu")
-    remove_all(soup, "style")
-
     bokmaal_table = soup.find(id="byttutBM")
     if not bokmaal_table:
         raise ApiError(404)
 
+    remove_all(bokmaal_table, ".kompakt")
+    remove_all(bokmaal_table, ".oppsgramordklassevindu")
+    remove_all(bokmaal_table, "style")
+    transform_links(soup, bokmaal_table)
+    replace_circle_image(soup, bokmaal_table)
+    remove_attributes(bokmaal_table, exceptions=["href", "class", "style"])
+
     entry_rows = bokmaal_table.find_all("tr", recursive=False)[1:]
-    entries = [parse_entry(v) for v in entry_rows]
 
-    return jsonify(entries)
+    result = bs4.BeautifulSoup("<entries />", "html")
+    for entry in entry_rows:
+        term_column = entry.contents[0]
+        term_column.br.replace_with(" ")
+        term_element = result.new_tag("term")
+        term_element.append(term_column.get_text())
 
+        article_content = entry.find(class_="artikkelinnhold")
+        content_element = result.new_tag("content")
+        article_content.wrap(content_element)
+        article_content.unwrap()
 
-def parse_entry(container):
-    term_column = next(container.children)
-    term = re.sub("\\s\\s+", " ", parse(term_column))
+        entry_element = result.new_tag("entry")
+        entry_element.append(term_element)
+        entry_element.append(content_element)
 
-    article_content = container.find(class_="artikkelinnhold")
+        result.entries.append(entry_element)
 
-    etymology_elements = take_children_until(article_content, ".utvidet")
-
-    senses_container = article_content.find(class_="utvidet")
-    sense_containers = senses_container.find_all(class_="tyding", recursive=False)
-    is_single_sense = len(sense_containers) <= 1
-
-    if is_single_sense:
-        etymology = parse(*etymology_elements)
-        senses = [parse_sense(senses_container)]
-    else:
-        pre_senses_text = take_children_until(senses_container, ".tyding")
-        etymology = parse(*etymology_elements, *pre_senses_text)
-        senses = [parse_sense(v) for v in sense_containers]
-
-    return {
-        "term": term,
-        "etymology": etymology,
-        "senses": senses,
-    }
+    return result.prettify()
 
 
-def parse_sense(container):
-    return {
-        "definition": parse_definition(container),
-        "examples": parse_examples(container),
-        "subDefinitions": parse_subdefinitions(container),
-        "subEntries": parse_subentries(container),
-    }
+def transform_links(soup, root):
+    for link_element in root.select(".henvisning, .etymtilvising"):
+        on_click_parameter = re.search(
+            "^bob_vise_ref_art\\(.*, .*, .*, .*, '(.*)'\\)$", link_element["onclick"],
+        )[1]
+
+        on_click_parameter = re.sub("^[IVX]+\\s+", "", on_click_parameter)
+        on_click_parameter = re.sub("\\s+\\([IVX]+\\)$", "", on_click_parameter)
+        on_click_parameter = re.sub("\\s+\\(\\d+\\)$", "", on_click_parameter)
+        on_click_parameter = re.sub("\\s+\\([IVX]+,\\d+\\)$", "", on_click_parameter)
+
+        anchor = soup.new_tag("a", href=on_click_parameter)
+        link_element.wrap(anchor)
+        link_element.unwrap()
 
 
-def parse_definition(sense_container):
-    definition_elements = take_children_until(
-        sense_container, ".doemeliste, .tyding.utvidet, .artikkelinnhold"
-    )
-    return re.sub("^\\d+", "", parse(*definition_elements)).strip()
+# An image is used for bullet points in lists, which must be replaced with
+# something that can be used by client:
+#
+#   <img src="/grafikk/black_circle_e.png" width="6px" height="6px"/>
+#
+def replace_circle_image(soup, root):
+    for image in root.find_all("img"):
+        if image["src"] == "/grafikk/black_circle_e.png":
+            bullet = soup.new_tag("bullet")
+            image.replace_with(bullet)
 
 
-def parse_examples(sense_container):
-    example_list = sense_container.find(class_="doemeliste", recursive=False)
-
-    if example_list is None:
-        return None
-
-    return parse(example_list)
-
-
-def parse_subdefinitions(sense_container):
-    subdefinition_containers = sense_container.select(
-        ".tyding.utvidet", recursive=False
-    )
-
-    return [parse_subdefinition(v) for v in subdefinition_containers]
-
-
-def parse_subdefinition(container):
-    definition_elements = take_children_until(container, ":scope > .doemeliste")
-    examples_container = container.find(class_="doemeliste", recursive=False)
-
-    return {
-        "definition": parse(*definition_elements),
-        "examples": parse(examples_container) if examples_container else None,
-    }
-
-
-def parse_subentries(sense_container):
-    subentry_containers = sense_container.select(".artikkelinnhold > div")
-    return [parse_subentry(v) for v in subentry_containers]
-
-
-def parse_subentry(container):
-    term_items = take_children_until(container, ".utvidet")
-    definition_container = container.find(class_="utvidet", recursive=False)
-
-    return {
-        "term": parse(*term_items),
-        "definition": parse(definition_container),
-    }
+def remove_unwanted_attributes(root):
+    for element in root.find_all():
+        attributes = element.attrs.keys()
+        attributes_to_delete = [
+            v for v in attributes if v != "href" and v != "class" and v != "style"
+        ]
+        for attribute in attributes_to_delete:
+            del element[attribute]

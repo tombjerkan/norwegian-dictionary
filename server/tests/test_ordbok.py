@@ -23,25 +23,8 @@ def read_data_file(filename):
 #
 #      stas, for:          initial test pages
 #
-#      tilsynelatende:     only one sense
-#
-#      male:               sub-definition without examples and link with
-#                          number instead of roman numeral (svive (1))
-#
-#      ting:               multiple sub-definitions for a single sense and
-#                          link with number and roman numeral (yrke (II,1))
-#
-#      skjermen:           results for another form of the word shown instead,
-#                          in this case 'skjerm'.
-#
-#      overfor:            extra text at the end of etymology, senses with
-#                          empty definitions.
-#
-#      begrep:             extra text before main sub-entry term
-#
 @pytest.mark.parametrize(
-    "word",
-    ["stas", "for", "tilsynelatende", "male", "ting", "skjermen", "overfor", "begrep"],
+    "word", ["stas", "for"],
 )
 @responses.activate
 def test_correctly_parses_html_into_data_structure(word):
@@ -50,15 +33,14 @@ def test_correctly_parses_html_into_data_structure(word):
         responses.GET,
         f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}",
         status=200,
-        body=read_data_file(f"{word}.html"),
+        body=read_data_file(f"{word}-original.html"),
         content_type="text/html; charset=UTF-8",
     )
 
     response = app.test_client().get(f"/api/ordbok/{word}")
 
-    expected_data = json.loads(read_data_file(f"{word}.json"))
-    received_data = json.loads(response.data)
-    assert expected_data == received_data
+    expected_data = read_data_file(f"{word}-parsed.html")
+    assert expected_data == response.data.decode("utf-8")
     assert response.status_code == 200
 
 

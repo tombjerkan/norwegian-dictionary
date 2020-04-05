@@ -45,8 +45,8 @@ def ordbok(word):
 
         entries.append({"term": term, "content": content})
 
-    # report_unexpected_classes(result)
-    # report_unexpected_inline_styles(result)
+        report_unexpected_classes(content)
+        report_unexpected_inline_styles(content)
 
     return jsonify(entries)
 
@@ -89,9 +89,11 @@ def remove_unwanted_attributes(root):
             del element[attribute]
 
 
-def report_unexpected_classes(string):
+def report_unexpected_classes(content):
+    soup = bs4.BeautifulSoup(f"<div>{content}</div>", "html.parser")
+
     all_classes = {
-        _class for element in root.find_all() for _class in element.get("class", [])
+        _class for element in soup.find_all() for _class in element.get("class", [])
     }
     expected_classes = {"utvidet", "tyding", "doeme", "doemeliste"}
     unexpected_classes = all_classes - expected_classes
@@ -101,10 +103,12 @@ def report_unexpected_classes(string):
         print(f"- {_class}")
 
 
-def report_unexpected_inline_styles(root):
+def report_unexpected_inline_styles(content):
+    soup = bs4.BeautifulSoup(f"<div>{content}</div>", "html.parser")
+
     all_styles = {
         style
-        for element in root.find_all()
+        for element in soup.find_all()
         for style in re.split("\s*;\s*", element.get("style", ""))
     }
     expected_styles = {

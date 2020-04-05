@@ -5,7 +5,7 @@ import ExpandChevron from "components/ExpandChevron";
 import Loading from "components/Loading";
 import { ReactComponent as Error } from "components/Error.svg";
 import CloseButton from "components/CloseButton";
-import useFetch from "../useFetch";
+import useFetch from "../../utils/useFetch";
 import styles from "./styles.module.css";
 
 export default function OrdbokContainer({ query }) {

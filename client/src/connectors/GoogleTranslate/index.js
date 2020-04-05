@@ -1,5 +1,5 @@
 import React from "react";
-import useFetch from "../useFetch";
+import useFetch from "../../utils/useFetch";
 import Section from "components/Section";
 import Loading from "components/Loading";
 import { ReactComponent as Error } from "components/Error.svg";

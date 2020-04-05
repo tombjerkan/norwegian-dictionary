@@ -4,7 +4,7 @@ import Loading from "components/Loading";
 import ExpandChevron from "components/ExpandChevron";
 import { ReactComponent as Error } from "components/Error.svg";
 import CloseButton from "components/CloseButton";
-import useFetch from "../useFetch";
+import useFetch from "../../utils/useFetch";
 import WiktionaryContent from "components/WiktionaryContent";
 import styles from "./styles.module.css";
 

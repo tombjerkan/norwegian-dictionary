@@ -51,6 +51,8 @@ def ordbok(word):
 
         result.entries.append(entry_element)
 
+    report_unexpected_classes(result)
+
     return result.prettify()
 
 
@@ -90,3 +92,15 @@ def remove_unwanted_attributes(root):
         ]
         for attribute in attributes_to_delete:
             del element[attribute]
+
+
+def report_unexpected_classes(root):
+    all_classes = {
+        _class for element in root.find_all() for _class in element.get("class", [])
+    }
+    expected_classes = set({})
+    unexpected_classes = all_classes - expected_classes
+
+    print("Unexpected classes:")
+    for _class in unexpected_classes:
+        print(f"- {_class}")

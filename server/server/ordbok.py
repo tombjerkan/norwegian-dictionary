@@ -33,7 +33,7 @@ def ordbok(word):
 
     entry_rows = bokmaal_table.find_all("tr", recursive=False)[1:]
 
-    result = bs4.BeautifulSoup("<entries />", "html")
+    result = bs4.BeautifulSoup("<entries />", "html.parser")
     for entry in entry_rows:
         term_column = entry.contents[0]
         term_column.br.replace_with(" ")

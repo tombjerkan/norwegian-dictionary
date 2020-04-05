@@ -33,14 +33,15 @@ def test_correctly_parses_html_into_data_structure(word):
         responses.GET,
         f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}",
         status=200,
-        body=read_data_file(f"{word}-original.html"),
+        body=read_data_file(f"{word}.html"),
         content_type="text/html; charset=UTF-8",
     )
 
     response = app.test_client().get(f"/api/ordbok/{word}")
 
-    expected_data = read_data_file(f"{word}-parsed.html")
-    assert expected_data == response.data.decode("utf-8")
+    expected_data = json.loads(read_data_file(f"{word}.json"))
+    response_data = json.loads(response.data.decode("utf-8"))
+    assert expected_data == response_data
     assert response.status_code == 200
 
 

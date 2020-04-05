@@ -1,4 +1,5 @@
 import bs4
+from flask import jsonify
 import re
 import requests
 
@@ -33,27 +34,21 @@ def ordbok(word):
 
     entry_rows = bokmaal_table.find_all("tr", recursive=False)[1:]
 
-    result = bs4.BeautifulSoup("<entries />", "html.parser")
+    entries = []
     for entry in entry_rows:
         term_column = entry.contents[0]
         term_column.br.replace_with(" ")
-        term_element = result.new_tag("term")
-        term_element.append(term_column.get_text())
+        term = term_column.get_text().strip()
 
         article_content = entry.find(class_="artikkelinnhold")
-        content_element = result.new_tag("content")
-        article_content.wrap(content_element)
-        article_content.unwrap()
+        content = "".join(str(node) for node in article_content.contents).strip()
 
-        entry_element = result.new_tag("entry")
-        entry_element.append(term_element)
-        entry_element.append(content_element)
+        entries.append({"term": term, "content": content})
 
-        result.entries.append(entry_element)
+    # report_unexpected_classes(result)
+    # report_unexpected_inline_styles(result)
 
-    report_unexpected_classes(result)
-
-    return result.prettify()
+    return jsonify(entries)
 
 
 def transform_links(soup, root):
@@ -94,13 +89,33 @@ def remove_unwanted_attributes(root):
             del element[attribute]
 
 
-def report_unexpected_classes(root):
+def report_unexpected_classes(string):
     all_classes = {
         _class for element in root.find_all() for _class in element.get("class", [])
     }
-    expected_classes = set({})
+    expected_classes = {"utvidet", "tyding", "doeme", "doemeliste"}
     unexpected_classes = all_classes - expected_classes
 
     print("Unexpected classes:")
     for _class in unexpected_classes:
         print(f"- {_class}")
+
+
+def report_unexpected_inline_styles(root):
+    all_styles = {
+        style
+        for element in root.find_all()
+        for style in re.split("\s*;\s*", element.get("style", ""))
+    }
+    expected_styles = {
+        "font-style: normal",
+        "font-style: italic",
+        "margin-top: 15px",
+        "margin-top: 10px",
+        "font-weight: 900",
+    }
+    unexpected_styles = all_styles - expected_styles
+
+    print("Unexpected styles:")
+    for style in unexpected_styles:
+        print(f"- {style}")

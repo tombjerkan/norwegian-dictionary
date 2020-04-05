@@ -14,18 +14,3 @@
     padding: 24px 16px 70px;
     border-top: 1px solid #e9ebed;
 }
-.subDefinition {
-    padding: 1px 16px;
-    margin-top: 22px;
-    margin-bottom: 22px;
-    border-left: 3px solid hsl(202, 50%, 50%);;
-    background: hsl(202, 50%, 95%);
-}
-
-.subEntryTerm {
-    font-weight: 700;
-}
-
-.subEntryDefinition {
-	color: rgba(0, 0, 0, 0.6);
-}

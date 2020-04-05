@@ -34,12 +34,10 @@ def wiktionary(word):
     norwegian_section = get_norwegian_section(soup)
 
     remove_unwanted_sections(norwegian_section.div)
-    unwrap_all(norwegian_section.div, "span")
-    unwrap_all(norwegian_section.div, "div")
     transform_links(norwegian_section.div)
-    remove_attributes(norwegian_section, exceptions=["href"])
+    remove_attributes(norwegian_section, exceptions=["class", "style", "href"])
 
-    return norwegian_section.prettify()
+    return str(norwegian_section)
 
 
 def unwrap_all(root, selector):

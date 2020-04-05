@@ -46,7 +46,6 @@ def ordbok(word):
         entries.append({"term": term, "content": content})
 
         report_unexpected_classes(content)
-        report_unexpected_inline_styles(content)
 
     return jsonify(entries)
 
@@ -101,25 +100,3 @@ def report_unexpected_classes(content):
     print("Unexpected classes:")
     for _class in unexpected_classes:
         print(f"- {_class}")
-
-
-def report_unexpected_inline_styles(content):
-    soup = bs4.BeautifulSoup(f"<div>{content}</div>", "html.parser")
-
-    all_styles = {
-        style
-        for element in soup.find_all()
-        for style in re.split("\s*;\s*", element.get("style", ""))
-    }
-    expected_styles = {
-        "font-style: normal",
-        "font-style: italic",
-        "margin-top: 15px",
-        "margin-top: 10px",
-        "font-weight: 900",
-    }
-    unexpected_styles = all_styles - expected_styles
-
-    print("Unexpected styles:")
-    for style in unexpected_styles:
-        print(f"- {style}")

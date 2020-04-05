@@ -37,6 +37,8 @@ def wiktionary(word):
     transform_links(norwegian_section.div)
     remove_attributes(norwegian_section, exceptions=["class", "style", "href"])
 
+    report_unexpected_classes(norwegian_section)
+
     return str(norwegian_section)
 
 
@@ -101,3 +103,29 @@ def remove_unwanted_sections(elements):
 
     for element in elements_to_remove:
         element.decompose()
+
+
+def report_unexpected_classes(soup):
+    all_classes = {
+        _class for element in soup.find_all() for _class in element.get("class", [])
+    }
+    expected_classes = {
+        "e-translation",
+        "selflink",
+        "form-of-definition",
+        "use-with-mention",
+        "gender",
+        "Latn",
+        "etyl",
+        "headword",
+        "h-usage-example",
+        "e-example",
+        "mention",
+        "form-of-definition-link",
+        "mw-headline",
+    }
+    unexpected_classes = all_classes - expected_classes
+
+    print("Unexpected classes:")
+    for _class in unexpected_classes:
+        print(f"- {_class}")

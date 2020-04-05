@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Section from "components/Section";
-import OrdbokContent from "components/OrdbokContent";
 import ExpandChevron from "components/ExpandChevron";
 import Loading from "components/Loading";
 import { ReactComponent as Error } from "components/Error.svg";
 import CloseButton from "components/CloseButton";
 import useFetch from "../../utils/useFetch";
+import Content from "./Content";
 import styles from "./styles.module.css";
 
 export default function OrdbokContainer({ query }) {
@@ -50,7 +50,7 @@ export function OrdbokView({ data, isLoading, error }) {
             {isContentAvailable && isOpen && (
                 <>
                     <div className={styles.expandableContent}>
-                        {data && <OrdbokContent data={data} />}
+                        {data && <Content data={data} />}
                     </div>
 
                     <CloseButton onClose={close} />

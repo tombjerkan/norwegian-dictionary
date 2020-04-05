@@ -5,7 +5,7 @@ import ExpandChevron from "components/ExpandChevron";
 import { ReactComponent as Error } from "components/Error.svg";
 import CloseButton from "components/CloseButton";
 import useFetch from "../../utils/useFetch";
-import WiktionaryContent from "components/WiktionaryContent";
+import Content from "./Content";
 import styles from "./styles.module.css";
 
 export default function WiktionaryContainer({ query }) {
@@ -50,7 +50,7 @@ export function WiktionaryView({ data, isLoading, error }) {
             {isContentAvailable && isOpen && (
                 <>
                     <div className={styles.expandableContent}>
-                        {data && <WiktionaryContent data={data} />}
+                        {data && <Content data={data} />}
                     </div>
 
                     <CloseButton onClose={close} />

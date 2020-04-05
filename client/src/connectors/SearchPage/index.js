@@ -5,9 +5,9 @@ import Navigation from "components/Navigation";
 import Search from "components/Search";
 import StarredNavigationButton from "./StarredNavigationButton";
 import MaxWidthLimit from "components/MaxWidthLimit";
-import GoogleTranslate from "./GoogleTranslate";
-import Ordbok from "./Ordbok";
-import Wiktionary from "./Wiktionary";
+import GoogleTranslate from "../GoogleTranslate";
+import Ordbok from "../Ordbok";
+import Wiktionary from "../Wiktionary";
 import Star from "./Star";
 import styles from "./styles.module.css";
 

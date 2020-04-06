@@ -23,8 +23,10 @@ def read_data_file(filename):
 #
 #      stas, for:          initial test pages
 #
+#      rystet:             term column without a line break
+#
 @pytest.mark.parametrize(
-    "word", ["stas", "for"],
+    "word", ["stas", "for", "rystet"],
 )
 @responses.activate
 def test_correctly_parses_html_into_data_structure(word):

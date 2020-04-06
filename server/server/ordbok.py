@@ -37,7 +37,10 @@ def ordbok(word):
     entries = []
     for entry in entry_rows:
         term_column = entry.contents[0]
-        term_column.br.replace_with(" ")
+
+        for line_break in term_column.find_all("br"):
+            line_break.replace_with(" ")
+
         term = term_column.get_text().strip()
 
         article_content = entry.find(class_="artikkelinnhold")

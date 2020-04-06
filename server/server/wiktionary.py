@@ -25,6 +25,7 @@ def wiktionary(word):
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 
     remove_all(soup, ".mw-editsection")
+    remove_all(soup, ".sister-wikipedia")
     remove_comments(soup)
 
     norwegian_section = get_norwegian_section(soup)

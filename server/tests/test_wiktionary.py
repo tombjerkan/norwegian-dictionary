@@ -26,8 +26,10 @@ def read_data_file(filename):
 #      arrestere:          HTML comments in page could not be removed when
 #                          removing unwanted sectionsh
 #
+#      kopper:             links to sister Wikipedia page
+#
 @pytest.mark.parametrize(
-    "word", ["for", "arrestere"],
+    "word", ["for", "arrestere", "kopper"],
 )
 @responses.activate
 def test_correctly_returns_norwegian_bokmal_part_of_html(word):

@@ -16,20 +16,33 @@ def read_data_file(filename):
         return file.read()
 
 
+#  Words are added as test cases when an error is caused parsing their pages.
+#  The list below outlines what about their page was different to all previous
+#  test cases that meant that the cause of the error was not caught by an
+#  existing test case.
+#
+#      stas, for:          initial test pages
+#
+#      arrestere:          HTML comments in page could not be removed when
+#                          removing unwanted sectionsh
+#
+@pytest.mark.parametrize(
+    "word", ["for", "arrestere"],
+)
 @responses.activate
-def test_correctly_returns_norwegian_bokmal_part_of_html():
+def test_correctly_returns_norwegian_bokmal_part_of_html(word):
     app.config["TESTING"] = True
     responses.add(
         responses.GET,
-        f"https://en.wiktionary.org/wiki/for",
+        f"https://en.wiktionary.org/wiki/{word}",
         status=200,
-        body=read_data_file(f"for-original.html"),
+        body=read_data_file(f"{word}-original.html"),
         content_type="text/html; charset=UTF-8",
     )
 
-    response = app.test_client().get(f"/api/wiktionary/for")
+    response = app.test_client().get(f"/api/wiktionary/{word}")
 
-    expected_data = read_data_file(f"for-parsed.html")
+    expected_data = read_data_file(f"{word}-parsed.html")
     assert expected_data == response.data.decode("utf-8")
     assert response.status_code == 200
 

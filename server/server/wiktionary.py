@@ -25,11 +25,7 @@ def wiktionary(word):
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 
     remove_all(soup, ".mw-editsection")
-
-    # Navigable strings with only '\n' are purely syntactic
-    # Removal makes parsing easier
-    for syntactic_new_line in soup.find_all(string="\n"):
-        syntactic_new_line.extract()
+    remove_comments(soup)
 
     norwegian_section = get_norwegian_section(soup)
 
@@ -83,6 +79,11 @@ def is_header(element):
     return element.name in ["h1", "h2", "h3", "h4", "h5", "h6"]
 
 
+def remove_comments(soup):
+    for comment in soup.find_all(string=lambda v: isinstance(v, bs4.Comment)):
+        comment.extract()
+
+
 def remove_unwanted_sections(elements):
     is_current_section_wanted = True
     unwanted_sections = ["Pronunciation", "References"]
@@ -102,7 +103,10 @@ def remove_unwanted_sections(elements):
             elements_to_remove.append(element)
 
     for element in elements_to_remove:
-        element.decompose()
+        if isinstance(element, bs4.Tag):
+            element.decompose()
+        else:
+            element.extract()
 
 
 def report_unexpected_classes(soup):

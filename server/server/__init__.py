@@ -12,6 +12,8 @@ load_dotenv()
 
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 if os.environ["FLASK_ENV"] == "production":
     app.wsgi_app = WhiteNoise(app.wsgi_app, root=os.environ["CLIENT_BUILD_PATH"])
 

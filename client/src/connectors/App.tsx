@@ -5,14 +5,16 @@ import StarredPage from "./StarredPage";
 import "./App.css";
 
 export default function App() {
-    const location = useLocation();
+    const pathName = useLocation();
 
-    if (location.pathname === "/") {
-        return <SearchPage />;
-    } else if (location.pathname.startsWith("/search/")) {
-        const query = location.pathname.slice(8);
+    if (pathName === "/") {
+        return <SearchPage query="" />;
+    } else if (pathName.startsWith("/search/")) {
+        const query = pathName.slice(8);
         return <SearchPage query={query} />;
-    } else if (location.pathname === "/starred") {
+    } else if (pathName === "/starred") {
         return <StarredPage />;
+    } else {
+        return <h1>Not found</h1>;
     }
 }

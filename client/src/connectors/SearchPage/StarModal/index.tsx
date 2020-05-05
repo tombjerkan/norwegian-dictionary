@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import styles from "./styles.module.css";
 
-export default function StarModal({ initialNotes, onSave, onCancel }) {
-    const [notes, setNotes] = useState("");
+interface Props {
+    initialNotes?: string;
+    onSave(value: string): void;
+    onCancel(): void;
+}
+
+export default function StarModal({ initialNotes = "", ...props }: Props) {
+    const [notes, setNotes] = useState(initialNotes);
 
     useEffect(() => {
-        setNotes(initialNotes || "");
+        setNotes(initialNotes);
     }, [initialNotes]);
 
     return ReactDOM.createPortal(
@@ -19,15 +25,18 @@ export default function StarModal({ initialNotes, onSave, onCancel }) {
                     onChange={event => setNotes(event.target.value)}
                 />
 
-                <button className={styles.cancel} onClick={onCancel}>
+                <button className={styles.cancel} onClick={props.onCancel}>
                     Cancel
                 </button>
 
-                <button className={styles.ok} onClick={() => onSave(notes)}>
+                <button
+                    className={styles.ok}
+                    onClick={() => props.onSave(notes)}
+                >
                     Ok
                 </button>
             </div>
         </div>,
-        document.getElementById("modalRoot")
+        document.getElementById("modalRoot")!
     );
 }

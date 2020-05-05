@@ -1,6 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { OrdbokView } from ".";
+import OrdbokContent from "./Content";
 
 storiesOf("Ordbok", module).add("default", () => (
     <OrdbokView data={testData} isLoading={false} error={null} />

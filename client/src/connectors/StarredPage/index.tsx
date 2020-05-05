@@ -4,25 +4,20 @@ import Navigation from "components/Navigation";
 import Link from "components/Link";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import SearchNavigationButton from "./SearchNavigationButton";
+import { Entry } from "../SearchPage/types";
 import styles from "./styles.module.css";
 
 export default function StarredPageContainer() {
-    const [entries, setEntries] = useState([]);
-    const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [entries, setEntries] = useState<Entry[]>([]);
 
     useEffect(() => {
-        setLoading(true);
-        setError(null);
-
         axios
             .get("/api/starred")
             .then(response => setEntries(response.data))
-            .catch(error => setError(error.response.status))
-            .finally(() => setLoading(false));
+            .catch(() => {});
     }, []);
 
-    function deleteEntry(term) {
+    function deleteEntry(term: string) {
         setEntries(entries.filter(v => v.term !== term));
         axios.delete(`/api/starred/${term}`);
     }
@@ -30,7 +25,12 @@ export default function StarredPageContainer() {
     return <StarredPageView entries={entries} onDelete={deleteEntry} />;
 }
 
-export function StarredPageView({ entries, onDelete }) {
+interface Props {
+    entries: Entry[];
+    onDelete(term: string): void;
+}
+
+export function StarredPageView(props: Props) {
     return (
         <div>
             <Navigation>
@@ -39,11 +39,11 @@ export function StarredPageView({ entries, onDelete }) {
 
             <MaxWidthLimit>
                 <StarredEntries>
-                    {entries.map(entry => (
+                    {props.entries.map(entry => (
                         <StarredEntry
                             term={entry.term}
                             notes={entry.notes}
-                            onDelete={() => onDelete(entry.term)}
+                            onDelete={() => props.onDelete(entry.term)}
                         />
                     ))}
                 </StarredEntries>
@@ -52,28 +52,38 @@ export function StarredPageView({ entries, onDelete }) {
     );
 }
 
-function StarredEntries({ children }) {
+interface StarredEntriesProps {
+    children: React.ReactNode;
+}
+
+function StarredEntries(props: StarredEntriesProps) {
     return (
         <div className={styles.starred}>
             <h2 className={styles.header}>Starred</h2>
 
-            <ul className={styles.entries}>{children}</ul>
+            <ul className={styles.entries}>{props.children}</ul>
         </div>
     );
 }
 
-function StarredEntry({ term, notes, onDelete }) {
+interface StarredEntryProps {
+    term: string;
+    notes: string;
+    onDelete(): void;
+}
+
+function StarredEntry(props: StarredEntryProps) {
     return (
         <li className={styles.entry}>
             <h3 className={styles.term}>
-                <Link to={`/search/${term}`}>{term}</Link>
+                <Link to={`/search/${props.term}`}>{props.term}</Link>
             </h3>
 
-            <button onClick={onDelete} className={styles.removeButton}>
+            <button onClick={props.onDelete} className={styles.removeButton}>
                 Remove
             </button>
 
-            <p className={styles.notes}>{notes}</p>
+            <p className={styles.notes}>{props.notes}</p>
         </li>
     );
 }

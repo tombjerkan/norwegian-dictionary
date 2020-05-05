@@ -8,20 +8,33 @@ import useFetch from "../../utils/useFetch";
 import Content from "./Content";
 import styles from "./styles.module.css";
 
-export default function WiktionaryContainer({ query }) {
-    const [data, isLoading, error] = useFetch(`/api/wiktionary/${query}`);
+interface Props {
+    query: string;
+}
+
+export default function WiktionaryContainer(props: Props) {
+    const [data, isLoading, error] = useFetch<string>(
+        `/api/wiktionary/${props.query}`,
+        null
+    );
 
     return (
         <WiktionaryView
             data={data}
             isLoading={isLoading}
             error={error}
-            key={query}
+            key={props.query}
         />
     );
 }
 
-export function WiktionaryView({ data, isLoading, error }) {
+interface ViewProps {
+    data: string | null;
+    isLoading: boolean;
+    error: number | null;
+}
+
+export function WiktionaryView(props: ViewProps) {
     const [isOpen, setOpen] = useState(false);
 
     function toggleOpen() {
@@ -32,16 +45,17 @@ export function WiktionaryView({ data, isLoading, error }) {
         setOpen(false);
     }
 
-    const isNotFound = !isLoading && error === 404;
-    const isError = !isLoading && error !== null && error !== 404;
-    const isContentAvailable = !isLoading && error === null;
+    const isNotFound = !props.isLoading && props.error === 404;
+    const isError =
+        !props.isLoading && props.error !== null && props.error !== 404;
+    const isContentAvailable = !props.isLoading && props.error === null;
 
     return (
-        <Section isAvailable={isContentAvailable || isLoading}>
+        <Section isAvailable={isContentAvailable || props.isLoading}>
             <div onClick={toggleOpen} className={styles.header}>
                 <h2 className={styles.title}>Wiktionary</h2>
 
-                {isLoading && <Loading />}
+                {props.isLoading && <Loading />}
                 {isNotFound && <div>Not available</div>}
                 {isError && <Error style={{ height: "30px" }} />}
                 {isContentAvailable && <ExpandChevron isOpen={isOpen} />}
@@ -50,7 +64,7 @@ export function WiktionaryView({ data, isLoading, error }) {
             {isContentAvailable && isOpen && (
                 <>
                     <div className={styles.expandableContent}>
-                        {data && <Content data={data} />}
+                        {props.data !== null && <Content data={props.data} />}
                     </div>
 
                     <CloseButton onClose={close} />

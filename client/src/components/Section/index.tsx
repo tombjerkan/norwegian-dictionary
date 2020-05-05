@@ -3,16 +3,22 @@ import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
-export default function Section({ children, isAvailable = true, className }) {
+interface Props {
+    children: React.ReactNode;
+    isAvailable?: boolean;
+    className?: string;
+}
+
+export default function Section({ isAvailable = true, ...props }: Props) {
     return (
         <section
             className={classNames(
                 styles.section,
                 !isAvailable && styles.unavailable,
-                className
+                props.className
             )}
         >
-            {children}
+            {props.children}
         </section>
     );
 }

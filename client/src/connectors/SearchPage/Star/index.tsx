@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import classNames from "classnames";
 import { ReactComponent as StarIcon } from "components/Star.svg";
 import StarModal from "../StarModal";
+import { Entry } from "../types";
 import styles from "./styles.module.css";
 
-export default function Star({ entry, postEntry }) {
+interface Props {
+    entry: Entry | null;
+    postEntry(notes: string): void;
+}
+
+export default function Star(props: Props) {
     const [isEditingNotes, setEditingNotes] = useState(false);
 
-    const isStarred = isEditingNotes || entry !== null;
+    const isStarred = isEditingNotes || props.entry !== null;
 
     return (
         <div className={styles.container}>
@@ -25,10 +31,10 @@ export default function Star({ entry, postEntry }) {
 
             {isEditingNotes && (
                 <StarModal
-                    initialNotes={entry !== null && entry.notes}
-                    onSave={notes => {
+                    initialNotes={props.entry?.notes}
+                    onSave={(notes: string) => {
                         setEditingNotes(false);
-                        postEntry(notes);
+                        props.postEntry(notes);
                     }}
                     onCancel={() => {
                         setEditingNotes(false);

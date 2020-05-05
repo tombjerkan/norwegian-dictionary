@@ -4,15 +4,23 @@ import { ReactComponent as Magnifier } from "components/Magnifier.svg";
 import { ReactComponent as Clear } from "./Clear.svg";
 import styles from "./styles.module.css";
 
-export default function Search({ initialValue, onSubmit, className }) {
-    const [value, setValue] = useState(initialValue || "");
-    const inputRef = useRef(null);
+interface Props {
+    initialValue?: string;
+    className?: string;
+    onSubmit(value: string): void;
+}
+
+export default function Search(props: Props) {
+    const [value, setValue] = useState(props.initialValue ?? "");
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        setValue(initialValue);
-    }, [initialValue]);
+        if (props.initialValue !== undefined) {
+            setValue(props.initialValue);
+        }
+    }, [props.initialValue]);
 
-    function handleChange(event) {
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         setValue(event.target.value);
     }
 
@@ -20,19 +28,19 @@ export default function Search({ initialValue, onSubmit, className }) {
         setValue("");
     }
 
-    function handleSubmit(event) {
+    function handleSubmit(event: React.FormEvent) {
         // Input does not automatically unfocus as same root page is used,
         // must unfocus manually for mobile keyboard to disappear.
-        inputRef.current.blur();
+        inputRef?.current?.blur();
 
-        onSubmit(value);
+        props.onSubmit(value);
         event.preventDefault();
     }
 
     return (
         <form
             onSubmit={handleSubmit}
-            className={classNames(styles.container, className)}
+            className={classNames(styles.container, props.className)}
         >
             <Magnifier className={styles.magnifier} />
 

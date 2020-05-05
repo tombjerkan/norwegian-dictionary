@@ -3,13 +3,18 @@ import classNames from "classnames";
 import { ReactComponent as Chevron } from "components/Chevron.svg";
 import styles from "./styles.module.css";
 
-export default function ExpandChevron({ isOpen, className }) {
+interface Props {
+    isOpen: boolean;
+    className?: string;
+}
+
+export default function ExpandChevron(props: Props) {
     return (
         <Chevron
             className={classNames(
                 styles.chevron,
-                isOpen && styles.closeChevron,
-                className
+                props.isOpen && styles.closeChevron,
+                props.className
             )}
         />
     );

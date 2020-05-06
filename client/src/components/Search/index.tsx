@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import { ReactComponent as Magnifier } from "components/Magnifier.svg";
 import { ReactComponent as Clear } from "./Clear.svg";
-import styles from "./styles.module.css";
 
 interface Props {
     initialValue?: string;
@@ -40,9 +39,11 @@ export default function Search(props: Props) {
     return (
         <form
             onSubmit={handleSubmit}
-            className={classNames(styles.container, props.className)}
+            className={classNames("relative", props.className)}
         >
-            <Magnifier className={styles.magnifier} />
+            <div className="pointer-events-none absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500">
+                <Magnifier className="h-4 stroke-current" />
+            </div>
 
             <input
                 type="text"
@@ -50,10 +51,12 @@ export default function Search(props: Props) {
                 value={value}
                 onChange={handleChange}
                 ref={inputRef}
-                className={styles.input}
+                className="h-10 rounded-lg pl-10 pr-12 shadow w-full"
             />
 
-            <Clear className={styles.clear} onClick={handleClear} />
+            <button className="absolute inset-y-0 right-0 pl-4 pr-4 flex items-center">
+                <Clear className="h-4" onClick={handleClear} />
+            </button>
         </form>
     );
 }

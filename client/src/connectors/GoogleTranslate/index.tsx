@@ -3,7 +3,6 @@ import useFetch from "../../utils/useFetch";
 import Section from "components/Section";
 import Loading from "components/Loading";
 import { ReactComponent as Error } from "components/Error.svg";
-import styles from "./styles.module.css";
 
 interface Props {
     query: string;
@@ -34,13 +33,13 @@ export function GoogleTranslateView(props: ViewProps) {
     return (
         <Section
             isAvailable={isContentAvailable || props.isLoading}
-            className={styles.section}
+            className="flex items-center pl-4 pr-4"
         >
-            <h2 className={styles.title}>Google</h2>
+            <h2 className="flex-1">Google</h2>
 
             {props.isLoading && <Loading />}
             {isNotFound && <div>Not available</div>}
-            {isError && <Error style={{ height: "30px" }} />}
+            {isError && <Error className="h-8" />}
             {isContentAvailable && props.data}
         </Section>
     );

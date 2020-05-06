@@ -1,7 +1,6 @@
 import React from "react";
 import classNames from "classnames";
 import MaxWidthLimit from "components/MaxWidthLimit";
-import styles from "./styles.module.css";
 
 interface Props {
     children: React.ReactNode;
@@ -10,9 +9,9 @@ interface Props {
 
 export default function Navigation(props: Props) {
     return (
-        <nav className={classNames(styles.outerContainer, props.className)}>
+        <nav className={classNames("bg-gray-800", props.className)}>
             <MaxWidthLimit>
-                <div className={styles.innerContainer}>{props.children}</div>
+                <div className="flex pt-3 pb-3">{props.children}</div>
             </MaxWidthLimit>
         </nav>
     );

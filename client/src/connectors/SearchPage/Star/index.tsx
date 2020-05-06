@@ -3,7 +3,6 @@ import classNames from "classnames";
 import { ReactComponent as StarIcon } from "components/Star.svg";
 import StarModal from "../StarModal";
 import { Entry } from "../types";
-import styles from "./styles.module.css";
 
 interface Props {
     entry: Entry | null;
@@ -16,15 +15,15 @@ export default function Star(props: Props) {
     const isStarred = isEditingNotes || props.entry !== null;
 
     return (
-        <div className={styles.container}>
-            <div className={styles.starButton}>
+        <div className="fixed right-0 bottom-0 mr-8 mb-8">
+            <div className="bg-white w-12 h-12 rounded-full flex justify-center items-center cursor-pointer shadow text-blue-500 stroke-current">
                 <StarIcon
                     onClick={() => {
                         setEditingNotes(true);
                     }}
                     className={classNames(
-                        styles.star,
-                        isStarred && styles.filled
+                        "w-6 transform translate-y-px",
+                        isStarred && "fill-current"
                     )}
                 />
             </div>

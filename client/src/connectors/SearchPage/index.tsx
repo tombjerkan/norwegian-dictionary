@@ -10,7 +10,6 @@ import Ordbok from "../Ordbok";
 import Wiktionary from "../Wiktionary";
 import Star from "./Star";
 import { Entry } from "./types";
-import styles from "./styles.module.css";
 
 function useStarredEntry(term: string): [Entry | null, (entry: Entry) => void] {
     const [entry, setEntry] = useState<Entry | null>(null);
@@ -62,12 +61,12 @@ export function SearchPageView(props: ViewProps) {
     }
 
     return (
-        <div>
-            <Navigation className={styles.navigation}>
+        <div className="min-h-screen bg-gray-100">
+            <Navigation className="mb-8">
                 <Search
                     onSubmit={handleSearch}
                     initialValue={props.query}
-                    className={styles.search}
+                    className="flex-1 mr-3"
                 />
                 <StarredNavigationButton />
             </Navigation>
@@ -95,7 +94,7 @@ interface ContentProps {
 function Content(props: ContentProps) {
     return (
         <MaxWidthLimit>
-            <div className={styles.content}>{props.children}</div>
+            <div className="pb-8 space-y-8">{props.children}</div>
         </MaxWidthLimit>
     );
 }

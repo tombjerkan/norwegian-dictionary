@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import classNames from "classnames";
 import Navigation from "components/Navigation";
 import Link from "components/Link";
 import MaxWidthLimit from "components/MaxWidthLimit";
@@ -32,7 +33,7 @@ interface Props {
 
 export function StarredPageView(props: Props) {
     return (
-        <div>
+        <div className="min-h-screen bg-gray-100">
             <Navigation>
                 <SearchNavigationButton />
             </Navigation>
@@ -58,10 +59,10 @@ interface StarredEntriesProps {
 
 function StarredEntries(props: StarredEntriesProps) {
     return (
-        <div className={styles.starred}>
-            <h2 className={styles.header}>Starred</h2>
+        <div className="rounded bg-white shadow mt-8">
+            <h2 className="py-6 px-4">Starred</h2>
 
-            <ul className={styles.entries}>{props.children}</ul>
+            <ul>{props.children}</ul>
         </div>
     );
 }
@@ -74,7 +75,7 @@ interface StarredEntryProps {
 
 function StarredEntry(props: StarredEntryProps) {
     return (
-        <li className={styles.entry}>
+        <li className={classNames("p-6 h-12 border-t", styles.entry)}>
             <h3 className={styles.term}>
                 <Link to={`/search/${props.term}`}>{props.term}</Link>
             </h3>

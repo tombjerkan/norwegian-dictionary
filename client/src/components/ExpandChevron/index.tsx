@@ -1,7 +1,6 @@
 import React from "react";
 import classNames from "classnames";
 import { ReactComponent as Chevron } from "components/Chevron.svg";
-import styles from "./styles.module.css";
 
 interface Props {
     isOpen: boolean;
@@ -12,8 +11,8 @@ export default function ExpandChevron(props: Props) {
     return (
         <Chevron
             className={classNames(
-                styles.chevron,
-                props.isOpen && styles.closeChevron,
+                "w-3",
+                props.isOpen && "transform rotate-180",
                 props.className
             )}
         />

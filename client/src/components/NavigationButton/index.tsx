@@ -1,7 +1,5 @@
 import React from "react";
-import classNames from "classnames";
 import Link from "components/Link";
-import styles from "./styles.module.css";
 
 interface Props {
     to: string;
@@ -11,7 +9,7 @@ interface Props {
 export default function NavigationButton(props: Props) {
     return (
         <Link to={props.to}>
-            <button className={classNames(styles.button, props.className)}>
+            <button className="flex items-center bg-white h-10 rounded-lg shadow pl-3 pr-3">
                 {props.children}
             </button>
         </Link>

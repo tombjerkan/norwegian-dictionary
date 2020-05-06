@@ -6,7 +6,6 @@ import { ReactComponent as Error } from "components/Error.svg";
 import CloseButton from "components/CloseButton";
 import useFetch from "../../utils/useFetch";
 import Content from "./Content";
-import styles from "./styles.module.css";
 
 interface Props {
     query: string;
@@ -52,18 +51,21 @@ export function WiktionaryView(props: ViewProps) {
 
     return (
         <Section isAvailable={isContentAvailable || props.isLoading}>
-            <div onClick={toggleOpen} className={styles.header}>
-                <h2 className={styles.title}>Wiktionary</h2>
+            <div
+                onClick={toggleOpen}
+                className="flex items-center pl-4 pr-4 cursor-pointer"
+            >
+                <h2 className="flex-1">Wiktionary</h2>
 
                 {props.isLoading && <Loading />}
                 {isNotFound && <div>Not available</div>}
-                {isError && <Error style={{ height: "30px" }} />}
+                {isError && <Error className="h-8" />}
                 {isContentAvailable && <ExpandChevron isOpen={isOpen} />}
             </div>
 
             {isContentAvailable && isOpen && (
                 <>
-                    <div className={styles.expandableContent}>
+                    <div className="pt-6 pl-4 pr-4 pb-16 border-t border-gray-200">
                         {props.data !== null && <Content data={props.data} />}
                     </div>
 

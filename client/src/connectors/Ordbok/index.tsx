@@ -53,9 +53,9 @@ export function OrdbokView(props: ViewProps) {
         <Section isAvailable={isContentAvailable || props.isLoading}>
             <div
                 onClick={toggleOpen}
-                className="flex items-center pl-4 pr-4 cursor-pointer"
+                className="flex items-center px-4 py-4 cursor-pointer"
             >
-                <h2 className="flex-1">Ordbok</h2>
+                <h2 className="flex-1 text-gray-900 text-xl">Ordbok</h2>
 
                 {props.isLoading && <Loading />}
                 {isNotFound && <div>Not available</div>}

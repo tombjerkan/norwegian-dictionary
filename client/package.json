@@ -39,7 +39,7 @@
         "build:css": "postcss src/tailwind.css -o src/tailwind.generated.css"
     },
     "lint-staged": {
-        "*.js *.jsx *.ts *.tsx": "prettier --tab-width 4 --check",
+        "*.js|*.jsx|*.ts|*.tsx": "prettier --tab-width 4 --check",
         "*.json": [
             "prettier --tab-width 4 --write",
             "git add"

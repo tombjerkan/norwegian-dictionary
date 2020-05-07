@@ -33,14 +33,16 @@ export function GoogleTranslateView(props: ViewProps) {
     return (
         <Section
             isAvailable={isContentAvailable || props.isLoading}
-            className="flex items-center pl-4 pr-4"
+            className="flex items-center px-4 py-4"
         >
-            <h2 className="flex-1">Google</h2>
+            <h2 className="flex-1 text-gray-900 text-xl">Google</h2>
 
             {props.isLoading && <Loading />}
             {isNotFound && <div>Not available</div>}
             {isError && <Error className="h-8" />}
-            {isContentAvailable && props.data}
+            {isContentAvailable && (
+                <span className="text-gray-700">{props.data}</span>
+            )}
         </Section>
     );
 }

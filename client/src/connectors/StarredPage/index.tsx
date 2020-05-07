@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import classNames from "classnames";
 import Navigation from "components/Navigation";
 import Link from "components/Link";
 import MaxWidthLimit from "components/MaxWidthLimit";
 import SearchNavigationButton from "./SearchNavigationButton";
 import { Entry } from "../SearchPage/types";
-import styles from "./styles.module.css";
 
 export default function StarredPageContainer() {
     const [entries, setEntries] = useState<Entry[]>([]);
@@ -33,7 +31,7 @@ interface Props {
 
 export function StarredPageView(props: Props) {
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-200">
             <Navigation>
                 <SearchNavigationButton />
             </Navigation>
@@ -75,16 +73,14 @@ interface StarredEntryProps {
 
 function StarredEntry(props: StarredEntryProps) {
     return (
-        <li className={classNames("p-6 h-12 border-t", styles.entry)}>
-            <h3 className={styles.term}>
+        <li className={"flex flex-wrap p-6 border-t"}>
+            <h3 className={"flex-1"}>
                 <Link to={`/search/${props.term}`}>{props.term}</Link>
             </h3>
 
-            <button onClick={props.onDelete} className={styles.removeButton}>
-                Remove
-            </button>
+            <button onClick={props.onDelete}>Remove</button>
 
-            <p className={styles.notes}>{props.notes}</p>
+            <p className={"w-full"}>{props.notes}</p>
         </li>
     );
 }

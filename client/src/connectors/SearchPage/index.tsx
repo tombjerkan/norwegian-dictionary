@@ -61,7 +61,7 @@ export function SearchPageView(props: ViewProps) {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-200">
             <Navigation className="mb-8">
                 <Search
                     onSubmit={handleSearch}
@@ -72,16 +72,18 @@ export function SearchPageView(props: ViewProps) {
             </Navigation>
 
             {props.query && (
-                <Content>
-                    <GoogleTranslate query={props.query} />
-                    <Wiktionary query={props.query} />
-                    <Ordbok query={props.query} />
+                <>
+                    <Content>
+                        <GoogleTranslate query={props.query} />
+                        <Wiktionary query={props.query} />
+                        <Ordbok query={props.query} />
+                    </Content>
 
                     <Star
                         entry={props.starredEntry}
                         postEntry={props.postStarredEntry}
                     />
-                </Content>
+                </>
             )}
         </div>
     );

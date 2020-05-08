@@ -30,7 +30,7 @@ interface Props {
 
 export function StarredPageView(props: Props) {
     return (
-        <div className="min-h-screen bg-gray-200">
+        <>
             <Navigation>
                 <SearchNavigationButton />
             </Navigation>
@@ -49,7 +49,7 @@ export function StarredPageView(props: Props) {
                     </ul>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

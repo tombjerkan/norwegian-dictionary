@@ -60,7 +60,7 @@ export function SearchPageView(props: ViewProps) {
     }
 
     return (
-        <div className="min-h-screen bg-gray-200">
+        <>
             <Navigation className="mb-8">
                 <Search
                     onSubmit={handleSearch}
@@ -84,6 +84,6 @@ export function SearchPageView(props: ViewProps) {
                     />
                 </>
             )}
-        </div>
+        </>
     );
 }

@@ -4,7 +4,6 @@ import { history } from "routing";
 import Navigation from "components/Navigation";
 import Search from "components/Search";
 import StarredNavigationButton from "./StarredNavigationButton";
-import MaxWidthLimit from "components/MaxWidthLimit";
 import GoogleTranslate from "../GoogleTranslate";
 import Ordbok from "../Ordbok";
 import Wiktionary from "../Wiktionary";
@@ -73,11 +72,11 @@ export function SearchPageView(props: ViewProps) {
 
             {props.query && (
                 <>
-                    <Content>
+                    <div className="max-width-limit pb-8 space-y-8">
                         <GoogleTranslate query={props.query} />
                         <Wiktionary query={props.query} />
                         <Ordbok query={props.query} />
-                    </Content>
+                    </div>
 
                     <Star
                         entry={props.starredEntry}
@@ -86,17 +85,5 @@ export function SearchPageView(props: ViewProps) {
                 </>
             )}
         </div>
-    );
-}
-
-interface ContentProps {
-    children: React.ReactNode;
-}
-
-function Content(props: ContentProps) {
-    return (
-        <MaxWidthLimit>
-            <div className="pb-8 space-y-8">{props.children}</div>
-        </MaxWidthLimit>
     );
 }

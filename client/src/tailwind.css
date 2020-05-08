@@ -1,5 +1,13 @@
 /* stylelint-disable */
 @tailwind base;
 @tailwind components;
+
+.max-width-limit {
+    @apply max-w-xl;
+    @apply mx-auto;
+    @apply px-3;
+}
+
 @tailwind utilities;
+
 /* stylelint-enable */

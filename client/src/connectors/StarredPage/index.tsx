@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navigation from "components/Navigation";
 import Link from "components/Link";
-import MaxWidthLimit from "components/MaxWidthLimit";
 import SearchNavigationButton from "./SearchNavigationButton";
 import { Entry } from "../SearchPage/types";
 
@@ -36,31 +35,20 @@ export function StarredPageView(props: Props) {
                 <SearchNavigationButton />
             </Navigation>
 
-            <MaxWidthLimit>
-                <StarredEntries>
-                    {props.entries.map(entry => (
-                        <StarredEntry
-                            term={entry.term}
-                            notes={entry.notes}
-                            onDelete={() => props.onDelete(entry.term)}
-                        />
-                    ))}
-                </StarredEntries>
-            </MaxWidthLimit>
-        </div>
-    );
-}
-
-interface StarredEntriesProps {
-    children: React.ReactNode;
-}
-
-function StarredEntries(props: StarredEntriesProps) {
-    return (
-        <div className="rounded bg-white shadow mt-8">
-            <h2 className="py-6 px-4">Starred</h2>
-
-            <ul>{props.children}</ul>
+            <div className="max-width-limit">
+                <div className="rounded bg-white shadow mt-8">
+                    <h2 className="py-6 px-4">Starred</h2>
+                    <ul>
+                        {props.entries.map(entry => (
+                            <StarredEntry
+                                term={entry.term}
+                                notes={entry.notes}
+                                onDelete={() => props.onDelete(entry.term)}
+                            />
+                        ))}
+                    </ul>
+                </div>
+            </div>
         </div>
     );
 }
@@ -73,14 +61,14 @@ interface StarredEntryProps {
 
 function StarredEntry(props: StarredEntryProps) {
     return (
-        <li className={"flex flex-wrap p-6 border-t"}>
-            <h3 className={"flex-1"}>
+        <li className="flex flex-wrap p-6 border-t">
+            <h3 className="flex-1">
                 <Link to={`/search/${props.term}`}>{props.term}</Link>
             </h3>
 
             <button onClick={props.onDelete}>Remove</button>
 
-            <p className={"w-full"}>{props.notes}</p>
+            <p className="w-full">{props.notes}</p>
         </li>
     );
 }

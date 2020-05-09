@@ -1,3 +1,10 @@
+/*
+ * The Tailwind theme configuration is separated from the rest of the Tailwind
+ * config (in tailwind.config.js) so that it can be imported from
+ * TailwindThemeProvider (imports must be within 'src' directory, but I did not
+ * want to move the whole config file here).
+ */
+
 export default {
     screens: {
         sm: "640px",

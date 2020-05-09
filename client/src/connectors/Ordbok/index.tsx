@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import Section from "components/Section";
-import ExpandChevron from "components/ExpandChevron";
-import Loading from "components/Loading";
-import { ReactComponent as Error } from "components/Error.svg";
-import CloseButton from "components/CloseButton";
+import {
+    Card,
+    Error,
+    ExpandArrow,
+    Header,
+    Loading,
+    NotAvailable,
+    Title
+} from "components/Section";
+import { ReactComponent as Chevron } from "components/Chevron.svg";
 import useFetch from "../../utils/useFetch";
 import Content from "./Content";
 import { Entry } from "./types";
@@ -50,18 +55,15 @@ export function OrdbokView(props: ViewProps) {
     const isContentAvailable = !props.isLoading && props.error === null;
 
     return (
-        <Section isAvailable={isContentAvailable || props.isLoading}>
-            <div
-                onClick={toggleOpen}
-                className="flex items-center px-4 py-4 cursor-pointer"
-            >
-                <h2 className="flex-1 text-gray-900 text-xl">Ordbok</h2>
+        <Card isDisabled={isNotFound || isError}>
+            <Header onClick={toggleOpen} className="cursor-pointer">
+                <Title>Ordbok</Title>
 
                 {props.isLoading && <Loading />}
-                {isNotFound && <div>Not available</div>}
-                {isError && <Error className="h-8" />}
-                {isContentAvailable && <ExpandChevron isOpen={isOpen} />}
-            </div>
+                {isNotFound && <NotAvailable />}
+                {isError && <Error />}
+                {isContentAvailable && <ExpandArrow isOpen={isOpen} />}
+            </Header>
 
             {isContentAvailable && isOpen && (
                 <>
@@ -69,9 +71,14 @@ export function OrdbokView(props: ViewProps) {
                         {props.data && <Content data={props.data!} />}
                     </div>
 
-                    <CloseButton onClose={close} />
+                    <button
+                        onClick={close}
+                        className="flex justify-center items-center w-full h-10 bg-gray-100"
+                    >
+                        <Chevron className="w-3 transform rotate-180" />
+                    </button>
                 </>
             )}
-        </Section>
+        </Card>
     );
 }

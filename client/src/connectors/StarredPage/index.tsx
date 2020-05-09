@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navigation from "components/Navigation";
-import Link from "components/Link";
 import SearchNavigationButton from "./SearchNavigationButton";
 import { Entry } from "../SearchPage/types";
+import { history } from "routing";
 
 export default function StarredPageContainer() {
     const [entries, setEntries] = useState<Entry[]>([]);
@@ -60,10 +60,21 @@ interface StarredEntryProps {
 }
 
 function StarredEntry(props: StarredEntryProps) {
+    function navigate(event: React.MouseEvent) {
+        event.preventDefault();
+        history.push(`/search/${props.term}`);
+    }
+
     return (
         <li className="flex flex-wrap p-6 border-t">
             <h3 className="flex-1">
-                <Link to={`/search/${props.term}`}>{props.term}</Link>
+                <a
+                    href={`/search/${props.term}`}
+                    onClick={navigate}
+                    className="text-blue-500"
+                >
+                    {props.term}
+                </a>
             </h3>
 
             <button onClick={props.onDelete}>Remove</button>

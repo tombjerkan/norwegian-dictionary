@@ -1,8 +1,13 @@
 import React from "react";
 import useFetch from "../../utils/useFetch";
-import Section from "components/Section";
-import Loading from "components/Loading";
-import { ReactComponent as Error } from "components/Error.svg";
+import {
+    Card,
+    Error,
+    Header,
+    Loading,
+    NotAvailable,
+    Title
+} from "components/Section";
 
 interface Props {
     query: string;
@@ -31,18 +36,17 @@ export function GoogleTranslateView(props: ViewProps) {
     const isContentAvailable = !props.isLoading && props.error === null;
 
     return (
-        <Section
-            isAvailable={isContentAvailable || props.isLoading}
-            className="flex items-center px-4 py-4"
-        >
-            <h2 className="flex-1 text-gray-900 text-xl">Google</h2>
+        <Card isDisabled={isNotFound || isError}>
+            <Header>
+                <Title>Google</Title>
 
-            {props.isLoading && <Loading />}
-            {isNotFound && <div>Not available</div>}
-            {isError && <Error className="h-8" />}
-            {isContentAvailable && (
-                <span className="text-gray-700">{props.data}</span>
-            )}
-        </Section>
+                {props.isLoading && <Loading />}
+                {isNotFound && <NotAvailable />}
+                {isError && <Error />}
+                {isContentAvailable && (
+                    <span className="text-gray-700">{props.data}</span>
+                )}
+            </Header>
+        </Card>
     );
 }

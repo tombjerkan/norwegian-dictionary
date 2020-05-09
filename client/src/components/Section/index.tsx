@@ -1,22 +1,9 @@
-import React from "react";
-import classNames from "classnames";
+import Card from "./Card";
+import Error from "./Error";
+import ExpandArrow from "./ExpandArrow";
+import Header from "./Header";
+import Loading from "./Loading";
+import NotAvailable from "./NotAvailable";
+import Title from "./Title";
 
-interface Props {
-    children: React.ReactNode;
-    isAvailable?: boolean;
-    className?: string;
-}
-
-export default function Section({ isAvailable = true, ...props }: Props) {
-    return (
-        <section
-            className={classNames(
-                "shadow rounded-lg overflow-hidden bg-white",
-                !isAvailable && "opacity-50",
-                props.className
-            )}
-        >
-            {props.children}
-        </section>
-    );
-}
+export { Card, Error, ExpandArrow, Header, Loading, NotAvailable, Title };

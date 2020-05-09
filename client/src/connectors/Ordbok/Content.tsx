@@ -1,8 +1,8 @@
 import React from "react";
+import styled from "styled-components";
 import DomPurify from "dompurify";
 
 import { Entry } from "./types";
-import styles from "./styles.module.css";
 
 interface Props {
     data: Entry[];
@@ -19,12 +19,31 @@ export default function OrdbokContent(props: Props) {
             {sanitisedData.map(entry => (
                 <>
                     <h1>{entry.term}</h1>
-                    <div
+                    <Container
                         dangerouslySetInnerHTML={{ __html: entry.content }}
-                        className={styles.container}
                     />
                 </>
             ))}
         </>
     );
 }
+
+const Container = styled.div`
+    .tyding {
+        margin-left: ${props => props.theme.spacing[4]};
+        text-indent: -${props => props.theme.spacing[4]};
+    }
+
+    .doemeliste {
+        margin-left: 0;
+        text-indent: 0;
+    }
+
+    .oppslagsord {
+        font-weight: ${props => props.theme.fontWeight.bold};
+    }
+
+    .artikkeloppslagsord {
+        font-weight: ${props => props.theme.fontWeight.bold};
+    }
+`;

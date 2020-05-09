@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import classNames from "classnames";
 import {
     Card,
     Error,
@@ -10,7 +9,7 @@ import {
     Title
 } from "components/Section";
 import { ReactComponent as Chevron } from "components/Chevron.svg";
-import useFetch from "../../utils/useFetch";
+import useData from "../../utils/useData";
 import Content from "./Content";
 
 interface Props {
@@ -18,7 +17,7 @@ interface Props {
 }
 
 export default function WiktionaryContainer(props: Props) {
-    const [data, isLoading, error] = useFetch<string>(
+    const [data, isLoading, isUnavailable, isError] = useData<string>(
         `/api/wiktionary/${props.query}`,
         null
     );
@@ -27,7 +26,8 @@ export default function WiktionaryContainer(props: Props) {
         <WiktionaryView
             data={data}
             isLoading={isLoading}
-            error={error}
+            isUnavailable={isUnavailable}
+            isError={isError}
             key={props.query}
         />
     );
@@ -36,7 +36,8 @@ export default function WiktionaryContainer(props: Props) {
 interface ViewProps {
     data: string | null;
     isLoading: boolean;
-    error: number | null;
+    isUnavailable: boolean;
+    isError: boolean;
 }
 
 export function WiktionaryView(props: ViewProps) {
@@ -50,18 +51,16 @@ export function WiktionaryView(props: ViewProps) {
         setOpen(false);
     }
 
-    const isNotFound = !props.isLoading && props.error === 404;
-    const isError =
-        !props.isLoading && props.error !== null && props.error !== 404;
-    const isContentAvailable = !props.isLoading && props.error === null;
+    const isContentAvailable =
+        !props.isLoading && !props.isUnavailable && !props.isError;
 
     return (
-        <Card isDisabled={isNotFound || isError}>
+        <Card isDisabled={props.isUnavailable || props.isError}>
             <Header onClick={toggleOpen} className="cursor-pointer">
                 <Title>Wiktionary</Title>
                 {props.isLoading && <Loading />}
-                {isNotFound && <NotAvailable />}
-                {isError && <Error />}
+                {props.isUnavailable && <NotAvailable />}
+                {props.isError && <Error />}
                 {isContentAvailable && <ExpandArrow isOpen={isOpen} />}
             </Header>
 

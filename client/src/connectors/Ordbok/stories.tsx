@@ -4,7 +4,12 @@ import { OrdbokView } from ".";
 import OrdbokContent from "./Content";
 
 storiesOf("Ordbok", module).add("default", () => (
-    <OrdbokView data={testData} isLoading={false} error={null} />
+    <OrdbokView
+        data={testData}
+        isLoading={false}
+        isUnavailable={false}
+        isError={false}
+    />
 ));
 
 storiesOf("Ordbok", module).add("content", () => (

@@ -52,12 +52,11 @@ storiesOf("Section", module)
             </Header>
         </Card>
     ))
-    .add("expandable - open with content", () => (
+    .add("expandable - open", () => (
         <Card>
             <Header>
                 <Title>Title</Title>
                 <ExpandArrow isOpen={true} />
             </Header>
-            Content outside of header
         </Card>
     ));

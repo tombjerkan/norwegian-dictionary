@@ -4,14 +4,34 @@ import { GoogleTranslateView } from ".";
 
 storiesOf("GoogleTranslate", module)
     .add("default", () => (
-        <GoogleTranslateView data="apparently" isLoading={false} error={null} />
+        <GoogleTranslateView
+            data="apparently"
+            isLoading={false}
+            isUnavailable={false}
+            isError={false}
+        />
     ))
     .add("loading", () => (
-        <GoogleTranslateView data={null} isLoading={true} error={null} />
+        <GoogleTranslateView
+            data="apparently"
+            isLoading={true}
+            isUnavailable={false}
+            isError={false}
+        />
     ))
     .add("error (404)", () => (
-        <GoogleTranslateView data={null} isLoading={false} error={404} />
+        <GoogleTranslateView
+            data="apparently"
+            isLoading={false}
+            isUnavailable={true}
+            isError={false}
+        />
     ))
     .add("error (other)", () => (
-        <GoogleTranslateView data={null} isLoading={false} error={500} />
+        <GoogleTranslateView
+            data="apparently"
+            isLoading={false}
+            isUnavailable={false}
+            isError={true}
+        />
     ));

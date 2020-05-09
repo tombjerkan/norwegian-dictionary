@@ -4,7 +4,12 @@ import { WiktionaryView } from ".";
 import WiktionaryContent from "./Content";
 
 storiesOf("Wiktionary", module).add("default", () => (
-    <WiktionaryView data={testData} isLoading={false} error={null} />
+    <WiktionaryView
+        data={testData}
+        isLoading={false}
+        isUnavailable={false}
+        isError={false}
+    />
 ));
 
 storiesOf("Wiktionary", module).add("content", () => (

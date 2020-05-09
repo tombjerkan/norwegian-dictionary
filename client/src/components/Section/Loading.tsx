@@ -1,30 +1,29 @@
 import React from "react";
 import classNames from "classnames";
-import styles from "./styles.module.css";
+import styles from "./Loading.module.css";
 
 export default function Loading() {
     return (
         <div>
-            <div
-                className={classNames(
-                    "inline-block rounded-full w-2 h-2 bg-gray-500",
-                    styles.circle,
-                    styles.circle1
-                )}
-            />
-            <div
-                className={classNames(
-                    "inline-block rounded-full w-2 h-2 ml-2 bg-gray-500",
-                    styles.circle,
-                    styles.circle2
-                )}
-            />
-            <div
-                className={classNames(
-                    "inline-block rounded-full w-2 h-2 ml-2 bg-gray-500",
-                    styles.circle
-                )}
-            />
+            <Dot className={styles.circle1} />
+            <Dot className={styles.circle2} />
+            <Dot />
         </div>
+    );
+}
+
+interface DotProps {
+    className?: string;
+}
+
+function Dot(props: DotProps) {
+    return (
+        <div
+            className={classNames(
+                "inline-block rounded-full w-2 h-2 ml-2 bg-blue-500",
+                styles.circle,
+                props.className
+            )}
+        />
     );
 }

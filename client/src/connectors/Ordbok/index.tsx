@@ -9,7 +9,7 @@ import {
     Title
 } from "components/Section";
 import { ReactComponent as Chevron } from "components/Chevron.svg";
-import useFetch from "../../utils/useFetch";
+import useData from "../../utils/useData";
 import Content from "./Content";
 import { Entry } from "./types";
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function OrdbokContainer(props: Props) {
-    const [data, isLoading, error] = useFetch<Entry[]>(
+    const [data, isLoading, isUnavailable, isError] = useData<Entry[]>(
         `/api/ordbok/${props.query}`
     );
 
@@ -26,7 +26,8 @@ export default function OrdbokContainer(props: Props) {
         <OrdbokView
             data={data}
             isLoading={isLoading}
-            error={error}
+            isUnavailable={isUnavailable}
+            isError={isError}
             key={props.query}
         />
     );
@@ -35,7 +36,8 @@ export default function OrdbokContainer(props: Props) {
 interface ViewProps {
     data: Entry[] | null;
     isLoading: boolean;
-    error: number | null;
+    isUnavailable: boolean;
+    isError: boolean;
 }
 
 export function OrdbokView(props: ViewProps) {
@@ -49,19 +51,17 @@ export function OrdbokView(props: ViewProps) {
         setOpen(false);
     }
 
-    const isNotFound = !props.isLoading && props.error === 404;
-    const isError =
-        !props.isLoading && props.error !== null && props.error !== 404;
-    const isContentAvailable = !props.isLoading && props.error === null;
+    const isContentAvailable =
+        !props.isLoading && !props.isUnavailable && !props.isError;
 
     return (
-        <Card isDisabled={isNotFound || isError}>
+        <Card isDisabled={props.isUnavailable || props.isError}>
             <Header onClick={toggleOpen} className="cursor-pointer">
                 <Title>Ordbok</Title>
 
                 {props.isLoading && <Loading />}
-                {isNotFound && <NotAvailable />}
-                {isError && <Error />}
+                {props.isUnavailable && <NotAvailable />}
+                {props.isError && <Error />}
                 {isContentAvailable && <ExpandArrow isOpen={isOpen} />}
             </Header>
 

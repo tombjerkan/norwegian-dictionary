@@ -1,5 +1,5 @@
 import React from "react";
-import useFetch from "../../utils/useFetch";
+import useData from "../../utils/useData";
 import {
     Card,
     Error,
@@ -14,36 +14,37 @@ interface Props {
 }
 
 export default function GoogleTranslateContainer(props: Props) {
-    const [data, isLoading, error] = useFetch<string>(
+    const [data, isLoading, isUnavailable, isError] = useData<string>(
         `/api/googleTranslate/${props.query}`
     );
 
     return (
-        <GoogleTranslateView data={data} isLoading={isLoading} error={error} />
+        <GoogleTranslateView
+            data={data}
+            isLoading={isLoading}
+            isUnavailable={isUnavailable}
+            isError={isError}
+        />
     );
 }
 
 interface ViewProps {
     data: string | null;
     isLoading: boolean;
-    error: number | null;
+    isUnavailable: boolean;
+    isError: boolean;
 }
 
 export function GoogleTranslateView(props: ViewProps) {
-    const isNotFound = !props.isLoading && props.error === 404;
-    const isError =
-        !props.isLoading && props.error !== null && props.error !== 404;
-    const isContentAvailable = !props.isLoading && props.error === null;
-
     return (
-        <Card isDisabled={isNotFound || isError}>
+        <Card isDisabled={props.isUnavailable || props.isError}>
             <Header>
                 <Title>Google</Title>
 
                 {props.isLoading && <Loading />}
-                {isNotFound && <NotAvailable />}
-                {isError && <Error />}
-                {isContentAvailable && (
+                {props.isUnavailable && <NotAvailable />}
+                {props.isError && <Error />}
+                {!props.isLoading && !props.isUnavailable && !props.isError && (
                     <span className="text-gray-700">{props.data}</span>
                 )}
             </Header>

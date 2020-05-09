@@ -11,7 +11,7 @@ export default function Card(props: Props) {
     return (
         <section
             className={classNames(
-                "shadow rounded-lg overflow-hidden bg-white",
+                "shadow-lg rounded-lg overflow-hidden bg-white",
                 props.isDisabled && "opacity-50",
                 props.className
             )}

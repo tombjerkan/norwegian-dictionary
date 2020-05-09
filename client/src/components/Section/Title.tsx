@@ -5,5 +5,9 @@ interface Props {
 }
 
 export default function Title(props: Props) {
-    return <h2 className="flex-1 text-gray-900 text-xl">{props.children}</h2>;
+    return (
+        <h2 className="flex-1 font-bold text-gray-900 text-xl">
+            {props.children}
+        </h2>
+    );
 }

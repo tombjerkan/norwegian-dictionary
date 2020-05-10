@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navigation from "components/Navigation";
-import SearchNavigationButton from "./SearchNavigationButton";
 import { Entry } from "../SearchPage/types";
 import { history } from "routing";
+import Search from "components/Search";
 
 export default function StarredPageContainer() {
     const [entries, setEntries] = useState<Entry[]>([]);
@@ -29,10 +29,14 @@ interface Props {
 }
 
 export function StarredPageView(props: Props) {
+    function handleSearch(query: string) {
+        history.push(`/search/${query}`);
+    }
+
     return (
         <>
             <Navigation>
-                <SearchNavigationButton />
+                <Search onSubmit={handleSearch} className="w-full" />
             </Navigation>
 
             <div className="max-width-limit">

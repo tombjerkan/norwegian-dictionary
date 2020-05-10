@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navigation from "components/Navigation";
-import { Entry } from "../SearchPage/types";
+import { Entry } from "./SearchPage/types";
 import { history } from "routing";
 import Search from "components/Search";
 

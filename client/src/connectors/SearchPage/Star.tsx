@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import { ReactComponent as StarIcon } from "components/Star.svg";
-import StarModal from "../StarModal";
-import { Entry } from "../types";
+import StarModal from "./StarModal";
+import { Entry } from "./types";
 
 interface Props {
     entry: Entry | null;

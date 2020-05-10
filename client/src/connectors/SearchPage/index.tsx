@@ -3,6 +3,7 @@ import axios from "axios";
 import { history } from "routing";
 import Navigation from "components/Navigation";
 import Search from "components/Search";
+import { ReactComponent as RightChevron } from "components/RightChevron.svg";
 import GoogleTranslate from "../GoogleTranslate";
 import Ordbok from "../Ordbok";
 import Wiktionary from "../Wiktionary";
@@ -71,12 +72,15 @@ export function SearchPageView(props: ViewProps) {
           initialValue={props.query}
           className="flex-1 mr-3"
         />
+
         <a
           href="/starred"
           onClick={navigate}
-          className="flex items-center px-4 rounded text-gray-100 hover:bg-gray-700"
+          className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700 "
         >
           Starred
+
+          <RightChevron className="h-3 ml-2 stroke-current transform translate-y-px" />
         </a>
       </Navigation>
 

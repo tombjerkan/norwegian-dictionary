@@ -9,7 +9,7 @@ interface Props {
 export default function Navigation(props: Props) {
     return (
         <nav className={classNames("bg-gray-800", props.className)}>
-            <div className="max-width-limit flex pt-3 pb-3">
+            <div className="max-width-limit flex items-center pt-3 pb-3">
                 {props.children}
             </div>
         </nav>

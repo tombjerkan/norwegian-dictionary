@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import { ReactComponent as Magnifier } from "components/Magnifier.svg";
-import { ReactComponent as Clear } from "./Clear.svg";
 
 interface Props {
     initialValue?: string;
@@ -23,10 +22,6 @@ export default function Search(props: Props) {
         setValue(event.target.value);
     }
 
-    function handleClear() {
-        setValue("");
-    }
-
     function handleSubmit(event: React.FormEvent) {
         // Input does not automatically unfocus as same root page is used,
         // must unfocus manually for mobile keyboard to disappear.
@@ -41,8 +36,8 @@ export default function Search(props: Props) {
             onSubmit={handleSubmit}
             className={classNames("relative", props.className)}
         >
-            <div className="pointer-events-none absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500">
-                <Magnifier className="h-4 stroke-current" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 pl-4 flex items-center">
+                <Magnifier className="stroke-current text-gray-600 w-4 h-4" />
             </div>
 
             <input
@@ -51,12 +46,8 @@ export default function Search(props: Props) {
                 value={value}
                 onChange={handleChange}
                 ref={inputRef}
-                className="h-10 rounded-lg pl-10 pr-12 shadow w-full"
+                className="bg-gray-100 shadow-md outline-none border border-transparent placeholder-gray-600 rounded-lg py-2 pr-4 pl-10 block w-full appearance-none leading-normal "
             />
-
-            <button className="absolute inset-y-0 right-0 pl-4 pr-4 flex items-center">
-                <Clear className="h-4" onClick={handleClear} />
-            </button>
         </form>
     );
 }

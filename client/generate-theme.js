@@ -10,7 +10,7 @@ const include = ["colors", "spacing", "fontWeight"];
 try {
     const selectedThemeProperties = _.pick(config.theme, include);
     fs.writeFileSync(
-        "./src/theme.generated.json",
+        "./src/tailwind/theme.generated.json",
         JSON.stringify(selectedThemeProperties)
     );
 } catch (err) {

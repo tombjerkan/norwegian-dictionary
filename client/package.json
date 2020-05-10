@@ -39,7 +39,7 @@
         "prettier": "prettier --tab-width 4 --write \"**/*.js\" \"**/*.jsx\" \"**/*.ts\" \"**/*.tsx\" \"**/*.json\" ",
         "storybook": "npm run build:tailwind && start-storybook -p 9009 -s public",
         "build-storybook": "npm run build:tailwind && build-storybook -s public",
-        "build:tailwind": "postcss src/tailwind.css -o src/tailwind.generated.css && node ./generate-theme.js"
+        "build:tailwind": "postcss src/tailwind/tailwind.css -o src/tailwind/tailwind.generated.css && node ./generate-theme.js"
     },
     "lint-staged": {
         "*.js|*.jsx|*.ts|*.tsx": "prettier --tab-width 4 --check",

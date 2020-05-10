@@ -1,6 +1,6 @@
 import React from "react";
 import { ThemeProvider, DefaultTheme } from "styled-components";
-import tailwindTheme from "../theme.generated.json";
+import tailwindTheme from "./theme.generated.json";
 
 interface Props {
     children: React.ReactNode;

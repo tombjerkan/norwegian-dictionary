@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "routing";
-import TailwindThemeProvider from "../utils/TailwindThemeProvider";
+import TailwindThemeProvider from "../tailwind/TailwindThemeProvider";
 import SearchPage from "./SearchPage";
 import StarredPage from "./StarredPage";
 

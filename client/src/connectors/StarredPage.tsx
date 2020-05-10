@@ -40,8 +40,8 @@ export function StarredPageView(props: Props) {
             </Navigation>
 
             <div className="max-width-limit">
-                <div className="rounded bg-white shadow mt-8">
-                    <h2 className="py-6 px-4">Starred</h2>
+                <div className="rounded-lg bg-white shadow mt-8">
+                    <h2 className="text-bold text-black py-6 px-4">Starred</h2>
                     <ul>
                         {props.entries.map(entry => (
                             <StarredEntry
@@ -83,7 +83,7 @@ function StarredEntry(props: StarredEntryProps) {
 
             <button onClick={props.onDelete}>Remove</button>
 
-            <p className="w-full">{props.notes}</p>
+            <p className="w-full text-gray-800">{props.notes}</p>
         </li>
     );
 }

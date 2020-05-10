@@ -18,6 +18,7 @@
         "classnames": "^2.2.6",
         "dompurify": "^2.0.10",
         "history": "^4.10.1",
+        "lodash": "^4.17.15",
         "postcss-cli": "^7.1.1",
         "react": "^16.13.1",
         "react-collapse": "^5.0.1",
@@ -30,15 +31,16 @@
         "typescript": "^3.8.3"
     },
     "scripts": {
-        "start": "npm run build:css && react-scripts start",
-        "build": "npm run build:css && react-scripts build",
+        "start": "build:css && build:theme && react-scripts start",
+        "build": "build:css && build:theme && react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "lint-staged",
         "prettier": "prettier --tab-width 4 --write \"**/*.js\" \"**/*.jsx\" \"**/*.ts\" \"**/*.tsx\" \"**/*.json\" ",
-        "storybook": "start-storybook -p 9009 -s public",
-        "build-storybook": "build-storybook -s public",
-        "build:css": "postcss src/tailwind.css -o src/tailwind.generated.css"
+        "storybook": "build:css && build:theme && start-storybook -p 9009 -s public",
+        "build-storybook": "build:css && build:theme && build-storybook -s public",
+        "build:css": "postcss src/tailwind.css -o src/tailwind.generated.css",
+        "build:theme": "node ./generate-theme.js"
     },
     "lint-staged": {
         "*.js|*.jsx|*.ts|*.tsx": "prettier --tab-width 4 --check",

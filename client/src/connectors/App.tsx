@@ -7,11 +7,13 @@ import StarredPage from "./StarredPage";
 export default function App() {
     const pathName = useLocation();
 
-    <TailwindThemeProvider>
-        {pathName === "/" && <SearchPage query="" />}
-        {pathName.startsWith("/search/") && (
-            <SearchPage query={pathName.slice(8)} />
-        )}
-        {pathName === "/starred" && <StarredPage />}
-    </TailwindThemeProvider>;
+    return (
+        <TailwindThemeProvider>
+            {pathName === "/" && <SearchPage query="" />}
+            {pathName.startsWith("/search/") && (
+                <SearchPage query={pathName.slice(8)} />
+            )}
+            {pathName === "/starred" && <StarredPage />}
+        </TailwindThemeProvider>
+    );
 }

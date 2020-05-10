@@ -22,5 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Generated Tailwind CSS file
+# Generated Tailwind CSS file and theme file
 tailwind.generated.css
+theme.generated.json

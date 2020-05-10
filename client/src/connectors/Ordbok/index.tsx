@@ -77,7 +77,7 @@ export function OrdbokView(props: ViewProps) {
 
                     <button
                         onClick={close}
-                        className="flex justify-center items-center w-full h-10 bg-gray-100"
+                        className="flex justify-center items-center w-full h-10 bg-gray-100 hover:bg-gray-200 focus:outline-none"
                     >
                         <Chevron className="w-3 transform rotate-180" />
                     </button>

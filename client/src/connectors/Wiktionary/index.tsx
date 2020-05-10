@@ -11,6 +11,7 @@ import {
 import { ReactComponent as Chevron } from "components/Chevron.svg";
 import useData from "../../utils/useData";
 import Content from "./Content";
+import classNames from "classnames";
 
 interface Props {
     query: string;
@@ -56,7 +57,10 @@ export function WiktionaryView(props: ViewProps) {
 
     return (
         <Card isDisabled={props.isUnavailable || props.isError}>
-            <Header onClick={toggleOpen} className="cursor-pointer">
+            <Header
+                onClick={toggleOpen}
+                className={classNames(!props.isUnavailable && "cursor-pointer")}
+            >
                 <Title>Wiktionary</Title>
                 {props.isLoading && <Loading />}
                 {props.isUnavailable && <NotAvailable />}

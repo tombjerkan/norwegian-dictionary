@@ -46,7 +46,7 @@ export default function Search(props: Props) {
                 value={value}
                 onChange={handleChange}
                 ref={inputRef}
-                className="bg-gray-100 shadow-md outline-none border border-transparent placeholder-gray-600 rounded-lg py-2 pr-4 pl-10 block w-full appearance-none leading-normal "
+                className="bg-white shadow-md outline-none border border-transparent placeholder-gray-600 rounded-lg py-2 pr-4 pl-10 block w-full appearance-none leading-normal "
             />
         </form>
     );

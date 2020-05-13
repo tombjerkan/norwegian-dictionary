@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./font/inter.css";
 import "./tailwind/tailwind.generated.css";
 import App from "connectors/App";
 import * as serviceWorker from "serviceWorker";

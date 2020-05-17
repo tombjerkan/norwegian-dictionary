@@ -35,6 +35,7 @@ def wiktionary(word):
     remove_attributes(norwegian_section, exceptions=["class", "style", "href"])
 
     report_unexpected_classes(norwegian_section)
+    report_unexpected_elements(norwegian_section)
 
     return str(norwegian_section)
 
@@ -108,6 +109,34 @@ def remove_unwanted_sections(elements):
             element.decompose()
         else:
             element.extract()
+
+
+def report_unexpected_elements(soup):
+    all_elements = {element.name for element in soup.find_all()}
+
+    expected_elements = {
+        "div",
+        "span",
+        "abbr",
+        "b",
+        "strong",
+        "i",
+        "dl",
+        "dd",
+        "a",
+        "h3",
+        "h4",
+        "h5",
+        "p",
+        "ol",
+        "ul",
+    }
+
+    unexpected_elements = all_elements - expected_elements
+
+    print("Unexpected elements:")
+    for element in unexpected_elements:
+        print(f"- {element}")
 
 
 def report_unexpected_classes(soup):

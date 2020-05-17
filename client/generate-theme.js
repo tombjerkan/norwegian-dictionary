@@ -5,7 +5,7 @@ const tailwindConfig = require("./tailwind.config");
 
 const config = resolveConfig(tailwindConfig);
 
-const include = ["colors", "spacing", "fontWeight"];
+const include = ["colors", "spacing", "fontWeight", "fontSize"];
 
 try {
     const selectedThemeProperties = _.pick(config.theme, include);

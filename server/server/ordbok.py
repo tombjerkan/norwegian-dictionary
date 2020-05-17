@@ -48,6 +48,7 @@ def ordbok(word):
 
         entries.append({"term": term, "content": content})
 
+        report_unexpected_elements(content)
         report_unexpected_classes(content)
 
     return jsonify(entries)
@@ -89,6 +90,25 @@ def remove_unwanted_attributes(root):
         ]
         for attribute in attributes_to_delete:
             del element[attribute]
+
+
+def report_unexpected_elements(content):
+    soup = bs4.BeautifulSoup(f"<div>{content}</div>", "html.parser")
+
+    all_elements = {element.name for element in soup.find_all()}
+
+    expected_elements = {
+        "div",
+        "span",
+        "a",
+        "bullet",
+    }
+
+    unexpected_elements = all_elements - expected_elements
+
+    print("Unexpected elements:")
+    for element in unexpected_elements:
+        print(f"- {element}")
 
 
 def report_unexpected_classes(content):

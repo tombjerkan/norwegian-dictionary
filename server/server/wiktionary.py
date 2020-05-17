@@ -130,6 +130,7 @@ def report_unexpected_elements(soup):
         "p",
         "ol",
         "ul",
+        "li",
     }
 
     unexpected_elements = all_elements - expected_elements

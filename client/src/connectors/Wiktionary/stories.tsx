@@ -5,7 +5,7 @@ import WiktionaryContent from "./Content";
 
 storiesOf("Wiktionary", module).add("default", () => (
   <WiktionaryView
-    data={testData}
+    data={singleEtymologyData}
     isLoading={false}
     isUnavailable={false}
     isError={false}

@@ -3,25 +3,25 @@ from google.oauth2 import service_account
 from google.cloud import translate_v2 as translate
 import os
 
-from server import app, ApiError
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseServerError
 
 
-@app.route("/api/googleTranslate/<word>")
-def google_translate(word):
+def google_translate(request, word):
     try:
         credentials = service_account.Credentials.from_service_account_info(
             {
                 "token_uri": "https://oauth2.googleapis.com/token",
-                "client_email": os.getenv("GOOGLE_AUTH_CLIENT_EMAIL"),
-                "private_key": os.getenv("GOOGLE_AUTH_PRIVATE_KEY"),
+                "client_email": settings.GOOGLE_AUTH["CLIENT_EMAIL"],
+                "private_key": settings.GOOGLE_AUTH["PRIVATE_KEY"],
             }
         )
 
         client = translate.Client(credentials=credentials)
         response = client.translate(word, source_language="no")
     except (ValueError, google.auth.exceptions.RefreshError) as e:
-        raise ApiError(500) from e
+        return HttpResponseServerError()
     except google.auth.exceptions.TransportError as e:
-        raise ApiError(503) from e
+        return HttpResponse(status=503)
 
-    return response["translatedText"]
+    return HttpResponse(response["translatedText"])

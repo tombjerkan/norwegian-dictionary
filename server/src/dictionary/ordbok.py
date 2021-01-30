@@ -1,29 +1,29 @@
 import bs4
-from flask import jsonify
 import re
 import requests
+import json
 
-from server import app, ApiError
-from server.utils import remove_all, remove_attributes
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError, JsonResponse
+
+from .utils import remove_all, remove_attributes
 
 
-@app.route("/api/ordbok/<word>")
-def ordbok(word):
+def ordbok(request, word):
     try:
         response = requests.get(f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}")
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 503:
-            raise ApiError(503) from e
+            return HttpResponse(status=503)
         else:
-            raise ApiError(500) from e
+            return HttpResponseServerError()
     except requests.exceptions.ConnectionError as e:
-        raise ApiError(503) from e
+        return HttpResponse(status=503) 
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
     bokmaal_table = soup.find(id="byttutBM")
     if not bokmaal_table:
-        raise ApiError(404)
+        return HttpResponseNotFound()
 
     remove_all(bokmaal_table, ".kompakt")
     remove_all(bokmaal_table, ".oppsgramordklassevindu")
@@ -51,7 +51,7 @@ def ordbok(word):
         report_unexpected_elements(content)
         report_unexpected_classes(content)
 
-    return jsonify(entries)
+    return JsonResponse({ 'content': entries })
 
 
 def transform_links(soup, root):

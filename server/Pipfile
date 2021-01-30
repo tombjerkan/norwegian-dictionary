@@ -4,26 +4,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "*"
-black = "*"
 
 [packages]
-flask = "*"
-responses = "*"
+django = "*"
+djangorestframework = "*"
 beautifulsoup4 = "*"
-google-cloud-translate = "*"
-python-dotenv = "*"
-sentry-sdk = {extras = ["flask"],version = "*"}
-whitenoise = "*"
-gunicorn = "*"
-flask-sqlalchemy = "*"
-flask-migrate = "*"
-psycopg2 = "*"
-flask-marshmallow = "*"
-marshmallow-sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"
-
-[pipenv]
-allow_prereleases = true

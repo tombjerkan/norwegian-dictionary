@@ -3,24 +3,24 @@ import itertools
 import re
 import requests
 
-from server import app, ApiError
-from server.utils import remove_all, remove_attributes
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError
+
+from .utils import remove_all, remove_attributes
 
 
-@app.route("/api/wiktionary/<word>")
-def wiktionary(word):
+def wiktionary(request, word):
     try:
         response = requests.get(f"https://en.wiktionary.org/wiki/{word}")
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
-            raise ApiError(404)
+            return HttpResponseNotFound()
         elif e.response.status_code == 503:
-            raise ApiError(503) from e
+            return HttpResponse(status=503)
         else:
-            raise ApiError(500) from e
+            return HttpResponseServerError()
     except requests.exceptions.ConnectionError as e:
-        raise ApiError(503) from e
+        return HttpResponse(status=503)
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 
@@ -37,7 +37,7 @@ def wiktionary(word):
     report_unexpected_classes(norwegian_section)
     report_unexpected_elements(norwegian_section)
 
-    return str(norwegian_section)
+    return HttpResponse(str(norwegian_section))
 
 
 def unwrap_all(root, selector):

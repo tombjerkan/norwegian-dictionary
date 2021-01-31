@@ -9,6 +9,9 @@ verify_ssl = true
 django = "*"
 djangorestframework = "*"
 beautifulsoup4 = "*"
+google-cloud-translate = "*"
+psycopg2 = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"

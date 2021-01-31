@@ -26,7 +26,7 @@ SECRET_KEY = '@nq*!wb1ee++jd85r_%7)*eh#o3ebk5(dhf=bwg9qx)fr@=f2k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nordict.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'nordict.herokuapp.com']
 
 
 # Application definition

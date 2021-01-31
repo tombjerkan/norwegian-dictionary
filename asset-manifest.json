@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/norwegian-dictionary/static/css/main.fb965d66.chunk.css",
+    "main.js": "/norwegian-dictionary/static/js/main.e5aaa2b3.chunk.js",
+    "main.js.map": "/norwegian-dictionary/static/js/main.e5aaa2b3.chunk.js.map",
+    "runtime-main.js": "/norwegian-dictionary/static/js/runtime-main.ee2655c6.js",
+    "runtime-main.js.map": "/norwegian-dictionary/static/js/runtime-main.ee2655c6.js.map",
+    "static/js/2.2bc98f92.chunk.js": "/norwegian-dictionary/static/js/2.2bc98f92.chunk.js",
+    "static/js/2.2bc98f92.chunk.js.map": "/norwegian-dictionary/static/js/2.2bc98f92.chunk.js.map",
+    "index.html": "/norwegian-dictionary/index.html",
+    "precache-manifest.e2ef89a629594c70c2428648307d065d.js": "/norwegian-dictionary/precache-manifest.e2ef89a629594c70c2428648307d065d.js",
+    "service-worker.js": "/norwegian-dictionary/service-worker.js",
+    "static/css/main.fb965d66.chunk.css.map": "/norwegian-dictionary/static/css/main.fb965d66.chunk.css.map",
+    "static/js/2.2bc98f92.chunk.js.LICENSE.txt": "/norwegian-dictionary/static/js/2.2bc98f92.chunk.js.LICENSE.txt",
+    "static/media/Chevron.b4eb6173.svg": "/norwegian-dictionary/static/media/Chevron.b4eb6173.svg",
+    "static/media/Error.8c7770eb.svg": "/norwegian-dictionary/static/media/Error.8c7770eb.svg",
+    "static/media/inter.css": "/norwegian-dictionary/static/media/Inter-Regular.7c539936.woff",
+    "static/media/Magnifier.c0413def.svg": "/norwegian-dictionary/static/media/Magnifier.c0413def.svg",
+    "static/media/Star.28377138.svg": "/norwegian-dictionary/static/media/Star.28377138.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ee2655c6.js",
+    "static/js/2.2bc98f92.chunk.js",
+    "static/css/main.fb965d66.chunk.css",
+    "static/js/main.e5aaa2b3.chunk.js"
+  ]
+}

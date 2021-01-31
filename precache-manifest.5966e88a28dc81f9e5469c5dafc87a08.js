@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "aaf3501ff53e0db720387ad90404ddf7",
+    "revision": "c82024cbd81f9b88d4c37ea776f13c77",
     "url": "/norwegian-dictionary/index.html"
   },
   {
-    "revision": "c17e6c05162409cf155e",
+    "revision": "7d3fc21f75f4a524d121",
     "url": "/norwegian-dictionary/static/css/main.fb965d66.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/norwegian-dictionary/static/js/2.43723112.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "c17e6c05162409cf155e",
-    "url": "/norwegian-dictionary/static/js/main.f3974406.chunk.js"
+    "revision": "7d3fc21f75f4a524d121",
+    "url": "/norwegian-dictionary/static/js/main.29eb19d2.chunk.js"
   },
   {
     "revision": "f298603e98893fe19023",

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/norwegian-dictionary/precache-manifest.bbec0cb330e99b8ecb18302da9587bef.js"
+  "/norwegian-dictionary/precache-manifest.95ede13bfd82a716154b68e2dade0231.js"
 );
 
 self.addEventListener('message', (event) => {

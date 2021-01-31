@@ -18,14 +18,18 @@ interface Props {
     query: string;
 }
 
+interface ApiResponse {
+    content: Entry[];
+}
+
 export default function OrdbokContainer(props: Props) {
-    const [data, isLoading, isUnavailable, isError] = useData<Entry[]>(
-        `/api/ordbok/${props.query}`
+    const [data, isLoading, isUnavailable, isError] = useData<ApiResponse>(
+        `/ordbok/${props.query}`
     );
 
     return (
         <OrdbokView
-            data={data}
+            data={data?.content ?? null}
             isLoading={isLoading}
             isUnavailable={isUnavailable}
             isError={isError}

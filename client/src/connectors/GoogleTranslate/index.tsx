@@ -15,7 +15,7 @@ interface Props {
 
 export default function GoogleTranslateContainer(props: Props) {
     const [data, isLoading, isUnavailable, isError] = useData<string>(
-        `/api/googleTranslate/${props.query}`
+        `/googleTranslate/${props.query}`
     );
 
     return (

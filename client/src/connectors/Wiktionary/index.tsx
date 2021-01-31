@@ -19,7 +19,7 @@ interface Props {
 
 export default function WiktionaryContainer(props: Props) {
     const [data, isLoading, isUnavailable, isError] = useData<string>(
-        `/api/wiktionary/${props.query}`,
+        `/wiktionary/${props.query}`,
         null
     );
 

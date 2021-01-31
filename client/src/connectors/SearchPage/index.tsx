@@ -16,14 +16,14 @@ function useStarredEntry(term: string): [Entry | null, (entry: Entry) => void] {
         setEntry(null);
 
         axios
-            .get(`/api/starred/${term}`)
+            .get(`/starred/${term}`)
             .then(response => setEntry(response.data))
             .catch(() => {});
     }, [term]);
 
     function postEntry(entry: Entry) {
         setEntry(entry);
-        axios.post("/api/starred", entry);
+        axios.post("/starred/", entry);
     }
 
     return [entry, postEntry];

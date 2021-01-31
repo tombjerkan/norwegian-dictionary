@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/norwegian-dictionary/static/css/main.fb965d66.chunk.css",
-    "main.js": "/norwegian-dictionary/static/js/main.e5aaa2b3.chunk.js",
-    "main.js.map": "/norwegian-dictionary/static/js/main.e5aaa2b3.chunk.js.map",
+    "main.js": "/norwegian-dictionary/static/js/main.a736b510.chunk.js",
+    "main.js.map": "/norwegian-dictionary/static/js/main.a736b510.chunk.js.map",
     "runtime-main.js": "/norwegian-dictionary/static/js/runtime-main.ee2655c6.js",
     "runtime-main.js.map": "/norwegian-dictionary/static/js/runtime-main.ee2655c6.js.map",
     "static/js/2.2bc98f92.chunk.js": "/norwegian-dictionary/static/js/2.2bc98f92.chunk.js",
     "static/js/2.2bc98f92.chunk.js.map": "/norwegian-dictionary/static/js/2.2bc98f92.chunk.js.map",
     "index.html": "/norwegian-dictionary/index.html",
-    "precache-manifest.e2ef89a629594c70c2428648307d065d.js": "/norwegian-dictionary/precache-manifest.e2ef89a629594c70c2428648307d065d.js",
+    "precache-manifest.24e2c62a2cfdadba8b722752dd5abf6d.js": "/norwegian-dictionary/precache-manifest.24e2c62a2cfdadba8b722752dd5abf6d.js",
     "service-worker.js": "/norwegian-dictionary/service-worker.js",
     "static/css/main.fb965d66.chunk.css.map": "/norwegian-dictionary/static/css/main.fb965d66.chunk.css.map",
     "static/js/2.2bc98f92.chunk.js.LICENSE.txt": "/norwegian-dictionary/static/js/2.2bc98f92.chunk.js.LICENSE.txt",
@@ -22,6 +22,6 @@
     "static/js/runtime-main.ee2655c6.js",
     "static/js/2.2bc98f92.chunk.js",
     "static/css/main.fb965d66.chunk.css",
-    "static/js/main.e5aaa2b3.chunk.js"
+    "static/js/main.a736b510.chunk.js"
   ]
 }

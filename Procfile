@@ -1,2 +1,2 @@
-release: cd server && pipenv run flask db upgrade
-web: cd server && pipenv run gunicorn server:app
+release: pipenv run python src/manage.py migrate
+web: pipenv run gunicorn src.config.wsgi

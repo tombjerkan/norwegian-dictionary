@@ -4,6 +4,11 @@ import "./font/inter.css";
 import "./tailwind/tailwind.generated.css";
 import App from "connectors/App";
 import * as serviceWorker from "serviceWorker";
+import axios from "axios";
+
+if (process.env.NODE_ENV === "production") {
+    axios.defaults.baseURL = "https://nordict.herokuapp.com";
+}
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

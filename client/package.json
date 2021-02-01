@@ -34,6 +34,9 @@
     "scripts": {
         "start": "npm run build:tailwind && react-scripts start",
         "build": "npm run build:tailwind && react-scripts build",
+        "predeploy": "npm run build",
+        "deploy-draft": "netlify deploy",
+        "deploy": "netlify deploy --prod",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "lint-staged",
@@ -72,6 +75,7 @@
         "@storybook/preset-create-react-app": "^2.1.2",
         "@storybook/react": "^5.3.21",
         "lint-staged": "^9.5.0",
+        "netlify-cli": "^3.4.6",
         "prettier": "^1.19.1"
     }
 }

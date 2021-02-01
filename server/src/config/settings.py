@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'rest_framework',
+    'corsheaders',
     'dictionary.apps.DictionaryConfig',
 ]
 
@@ -132,3 +133,5 @@ GOOGLE_AUTH = {
     "CLIENT_EMAIL": os.getenv("GOOGLE_AUTH_CLIENT_EMAIL"),
     "PRIVATE_KEY": os.getenv("GOOGLE_AUTH_PRIVATE_KEY"),
 }
+
+CORS_ORIGIN_WHITELIST = 'https:nordict.netlify.app'

@@ -17,7 +17,7 @@ export default function StarredPageContainer() {
 
     function deleteEntry(term: string) {
         setEntries(entries.filter(v => v.term !== term));
-        axios.delete(`/starred/${term}`);
+        axios.delete(`/starred/${term}/`);
     }
 
     return <StarredPageView entries={entries} onDelete={deleteEntry} />;

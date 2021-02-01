@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     'https://nordict.netlify.app',
-    'https://nordict.herokuapp.com'
+    'nordict.herokuapp.com'
 ]
 
 

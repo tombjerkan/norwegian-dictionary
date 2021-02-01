@@ -134,4 +134,4 @@ GOOGLE_AUTH = {
     "PRIVATE_KEY": os.getenv("GOOGLE_AUTH_PRIVATE_KEY"),
 }
 
-CORS_ORIGIN_WHITELIST = 'https:nordict.netlify.app'
+CORS_ORIGIN_WHITELIST = ['https://nordict.netlify.app']

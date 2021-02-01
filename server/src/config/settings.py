@@ -26,7 +26,11 @@ SECRET_KEY = '@nq*!wb1ee++jd85r_%7)*eh#o3ebk5(dhf=bwg9qx)fr@=f2k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'https://nordict.netlify.app']
+ALLOWED_HOSTS = [
+    'localhost',
+    'https://nordict.netlify.app',
+    'https://nordict.herokuapp.com'
+]
 
 
 # Application definition

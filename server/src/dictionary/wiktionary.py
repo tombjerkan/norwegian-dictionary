@@ -30,6 +30,9 @@ def wiktionary(request, word):
 
     norwegian_section = get_norwegian_section(soup)
 
+    if not norwegian_section:
+        return HttpResponseNotFound()
+
     remove_unwanted_sections(norwegian_section.div)
     transform_links(norwegian_section.div)
     remove_attributes(norwegian_section, exceptions=["class", "style", "href"])
@@ -64,7 +67,7 @@ def get_norwegian_section(soup):
     ]
 
     if len(norwegian_bokmal_headers) == 0:
-        raise ApiError(404)
+        return None
 
     norwegian_header = norwegian_bokmal_headers[0]
     norwegian_section = itertools.takewhile(

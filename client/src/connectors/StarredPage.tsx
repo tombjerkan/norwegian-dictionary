@@ -10,14 +10,14 @@ export default function StarredPageContainer() {
 
     useEffect(() => {
         axios
-            .get("/starred")
+            .get("/starredTerms/")
             .then(response => setEntries(response.data))
             .catch(() => {});
     }, []);
 
     function deleteEntry(term: string) {
         setEntries(entries.filter(v => v.term !== term));
-        axios.delete(`/starred/${term}/`);
+        axios.delete(`/starredTerms/${term}/`);
     }
 
     return <StarredPageView entries={entries} onDelete={deleteEntry} />;

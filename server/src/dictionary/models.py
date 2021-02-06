@@ -1,7 +1,7 @@
 from django.db import models
 
-class Starred(models.Model):
-    term = models.TextField()
+class StarredTerm(models.Model):
+    term = models.TextField(primary_key=True)
     notes = models.TextField()
 
     def __repr__(self):

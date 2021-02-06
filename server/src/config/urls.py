@@ -14,14 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
 import dictionary.views
 
+
+router = DefaultRouter()
+router.register(r'starredTerms', dictionary.views.StarredTermViewSet)
+
+
 urlpatterns = [
+    path('', include(router.urls)),
     path('googleTranslate/<word>/', dictionary.views.google_translate),
     path('ordbok/<word>/', dictionary.views.ordbok),
-    path('starred/', dictionary.views.StarredList.as_view()),
     path('wiktionary/<word>/', dictionary.views.wiktionary),
     path('admin/', admin.site.urls),
 ]

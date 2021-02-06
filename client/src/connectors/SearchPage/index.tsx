@@ -16,14 +16,18 @@ function useStarredEntry(term: string): [Entry | null, (entry: Entry) => void] {
         setEntry(null);
 
         axios
-            .get(`/starred/${term}`)
+            .get(`/starredTerms/${term}/`)
             .then(response => setEntry(response.data))
             .catch(() => {});
     }, [term]);
 
-    function postEntry(entry: Entry) {
-        setEntry(entry);
-        axios.post("/starred/", entry);
+    function postEntry(newEntry: Entry) {
+        if (entry === null) {
+            axios.post("/starredTerms/", newEntry);
+        } else {
+            axios.put(`/starredTerms/${newEntry.term}/`, newEntry);
+        }
+        setEntry(newEntry);
     }
 
     return [entry, postEntry];

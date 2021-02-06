@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from .models import Starred
+from .models import StarredTerm
 
 
-class StarredSerializer(serializers.ModelSerializer):
+class StarredTermSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Starred
+        model = StarredTerm
         fields = ['term', 'notes']

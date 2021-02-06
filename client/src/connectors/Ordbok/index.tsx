@@ -24,7 +24,7 @@ interface ApiResponse {
 
 export default function OrdbokContainer(props: Props) {
     const [data, isLoading, isUnavailable, isError] = useData<ApiResponse>(
-        `/ordbok/${props.query}`
+        `/ordbok/${props.query}/`
     );
 
     return (

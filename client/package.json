@@ -67,7 +67,6 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:8000/",
     "devDependencies": {
         "@storybook/addon-actions": "^5.3.21",
         "@storybook/addon-links": "^5.3.21",

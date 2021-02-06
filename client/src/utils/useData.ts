@@ -15,6 +15,7 @@ function useData<T>(
             setUnavailable(true);
         } else {
             setError(true);
+            console.error(error);
         }
     }
 

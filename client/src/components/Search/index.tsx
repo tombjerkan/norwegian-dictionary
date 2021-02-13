@@ -47,6 +47,7 @@ export default function Search(props: Props) {
                 onChange={handleChange}
                 ref={inputRef}
                 className="bg-white shadow-md outline-none border border-transparent placeholder-gray-600 rounded-lg py-2 pr-4 pl-10 block w-full appearance-none leading-normal "
+                autoCapitalize="none"
             />
         </form>
     );

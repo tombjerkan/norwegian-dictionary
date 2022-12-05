@@ -3,24 +3,24 @@ import itertools
 import re
 import requests
 
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError
-
-from .utils import remove_all, remove_attributes
+from utils import create_response, remove_all, remove_attributes
 
 
-def wiktionary(request, word):
+def lambda_handler(event, context):
+    word = event['queryStringParameters']['word']
+
     try:
         response = requests.get(f"https://en.wiktionary.org/wiki/{word}")
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
-            return HttpResponseNotFound()
+            return create_response(404)
         elif e.response.status_code == 503:
-            return HttpResponse(status=503)
+            return create_response(503)
         else:
-            return HttpResponseServerError()
+            raise e from None
     except requests.exceptions.ConnectionError as e:
-        return HttpResponse(status=503)
+        return create_response(503)
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
 
@@ -31,7 +31,7 @@ def wiktionary(request, word):
     norwegian_section = get_norwegian_section(soup)
 
     if not norwegian_section:
-        return HttpResponseNotFound()
+            return create_response(404)
 
     remove_unwanted_sections(norwegian_section.div)
     transform_links(norwegian_section.div)
@@ -40,7 +40,7 @@ def wiktionary(request, word):
     report_unexpected_classes(norwegian_section)
     report_unexpected_elements(norwegian_section)
 
-    return HttpResponse(str(norwegian_section))
+    return create_response(200, str(norwegian_section))
 
 
 def unwrap_all(root, selector):

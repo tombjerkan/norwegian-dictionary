@@ -17,7 +17,7 @@ Resources:
       Environment:
         Variables:
           GOOGLE_AUTH_CLIENT_EMAIL: '{{resolve:ssm:GoogleAuthClientEmail:1}}'
-          GOOGLE_AUTH_PRIVATE_KEY: '{{resolve:ssm:GoogleAuthPrivateKey:1}}'
+          GOOGLE_AUTH_PRIVATE_KEY: '{{resolve:ssm:GoogleAuthPrivateKey:2}}'
       Events:
         GoogleTranslate:
           Type: Api

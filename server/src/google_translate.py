@@ -1,7 +1,6 @@
 import google
 from google.oauth2 import service_account
 from google.cloud import translate_v2 as translate
-import base64
 import os
 
 from utils import create_response
@@ -11,15 +10,13 @@ def lambda_handler(event, context):
     word = event['queryStringParameters']['word']
 
     google_client_email = os.getenv('GOOGLE_AUTH_CLIENT_EMAIL')
-    encoded_google_private_key = os.getenv('GOOGLE_AUTH_PRIVATE_KEY')
+    google_private_key = os.getenv('GOOGLE_AUTH_PRIVATE_KEY')
 
     if not google_client_email:
-        raise Error('Environment variable GOOGLE_AUTH_CLIENT_EMAIL is not configured.')
+        raise Exception('Environment variable GOOGLE_AUTH_CLIENT_EMAIL is not configured.')
 
-    if not encoded_google_private_key:
-        raise Error('Environment variable GOOGLE_AUTH_PRIVATE_KEY is not configured.')
-
-    google_private_key = base64.b64decode(encoded_google_private_key)
+    if not google_private_key:
+        raise Exception('Environment variable GOOGLE_AUTH_PRIVATE_KEY is not configured.')
 
     try:
         credentials = service_account.Credentials.from_service_account_info(

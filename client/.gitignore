@@ -25,3 +25,5 @@ yarn-error.log*
 # Generated Tailwind CSS file and theme file
 tailwind.generated.css
 theme.generated.json
+
+/.netlify

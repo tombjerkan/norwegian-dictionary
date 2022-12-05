@@ -1,8 +1,4 @@
 source ./.env
 
 sam build
-
-sam deploy \
-  --parameter-overrides \
-    GoogleAuthClientEmail=$GOOGLE_AUTH_CLIENT_EMAIL \
-    GoogleAuthPrivateKey=$GOOGLE_AUTH_PRIVATE_KEY
+sam deploy

@@ -16,8 +16,8 @@ Resources:
         - x86_64
       Environment:
         Variables:
-          GOOGLE_AUTH_CLIENT_EMAIL: !Ref GoogleAuthClientEmail
-          GOOGLE_AUTH_PRIVATE_KEY: !Ref GoogleAuthPrivateKey
+          GOOGLE_AUTH_CLIENT_EMAIL: '{{resolve:ssm:GoogleAuthClientEmail:1}}'
+          GOOGLE_AUTH_PRIVATE_KEY: '{{resolve:ssm:GoogleAuthPrivateKey:1}}'
       Events:
         GoogleTranslate:
           Type: Api

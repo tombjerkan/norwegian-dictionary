@@ -16,8 +16,8 @@ Resources:
         - x86_64
       Environment:
         Variables:
-          GOOGLE_AUTH_CLIENT_EMAIL: "<set environment variable value here>"
-          GOOGLE_AUTH_PRIVATE_KEY: "<set environment variable value here>"
+          GOOGLE_AUTH_CLIENT_EMAIL: !Ref GoogleAuthClientEmail
+          GOOGLE_AUTH_PRIVATE_KEY: !Ref GoogleAuthPrivateKey
       Events:
         GoogleTranslate:
           Type: Api

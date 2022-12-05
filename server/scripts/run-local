@@ -1,2 +1,9 @@
+source ./.env
+
 sam build
-sam local start-api --port 8080
+
+sam local start-api \
+  --port 8080 \
+  --parameter-overrides \
+    GoogleAuthClientEmail=$GOOGLE_AUTH_CLIENT_EMAIL \
+    GoogleAuthPrivateKey=$GOOGLE_AUTH_PRIVATE_KEY

@@ -47,8 +47,15 @@ To deploy to AWS:
 
 ## Configuration
 
-You must set the environment variables `GOOGLE_AUTH_CLIENT_EMAIL` and `GOOGLE_AUTH_PRIVATE_KEY` for `GoogleTranslateFunction` in `<root>/server/template.yaml` in order for the Google Translate API to work. The private key is base64 encoded, as AWS environment variables cannot have newlines in them.
+The local environment must have the variables `GOOGLE_AUTH_CLIENT_EMAIL` and `GOOGLE_AUTH_PRIVATE_KEY` set in order for the Google Translate API to work.
 
-For production, set these in the `template.yaml` file and deploy or configure in the AWS Lambda Console.
+For local development, place these in a `<root>/server/.env` file:
+
+```
+GOOGLE_AUTH_CLIENT_EMAIL=<email>
+GOOGLE_AUTH_PRIVATE_KEY=<private-key>
+```
+
+For production, these values will be included in the deployment when the deployment script is run.
 
 Follow the instructions in the [Google Cloud documentation](https://cloud.google.com/translate/docs/quickstart-client-libraries-v3) to set-up an account.

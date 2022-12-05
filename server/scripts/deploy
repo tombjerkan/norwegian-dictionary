@@ -1,4 +1,2 @@
-source ./.env
-
 sam build
 sam deploy

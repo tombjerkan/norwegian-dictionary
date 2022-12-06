@@ -4,11 +4,10 @@ A Norwegian dictionary aggregator that collects definitions and translations for
 
 ## Prerequisites
 
-- Python 3.6
-- Pipenv
-- Node 12
-- heroku CLI
-- Postgresql
+- Python (v. 3.9)
+- Node (v. 12)
+- AWS SAM CLI (v. 1.66)
+- Docker (v. 20.10)
 
 Other versions may work, but have not been tested.
 
@@ -20,10 +19,6 @@ To prepare the project locally for development:
 git clone https://github.com/tombjerkan/norwegian-dictionary.git
 cd norwegian-dictionary
 
-# Install the dependencies for the server.
-cd server
-pipenv install
-
 # Install the dependencies for the web client.
 cd ../client
 npm install
@@ -32,9 +27,7 @@ npm install
 To start the development servers, run from two separate terminals:
 ```
 # Window 1 (from <root>/server directory)
-export FLASK_ENV=development
-export FLASK_APP=server
-pipenv run flask run
+./scripts/run-local
 
 # Window 2 (from <root>/client directory)
 npm start
@@ -44,17 +37,12 @@ The website can now be accessed on `localhost:3000`.
 
 ## Deploying
 
-To deploy to Heroku:
+Ensure you are authorised locally with the AWS CLI.
+
+To deploy to AWS:
 
 ```shell
-# Ensure you are logged in to the deployment Heroku account
-heroku login
-
-# Set-up the Heroku remote for your local repository
-heroku git:remote -a peaceful-castle-58905
-
-# Publish local commits to the Heroku server.
-git push heroku master
+./scripts/deploy
 ```
 
 ## Configuration
@@ -68,6 +56,6 @@ GOOGLE_AUTH_CLIENT_EMAIL=<email>
 GOOGLE_AUTH_PRIVATE_KEY=<private-key>
 ```
 
-For production, set these as [Config Vars](https://devcenter.heroku.com/articles/config-vars) in Heroku.
+For production, these values will be included in the deployment when the deployment script is run.
 
 Follow the instructions in the [Google Cloud documentation](https://cloud.google.com/translate/docs/quickstart-client-libraries-v3) to set-up an account.

@@ -1,0 +1,54 @@
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 128
+
+Resources:
+  GoogleTranslateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: google_translate.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          GOOGLE_AUTH_CLIENT_EMAIL: '{{resolve:ssm:GoogleAuthClientEmail:1}}'
+          GOOGLE_AUTH_PRIVATE_KEY: '{{resolve:ssm:GoogleAuthPrivateKey:2}}'
+      Events:
+        GoogleTranslate:
+          Type: Api
+          Properties:
+            Path: /google_translate
+            Method: get
+  OrdbokFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: ordbok.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        Ordbok:
+          Type: Api
+          Properties:
+            Path: /ordbok
+            Method: get
+  WiktionaryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: wiktionary.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        Wiktionary:
+          Type: Api
+          Properties:
+            Path: /wiktionary
+            Method: get

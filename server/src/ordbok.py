@@ -3,27 +3,27 @@ import re
 import requests
 import json
 
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError, JsonResponse
-
-from .utils import remove_all, remove_attributes
+from utils import create_response, remove_all, remove_attributes
 
 
-def ordbok(request, word):
+def lambda_handler(event, context):
+    word = event['queryStringParameters']['word']
+
     try:
         response = requests.get(f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}")
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 503:
-            return HttpResponse(status=503)
+            return create_response(503)
         else:
-            return HttpResponseServerError()
+            raise e from None
     except requests.exceptions.ConnectionError as e:
-        return HttpResponse(status=503) 
+            return create_response(503)
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
     bokmaal_table = soup.find(id="byttutBM")
     if not bokmaal_table:
-        return HttpResponseNotFound()
+            return create_response(404)
 
     remove_all(bokmaal_table, ".kompakt")
     remove_all(bokmaal_table, ".oppsgramordklassevindu")
@@ -51,7 +51,7 @@ def ordbok(request, word):
         report_unexpected_elements(content)
         report_unexpected_classes(content)
 
-    return JsonResponse({ 'content': entries })
+        return create_response(200, json.dumps({ 'content': entries }))
 
 
 def transform_links(soup, root):

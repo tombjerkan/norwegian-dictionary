@@ -9,7 +9,7 @@ import axios from "axios";
 if (process.env.NODE_ENV === "production") {
     axios.defaults.baseURL = "https://9rh4ybbi57.execute-api.eu-west-2.amazonaws.com/Prod";
 } else {
-    axios.defaults.baseURL = "http://127.0.0.1:3000";
+    axios.defaults.baseURL = "http://127.0.0.1:8080";
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));

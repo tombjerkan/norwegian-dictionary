@@ -2,40 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import DomPurify from "dompurify";
 
-import { Entry } from "./types";
-
 interface Props {
-  data: Entry[];
+  data: string;
 }
 
 export default function OrdbokContent(props: Props) {
-  const sanitisedData = props.data.map((entry) => ({
-    term: entry.term,
-    content: DomPurify.sanitize(entry.content),
-  }));
+  const sanitisedData = DomPurify.sanitize(props.data);
 
-  return (
-    <>
-      {sanitisedData.map((entry) => (
-        <>
-          <Header>{entry.term}</Header>
-          <Container dangerouslySetInnerHTML={{ __html: entry.content }} />
-        </>
-      ))}
-    </>
-  );
+  return <Container dangerouslySetInnerHTML={{ __html: sanitisedData }} />;
 }
-
-const Header = styled.h3`
-  font-weight: ${(props) => props.theme.fontWeight.bold};
-  font-size: ${(props) => props.theme.fontSize.lg};
-  color: ${(props) => props.theme.colors.gray[900]};
-  margin-bottom: ${(props) => props.theme.spacing[4]};
-
-  &:not(:first-child) {
-    margin-top: ${(props) => props.theme.spacing[10]};
-  }
-`;
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.gray[700]};

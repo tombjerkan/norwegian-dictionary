@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     word = event['queryStringParameters']['word']
 
     try:
-        response = requests.get(f"https://ordbok.uib.no/perl/ordbok.cgi?OPP={word}")
+        response = requests.get(f"https://ordbokene.no/bm/{word}")
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 503:
@@ -21,37 +21,19 @@ def lambda_handler(event, context):
             return create_response(503)
 
     soup = bs4.BeautifulSoup(response.text, "html.parser")
-    bokmaal_table = soup.find(id="byttutBM")
-    if not bokmaal_table:
-            return create_response(404)
 
-    remove_all(bokmaal_table, ".kompakt")
-    remove_all(bokmaal_table, ".oppsgramordklassevindu")
-    remove_all(bokmaal_table, "style")
-    transform_links(soup, bokmaal_table)
-    replace_circle_image(soup, bokmaal_table)
-    remove_attributes(bokmaal_table, exceptions=["href", "class", "style"])
+    content = soup.find(class_="article") or soup.find(class_="suggestion")
 
-    entry_rows = bokmaal_table.find_all("tr", recursive=False)[1:]
+    if not content:
+        return create_response(404)
 
-    entries = []
-    for entry in entry_rows:
-        term_column = entry.contents[0]
+    transform_links(soup, content)
+    remove_attributes(content, exceptions=["href", "class", "style"])
 
-        for line_break in term_column.find_all("br"):
-            line_break.replace_with(" ")
+    report_unexpected_elements(content)
+    report_unexpected_classes(content)
 
-        term = term_column.get_text().strip()
-
-        article_content = entry.find(class_="artikkelinnhold")
-        content = "".join(str(node) for node in article_content.contents).strip()
-
-        entries.append({"term": term, "content": content})
-
-        report_unexpected_elements(content)
-        report_unexpected_classes(content)
-
-        return create_response(200, json.dumps({ 'content': entries }))
+    return create_response(200, str(content))
 
 
 def transform_links(soup, root):
@@ -68,18 +50,6 @@ def transform_links(soup, root):
         anchor = soup.new_tag("a", href=on_click_parameter)
         link_element.wrap(anchor)
         link_element.unwrap()
-
-
-# An image is used for bullet points in lists, which must be replaced with
-# something that can be used by client:
-#
-#   <img src="/grafikk/black_circle_e.png" width="6px" height="6px"/>
-#
-def replace_circle_image(soup, root):
-    for image in root.find_all("img"):
-        if image["src"] == "/grafikk/black_circle_e.png":
-            bullet = soup.new_tag("bullet")
-            image.replace_with(bullet)
 
 
 def remove_unwanted_attributes(root):

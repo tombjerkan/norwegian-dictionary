@@ -11,25 +11,20 @@ import {
 import { ReactComponent as Chevron } from "components/Chevron.svg";
 import useData from "../../utils/useData";
 import Content from "./Content";
-import { Entry } from "./types";
 import classNames from "classnames";
 
 interface Props {
     query: string;
 }
 
-interface ApiResponse {
-    content: Entry[];
-}
-
 export default function OrdbokContainer(props: Props) {
-    const [data, isLoading, isUnavailable, isError] = useData<ApiResponse>(
+    const [data, isLoading, isUnavailable, isError] = useData<string>(
         `/ordbok/?word=${props.query}`,
     );
 
     return (
         <OrdbokView
-            data={data?.content ?? null}
+            data={data}
             isLoading={isLoading}
             isUnavailable={isUnavailable}
             isError={isError}
@@ -39,7 +34,7 @@ export default function OrdbokContainer(props: Props) {
 }
 
 interface ViewProps {
-    data: Entry[] | null;
+    data: string | null;
     isLoading: boolean;
     isUnavailable: boolean;
     isError: boolean;

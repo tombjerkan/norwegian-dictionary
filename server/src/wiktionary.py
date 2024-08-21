@@ -1,9 +1,12 @@
 import bs4
 import itertools
+import logging
 import re
 import requests
 
 from utils import create_response, remove_all, remove_attributes
+
+logger = logging.getLogger()
 
 
 def lambda_handler(event, context):
@@ -139,9 +142,8 @@ def report_unexpected_elements(soup):
 
     unexpected_elements = all_elements - expected_elements
 
-    print("Unexpected elements:")
-    for element in unexpected_elements:
-        print(f"- {element}")
+    if unexpected_elements:
+        logger.warn("Unexpected elements in source HTML: " + ", ".join(unexpected_elements))
 
 
 def report_unexpected_classes(soup):
@@ -165,6 +167,5 @@ def report_unexpected_classes(soup):
     }
     unexpected_classes = all_classes - expected_classes
 
-    print("Unexpected classes:")
-    for _class in unexpected_classes:
-        print(f"- {_class}")
+    if unexpected_classes:
+        logger.warn("Unexpected classes in source HTML: " + ", ".join(unexpected_classes))

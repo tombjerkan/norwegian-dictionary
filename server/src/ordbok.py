@@ -1,9 +1,12 @@
 import bs4
+import logging
 import re
 import requests
 import json
 
 from utils import create_response, remove_all, remove_attributes
+
+logger = logging.getLogger()
 
 
 def lambda_handler(event, context):
@@ -76,9 +79,8 @@ def report_unexpected_elements(content):
 
     unexpected_elements = all_elements - expected_elements
 
-    print("Unexpected elements:")
-    for element in unexpected_elements:
-        print(f"- {element}")
+    if unexpected_elements:
+        logger.warn("Unexpected elements in source HTML: " + ", ".join(unexpected_elements))
 
 
 def report_unexpected_classes(content):
@@ -90,6 +92,5 @@ def report_unexpected_classes(content):
     expected_classes = {"utvidet", "tyding", "doeme", "doemeliste"}
     unexpected_classes = all_classes - expected_classes
 
-    print("Unexpected classes:")
-    for _class in unexpected_classes:
-        print(f"- {_class}")
+    if unexpected_classes:
+        logger.warn("Unexpected classes in source HTML: " + ", ".join(unexpected_classes))

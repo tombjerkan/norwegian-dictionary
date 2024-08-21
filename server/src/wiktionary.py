@@ -61,7 +61,7 @@ def transform_links(root):
 def get_norwegian_section(soup):
     container = soup.find(class_="mw-parser-output")
 
-    language_headers = container.find_all("h2")
+    language_headers = container.find_all(class_="mw-heading2")
     norwegian_bokmal_headers = [
         v for v in language_headers if v.get_text() == "Norwegian Bokmål"
     ]
@@ -71,7 +71,8 @@ def get_norwegian_section(soup):
 
     norwegian_header = norwegian_bokmal_headers[0]
     norwegian_section = itertools.takewhile(
-        lambda v: v.name != "h2", norwegian_header.next_siblings
+        lambda v: v not in language_headers,
+        norwegian_header.next_siblings
     )
 
     soup = bs4.BeautifulSoup("<div />", "html.parser")

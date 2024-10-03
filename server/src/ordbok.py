@@ -45,7 +45,7 @@ def transform_links(soup, root):
 
         # Some links will have the specific sense in the link text (e.g. "fungere (2)" or
         # "gjære (2II, 1)") but we just want to link to the whole page (e.g. "fungere" or "gjære")
-        link_text_without_numeral = re.sub("\\s+\\(\d+[IVX]+(, \d+)?\\)$", "", link_text)
+        link_text_without_numeral = re.sub("\\s+\\(\d*[IVX]+(, \d+)?\\)$", "", link_text)
 
         link_element['href'] = link_text_without_numeral
 

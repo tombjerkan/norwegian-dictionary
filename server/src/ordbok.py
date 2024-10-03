@@ -40,19 +40,14 @@ def lambda_handler(event, context):
 
 
 def transform_links(soup, root):
-    for link_element in root.select(".henvisning, .etymtilvising"):
-        on_click_parameter = re.search(
-            "^bob_vise_ref_art\\(.*, .*, .*, .*, '(.*)'\\)$", link_element["onclick"],
-        )[1]
+    for link_element in root.find_all("a", class_="article_ref"):
+        link_text = link_element.get_text()
 
-        on_click_parameter = re.sub("^[IVX]+\\s+", "", on_click_parameter)
-        on_click_parameter = re.sub("\\s+\\([IVX]+\\)$", "", on_click_parameter)
-        on_click_parameter = re.sub("\\s+\\(\\d+\\)$", "", on_click_parameter)
-        on_click_parameter = re.sub("\\s+\\([IVX]+,\\d+\\)$", "", on_click_parameter)
+        # Some links will have the specific sense in the link text (e.g. "fungere (2)" or
+        # "gjære (2II, 1)") but we just want to link to the whole page (e.g. "fungere" or "gjære")
+        link_text_without_numeral = re.sub("\\s+\\(\d+[IVX]+(, \d+)?\\)$", "", link_text)
 
-        anchor = soup.new_tag("a", href=on_click_parameter)
-        link_element.wrap(anchor)
-        link_element.unwrap()
+        link_element['href'] = link_text_without_numeral
 
 
 def remove_unwanted_attributes(root):

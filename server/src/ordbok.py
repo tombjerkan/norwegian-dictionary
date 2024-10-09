@@ -27,7 +27,7 @@ def lambda_handler(event, context):
     suggestions = json.loads(suggestions_response)
     inflections = [inflection for [inflection, _] in suggestions["a"].get("inflect", [])]
 
-    response_status = 200 if content else 404
+    response_status = 200 if content or inflections else 404
 
     response_body = {
         "content": str(content) if content else None,

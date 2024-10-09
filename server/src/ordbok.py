@@ -12,9 +12,36 @@ logger = logging.getLogger()
 def lambda_handler(event, context):
     word = event['queryStringParameters']['word']
 
+    definitions_response = try_get_definitions(word)
+    soup = bs4.BeautifulSoup(definitions_response, "html.parser")
+    content = soup.find(class_="article")
+
+    if content is not None:
+        transform_links(soup, content)
+        remove_attributes(content, exceptions=["href", "class", "style"])
+
+        report_unexpected_elements(content)
+        report_unexpected_classes(content)
+
+    suggestions_response = try_get_suggestions(word)
+    suggestions = json.loads(suggestions_response)
+    inflections = [inflection for [inflection, _] in suggestions["a"].get("inflect", [])]
+
+    response_status = 200 if content else 404
+
+    response_body = {
+        "content": str(content) if content else None,
+        "inflections": inflections
+    }
+
+    return create_response(response_status, json.dumps(response_body))
+
+
+def try_get_definitions(word):
     try:
         response = requests.get(f"https://ordbokene.no/bm/{word}")
         response.raise_for_status()
+        return response.text
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 503:
             return create_response(503)
@@ -23,20 +50,19 @@ def lambda_handler(event, context):
     except requests.exceptions.ConnectionError as e:
             return create_response(503)
 
-    soup = bs4.BeautifulSoup(response.text, "html.parser")
 
-    content = soup.find(class_="article") or soup.find(class_="suggestion")
-
-    if not content:
-        return create_response(404)
-
-    transform_links(soup, content)
-    remove_attributes(content, exceptions=["href", "class", "style"])
-
-    report_unexpected_elements(content)
-    report_unexpected_classes(content)
-
-    return create_response(200, str(content))
+def try_get_suggestions(word):
+    try:
+        response = requests.get(f"https://oda.uib.no/opal/prod/api/suggest?&q={word}&dict=bm&n=8&dform=int&meta=n&include=eifst")
+        response.raise_for_status()
+        return response.text
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 503:
+            return create_response(503)
+        else:
+            raise e from None
+    except requests.exceptions.ConnectionError as e:
+            return create_response(503)
 
 
 def transform_links(soup, root):

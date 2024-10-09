@@ -18,13 +18,13 @@ interface Props {
 }
 
 export default function OrdbokContainer(props: Props) {
-    const [data, isLoading, isUnavailable, isError] = useData<string>(
+    const [data, isLoading, isUnavailable, isError] = useData<{ content: string | null }>(
         `/ordbok/?word=${props.query}`,
     );
 
     return (
         <OrdbokView
-            data={data}
+            data={data?.content ?? null}
             isLoading={isLoading}
             isUnavailable={isUnavailable}
             isError={isError}

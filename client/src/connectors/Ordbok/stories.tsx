@@ -5,7 +5,8 @@ import OrdbokContent from "./Content";
 
 storiesOf("Ordbok", module).add("default", () => (
     <OrdbokView
-        data={testData}
+        content={testData}
+        inflections={[]}
         isLoading={false}
         isUnavailable={false}
         isError={false}
@@ -13,7 +14,7 @@ storiesOf("Ordbok", module).add("default", () => (
 ));
 
 storiesOf("Ordbok", module).add("content", () => (
-    <OrdbokContent data={testData} />
+    <OrdbokContent content={testData} inflections={[]} />
 ));
 
 const testData =

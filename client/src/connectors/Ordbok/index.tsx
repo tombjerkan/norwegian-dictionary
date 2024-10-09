@@ -18,13 +18,15 @@ interface Props {
 }
 
 export default function OrdbokContainer(props: Props) {
-    const [data, isLoading, isUnavailable, isError] = useData<{ content: string | null }>(
-        `/ordbok/?word=${props.query}`,
-    );
+    const [data, isLoading, isUnavailable, isError] = useData<{
+        content: string | null;
+        inflections: string[];
+    }>(`/ordbok/?word=${props.query}`);
 
     return (
         <OrdbokView
-            data={data?.content ?? null}
+            content={data?.content ?? null}
+            inflections={data?.inflections ?? []}
             isLoading={isLoading}
             isUnavailable={isUnavailable}
             isError={isError}
@@ -34,7 +36,8 @@ export default function OrdbokContainer(props: Props) {
 }
 
 interface ViewProps {
-    data: string | null;
+    content: string | null;
+    inflections: string[];
     isLoading: boolean;
     isUnavailable: boolean;
     isError: boolean;
@@ -70,8 +73,13 @@ export function OrdbokView(props: ViewProps) {
 
             {isContentAvailable && isOpen && (
                 <>
-                    <div className="pt-6 pl-4 pr-4 pb-16 border-t border-gray-200">
-                        {props.data && <Content data={props.data!} />}
+                    <div className="pt-6 pb-16 border-t border-gray-200">
+                        {(props.content || props.inflections.length > 0) && (
+                            <Content
+                                content={props.content}
+                                inflections={props.inflections}
+                            />
+                        )}
                     </div>
 
                     <button

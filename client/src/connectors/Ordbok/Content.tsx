@@ -3,16 +3,27 @@ import styled from "styled-components";
 import DomPurify from "dompurify";
 
 interface Props {
-  data: string;
+  content: string | null;
+  inflections: string[];
 }
 
 export default function OrdbokContent(props: Props) {
-  const sanitisedData = DomPurify.sanitize(props.data);
+  const sanitisedData = DomPurify.sanitize(props.content!);
 
-  return <Container dangerouslySetInnerHTML={{ __html: sanitisedData }} />;
+  return (
+    <>
+      <Content dangerouslySetInnerHTML={{ __html: sanitisedData }} />
+
+      {props.content !== null && props.inflections.length > 0 && <Separator />}
+
+      {props.inflections.length > 0 && (
+        <Inflections inflections={props.inflections} />
+      )}
+    </>
+  );
 }
 
-const Container = styled.div`
+const Content = styled.div`
   color: ${(props) => props.theme.colors.gray[700]};
 
   a {
@@ -41,3 +52,18 @@ const Container = styled.div`
     font-weight: ${(props) => props.theme.fontWeight.bold};
   }
 `;
+
+const Inflections = (props: { inflections: string[] }) => (
+  <div className="px-4">
+    Inflections:
+    <ul className="flex gap-2">
+      {props.inflections.map((inflection) => (
+        <a href={`/${inflection}`} className="text-blue-600 hover:underline">
+          {inflection}
+        </a>
+      ))}
+    </ul>
+  </div>
+);
+
+const Separator = () => <div className="border-t mb-4 mt-4" />;

@@ -19,13 +19,13 @@ interface Props {
 
 export default function OrdbokContainer(props: Props) {
     const [data, isLoading, isUnavailable, isError] = useData<{
-        content: string | null;
+        articles: string[];
         inflections: string[];
     }>(`/ordbok/?word=${props.query}`);
 
     return (
         <OrdbokView
-            content={data?.content ?? null}
+            articles={data?.articles ?? []}
             inflections={data?.inflections ?? []}
             isLoading={isLoading}
             isUnavailable={isUnavailable}
@@ -36,7 +36,7 @@ export default function OrdbokContainer(props: Props) {
 }
 
 interface ViewProps {
-    content: string | null;
+    articles: string[];
     inflections: string[];
     isLoading: boolean;
     isUnavailable: boolean;
@@ -74,9 +74,10 @@ export function OrdbokView(props: ViewProps) {
             {isContentAvailable && isOpen && (
                 <>
                     <div className="pt-6 pb-16 border-t border-gray-200">
-                        {(props.content || props.inflections.length > 0) && (
+                        {(props.articles.length > 0 ||
+                            props.inflections.length > 0) && (
                             <Content
-                                content={props.content}
+                                articles={props.articles}
                                 inflections={props.inflections}
                             />
                         )}

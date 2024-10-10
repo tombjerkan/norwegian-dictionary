@@ -14,23 +14,23 @@ def lambda_handler(event, context):
 
     definitions_response = try_get_definitions(word)
     soup = bs4.BeautifulSoup(definitions_response, "html.parser")
-    content = soup.find(class_="article")
+    articles = soup.find_all(class_="article")
 
-    if content is not None:
-        transform_links(soup, content)
-        remove_attributes(content, exceptions=["href", "class", "style"])
+    for article in articles:
+        transform_links(soup, article)
+        remove_attributes(article, exceptions=["href", "class", "style"])
 
-        report_unexpected_elements(content)
-        report_unexpected_classes(content)
+    report_unexpected_elements(articles)
+    report_unexpected_classes(articles)
 
     suggestions_response = try_get_suggestions(word)
     suggestions = json.loads(suggestions_response)
     inflections = [inflection for [inflection, _] in suggestions["a"].get("inflect", [])]
 
-    response_status = 200 if content or inflections else 404
+    response_status = 200 if articles or inflections else 404
 
     response_body = {
-        "content": str(content) if content else None,
+        "articles": [str(article) for article in articles],
         "inflections": inflections
     }
 
@@ -86,8 +86,8 @@ def remove_unwanted_attributes(root):
             del element[attribute]
 
 
-def report_unexpected_elements(content):
-    soup = bs4.BeautifulSoup(f"<div>{content}</div>", "html.parser")
+def report_unexpected_elements(articles):
+    soup = bs4.BeautifulSoup(f"<div>{article for article in articles}</div>", "html.parser")
 
     all_elements = {element.name for element in soup.find_all()}
 
@@ -104,8 +104,8 @@ def report_unexpected_elements(content):
         logger.warn("Unexpected elements in source HTML: " + ", ".join(unexpected_elements))
 
 
-def report_unexpected_classes(content):
-    soup = bs4.BeautifulSoup(f"<div>{content}</div>", "html.parser")
+def report_unexpected_classes(articles):
+    soup = bs4.BeautifulSoup(f"<div>{article for article in articles}</div>", "html.parser")
 
     all_classes = {
         _class for element in soup.find_all() for _class in element.get("class", [])

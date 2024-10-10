@@ -3,18 +3,29 @@ import styled from "styled-components";
 import DomPurify from "dompurify";
 
 interface Props {
-  content: string | null;
+  articles: string[];
   inflections: string[];
 }
 
 export default function OrdbokContent(props: Props) {
-  const sanitisedData = DomPurify.sanitize(props.content!);
+  const sanitisedArticles = props.articles.map(article =>
+    DomPurify.sanitize(article)
+  );
 
   return (
     <>
-      <Content dangerouslySetInnerHTML={{ __html: sanitisedData }} />
+      <ArticleContainer>
+        {sanitisedArticles.map((html, index) => (
+          <div
+            dangerouslySetInnerHTML={{ __html: html }}
+            className={index !== 0 ? "border-t mt-4 pt-4" : undefined}
+          />
+        ))}
+      </ArticleContainer>
 
-      {props.content !== null && props.inflections.length > 0 && <Separator />}
+      {props.articles !== null && props.inflections.length > 0 && (
+        <Separator />
+      )}
 
       {props.inflections.length > 0 && (
         <Inflections inflections={props.inflections} />
@@ -23,7 +34,7 @@ export default function OrdbokContent(props: Props) {
   );
 }
 
-const Content = styled.div`
+const ArticleContainer = styled.div`
   color: ${(props) => props.theme.colors.gray[700]};
 
   a {

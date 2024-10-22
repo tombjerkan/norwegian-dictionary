@@ -20,8 +20,19 @@ def lambda_handler(event, context):
         transform_links(soup, article)
         remove_attributes(article, exceptions=["href", "class", "style"])
 
-    report_unexpected_elements(articles)
-    report_unexpected_classes(articles)
+    unexpected_elements = get_unexpected_elements(articles)
+    if unexpected_elements:
+        logger.warn(
+            "Unexpected elements in source HTML: " + ", ".join(unexpected_elements),
+            extra={ "word": word },
+        )
+
+    unexpected_classes = get_unexpected_classes(articles)
+    if unexpected_classes:
+        logger.warn(
+            "Unexpected classes in source HTML: " + ", ".join(unexpected_classes),
+            extra={ "word": word },
+        )
 
     suggestions_response = try_get_suggestions(word)
     suggestions = json.loads(suggestions_response)
@@ -86,32 +97,21 @@ def remove_unwanted_attributes(root):
             del element[attribute]
 
 
-def report_unexpected_elements(articles):
-    soup = bs4.BeautifulSoup(f"<div>{article for article in articles}</div>", "html.parser")
+def get_unexpected_elements(articles):
+    soup = bs4.BeautifulSoup("".join(str(a) for a in articles), "html.parser")
 
     all_elements = {element.name for element in soup.find_all()}
 
-    expected_elements = {
-        "div",
-        "span",
-        "a",
-        "bullet",
-    }
+    expected_elements = set()
 
-    unexpected_elements = all_elements - expected_elements
-
-    if unexpected_elements:
-        logger.warn("Unexpected elements in source HTML: " + ", ".join(unexpected_elements))
+    return all_elements - expected_elements
 
 
-def report_unexpected_classes(articles):
-    soup = bs4.BeautifulSoup(f"<div>{article for article in articles}</div>", "html.parser")
+def get_unexpected_classes(articles):
+    soup = bs4.BeautifulSoup("".join(str(a) for a in articles), "html.parser")
 
     all_classes = {
         _class for element in soup.find_all() for _class in element.get("class", [])
     }
-    expected_classes = {"utvidet", "tyding", "doeme", "doemeliste"}
-    unexpected_classes = all_classes - expected_classes
-
-    if unexpected_classes:
-        logger.warn("Unexpected classes in source HTML: " + ", ".join(unexpected_classes))
+    expected_classes = set()
+    return all_classes - expected_classes
